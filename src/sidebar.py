@@ -14,6 +14,7 @@ class Sidebar(ttk.Frame):
         self.playlist = playlist
         self.playlist_manager = playlist_manager
         self.selected_view = None
+        self.playlist_id = None
 
         self.sidebar_tree = ttk.Treeview(self)
         self.sidebar_tree.pack(side="left", fill="both", expand=True)
@@ -24,7 +25,7 @@ class Sidebar(ttk.Frame):
 
     def set_sidebar(self):
         library_id = self.sidebar_tree.insert("", "end", text="Library", values=("Library"))
-        playlist_id = self.sidebar_tree.insert("", "end", text="Playlists", values=("Playlists"))
+        self.playlist_id = self.sidebar_tree.insert("", "end", text="Playlists", values=("Playlists"))
         playlists = self.playlist_manager.user_playlists
         
         self.sidebar_tree.insert(library_id, "end", text="Artists", values=("Artists", ))
@@ -32,13 +33,13 @@ class Sidebar(ttk.Frame):
         self.sidebar_tree.insert(library_id, "end", text="Songs", values=("Songs", ))
         self.sidebar_tree.insert(library_id, "end", text="Favorites", values=("Favorites", ))
 
-        self.sidebar_tree.insert(playlist_id, "end", text="All Playlists", values=("All Playlists"))
+        self.sidebar_tree.insert(self.playlist_id, "end", text="All Playlists", values=("All Playlists"))
 
         self.sidebar_tree.item(library_id, open=True)
-        self.sidebar_tree.item(playlist_id, open=True)
+        self.sidebar_tree.item(self.playlist_id, open=True)
 
         for playlist in playlists.keys():
-            self.sidebar_tree.insert(playlist_id, "end", text=f"- {playlist}")
+            self.sidebar_tree.insert(self.playlist_id, "end", text=f"- {playlist}")
 
     def on_sidebar_click(self, event):
         selection = self.sidebar_tree.selection()
@@ -49,6 +50,19 @@ class Sidebar(ttk.Frame):
         self.event_generate("<<SidebarSelection>>")
         print("SIDEBAR CLICK:", self.selected_iid)
         print(self.selected_view)
+
+    def add_user_playlist(self, playlist):
+        if not playlist:
+            return
+        
+        if not self.playlist_id:
+            print("Playlist parent not initialized")
+            return
+        
+        self.sidebar_tree.insert(self.playlist_id, "end", text=f"- {playlist.name}")
+        
+    def delete_user_playlist(self, playlist):
+        pass
 
 
 class SecondarySidebar(ttk.Frame):

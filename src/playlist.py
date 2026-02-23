@@ -6,7 +6,7 @@ import vlc
 
 
 class Playlist():
-    def __init__(self, name, track_list):
+    def __init__(self, name, track_list=None):
         self.name = name
         self.track_list = track_list
 
