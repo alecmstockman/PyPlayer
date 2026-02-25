@@ -177,7 +177,6 @@ class PlaylistDisplay(ttk.Frame):
             self._update_favorite(self.menu_iid)
 
     def _on_menu_play(self):
-        # print(f"MENU IID; {self.menu_iid}")
         self.clear_play_status()
         self.controls.play_index = int(self.menu_iid)
         index = self.controls.play_order[self.controls.play_index]
@@ -212,8 +211,6 @@ class PlaylistDisplay(ttk.Frame):
         self.event_generate("<<PlaylistCreated>>")
 
     def _set_popup_playlist_list(self):
-        print()
-        print("SET POPUP PLAYLIST LIST")
         for key, value in self.playlist_manager.user_playlists.items():
             self.playlist_submenu.add_command(
                 label=f"{value.name}", 
@@ -222,13 +219,9 @@ class PlaylistDisplay(ttk.Frame):
             )
     
     def _on_menu_add_to_playlist(self, key, name):
-        print("ON MENU ADD TO PLAYLIST")
         track = self.playlist_tree.set(self.menu_iid, "filepath")
-        print(f"menu iid: {self.menu_iid}, track: {track}\n")
         self.playlist_manager.add_to_user_playlist(key, name, track)
         self.menu_iid = None
-
-
 
     def _on_menu_update_favorite(self):
         self._update_favorite(self.menu_iid)
@@ -312,7 +305,6 @@ class PlaylistDisplay(ttk.Frame):
         for iid in self.playlist_tree.get_children():
             artist = self.playlist_tree.item(iid, 'values')
             if artist_album == artist[6]:
-                # print(f"{artist_album} == {artist[6]}")
                 track_list.append(Path(artist[0]))
         playlist = Playlist(f"{artist_album}", track_list)
         self.set_playlist(playlist)

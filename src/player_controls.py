@@ -36,7 +36,6 @@ class PlayerControls(ttk.Frame):
         self.now_playing_label.pack(side="left", padx=(300))   
 
     def get_current_track(self):
-        # print(f"play order: {self.play_order}, play index; {self.play_index}")
         index = self.play_order[self.play_index]
         self.track = self.playlist.track_list[index]
         self.current_track_title.set(self.track.stem)
@@ -46,12 +45,10 @@ class PlayerControls(ttk.Frame):
             self.player.pause()
             self.play_pause_btn.config(text="▶")
             self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
-            # print("toggle_play: PAUSED")
         else:
             self.player.play()
             self.playlist_display.play_status_icon_playing(self.play_order[self.play_index])
             self.play_pause_btn.config(text="⏸")
-            # print("toggle_play: PLAYING")
 
     def previous_track(self, event=None):
         self.playlist_display.clear_play_status()
@@ -84,7 +81,6 @@ class PlayerControls(ttk.Frame):
             self.player.load(track)
             self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
         self.get_current_track()
-        # print(f"Previous_track, play index now {self.play_index}")
 
     def next_track(self, event=None):
         self.playlist_display.clear_play_status()
@@ -150,14 +146,13 @@ class PlayerControls(ttk.Frame):
         self.play_index = self.play_order.index(iid)
         index = self.play_order[self.play_index]
         track = self.playlist.track_list[index]
-        print(f"PLAY SELECTION: IID: {iid}")
-        print(f"PLAY SELECTION: Play index: {self.play_index}, index: {index}, track: {track} \n")
+        # print(f"PLAY SELECTION: IID: {iid}")
+        # print(f"PLAY SELECTION: Play index: {self.play_index}, index: {index}, track: {track} \n")
         self.player.load(track)
         self.player.play()
         self.get_current_track()
         self.toggle_play()
         
-
     def play_next_track(self):
         if self.loop_status == "track":
             index = self.play_order[self.play_index]

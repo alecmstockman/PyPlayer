@@ -1,22 +1,31 @@
 {
-  "cfc5fe4c-fcbe-486e-bb29-25c9d7882ac8": {
-    "name": "Bilmuri",
-    "tracks": "[]"
+  "5d7294d3-cf55-41f5-9e2a-ebcd18f3af89": {
+    "name": "Sylarin",
+    "tracks": [
+      "Music/Songs/04 - Crimson Drum Video.wav",
+      "Music/Songs/01 - End of You.mp3",
+      "Music/Songs/12 - Dress.mp3"
+    ],
+    "id": "5d7294d3-cf55-41f5-9e2a-ebcd18f3af89"
   },
-  "f3ceb989-e207-458c-b0d8-8f1802b76830": {
-    "name": "Test",
-    "tracks": "[]"
-  },
-  "3c13f57f-0b41-4d52-a285-5ea3bef90064": {
-    "name": "Spotify",
-    "tracks": "[]"
-  },
-  "a200290d-3eea-481f-a0b8-20663a656459": {
-    "name": "another!",
-    "tracks": "[]"
-  },
-  "b5637a28-e40d-4f37-a056-522cda0316ca": {
+  "322181e7-0a8c-4fe8-82c3-e9cf990513b1": {
     "name": "Spiritbox",
-    "tracks": "[]"
+    "tracks": [
+      "Music/Songs/01 - End of You.mp3",
+      "Music/Albums/Test Album/03 - Stacy's Mom.mp3"
+    ],
+    "id": "322181e7-0a8c-4fe8-82c3-e9cf990513b1"
+  },
+  "75be49e5-d4e8-42de-83cb-42f595507ffa": {
+    "name": "Test",
+    "tracks": [
+      "Music/Albums/Test Album/01 - San Quentin [Explicit].mp3"
+    ],
+    "id": "75be49e5-d4e8-42de-83cb-42f595507ffa"
+  },
+  "e886744c-9c75-479e-a25a-005c0828d577": {
+    "name": "Another",
+    "tracks": [],
+    "id": "e886744c-9c75-479e-a25a-005c0828d577"
   }
 }

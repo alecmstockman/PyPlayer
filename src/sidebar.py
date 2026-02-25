@@ -37,28 +37,25 @@ class Sidebar(ttk.Frame):
         self.sidebar_tree.item(self.playlist_id, open=True)
 
         for value in self.playlist_manager.user_playlists.values():
-            self.sidebar_tree.insert(self.playlist_id, "end", text=f"- {value.name}")
+            self.sidebar_tree.insert(self.playlist_id, "end", text=f"- {value.name}", values=(value.id, value.name))
 
     def on_sidebar_click(self, event):
         selection = self.sidebar_tree.selection()
-        # print(f"SIDEBAR CLICK: {selection}")
+        print(f"SIDEBAR CLICK: {selection}")
         if not selection:
             return
         self.selected_iid = selection[0]
         self.selected_view = self.sidebar_tree.item(self.selected_iid, "values")[0]
         self.event_generate("<<SidebarSelection>>")
-        print(self.selected_view)
 
     def add_user_playlist(self, playlist):
-        # print("ADD USER PLAYLIST")
         if not playlist:
             return
         
         if not self.playlist_id:
             print("Playlist parent not initialized")
             return
-        
-        self.sidebar_tree.insert(self.playlist_id, "end", text=f"- {playlist.name}")
+        self.sidebar_tree.insert(self.playlist_id, "end", text=f"- {playlist.name}", values=("Playlist"))
 
 
 class SecondarySidebar(ttk.Frame):

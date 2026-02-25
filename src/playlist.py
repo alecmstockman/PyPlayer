@@ -7,8 +7,8 @@ import vlc
 
 
 class Playlist():
-    def __init__(self, name, track_list=None, id=None):
-        self.id = None
+    def __init__(self, name, track_list=None, song_id=None):
+        self.id = song_id
         self.name = name
         self.track_list = track_list
 
@@ -23,15 +23,13 @@ class PlaylistManager():
         playlist = Playlist(name, [])
         playlist.id = str(uuid.uuid4())
         self.user_playlists[playlist.id] = playlist
-        print(self.user_playlists)
         self.save_playlists()
         return playlist
 
     def save_playlists(self):
         user_playlists = {}
-        print("SAVE PLAYLIST CALLED")
         for key, value in self.user_playlists.items():
-            user_playlists[key] = {"name": value.name, "tracks": value.track_list}
+            user_playlists[key] = {"name": value.name, "tracks": value.track_list, "id": key}
         path = Path("data/playlists.json")
         try: 
             with path.open("w", encoding="utf-8") as f:
@@ -40,7 +38,6 @@ class PlaylistManager():
             print(f"Failed to save playlist: {e}")
 
     def load_playlist(self):
-        print("LOAD PLAYLISTS")
         user_playlists = {}
         path = Path("data/playlists.json")
 
@@ -55,16 +52,15 @@ class PlaylistManager():
             self.user_playlists = {}
 
         for key, value in user_playlists.items():
-            self.user_playlists[key] = Playlist(value["name"], value["tracks"], key)
+            path_list = []
+            track_list = value["tracks"]
+            for track in track_list:
+                path_list.append(Path(track))
+            self.user_playlists[key] = Playlist(value["name"], path_list, key)
     
     def add_to_user_playlist(self, key, name, track):
-        print(f"ADD TO USER PLAYLIST, playlist name: {name}, track: {track}")
         playlist = self.user_playlists[key]
-        print(f"name; {playlist.name}")
-        print(f"track_list: {playlist.track_list}")
         playlist.track_list.append(track)
-        # self.user_playlists[key] = {track.append(track)}
-        print(f"track_list: {playlist.track_list}")
         self.save_playlists()
 
 
