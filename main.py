@@ -92,6 +92,10 @@ def on_sidebar_selection(event):
     if selected_view in playlist_manager.user_playlists.keys():
         user_playlist = playlist_manager.user_playlists[selected_view]
         playlist_display.set_playlist(user_playlist)
+        if paned.secondary_sidebar is not None:
+            paned.forget(secondary_sidebar_region)
+            paned.secondary_sidebar.destroy()
+            paned.secondary_sidebar = None
         return
 
     if selected_view not in ("Artists", "Albums"):
