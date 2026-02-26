@@ -76,7 +76,6 @@ class PlaylistDisplay(ttk.Frame):
             return
         index = 0
         even = True
-
         for track in self.playlist.track_list:
             if not track or not track.exists():
                 print(f"Skipping invalid track: {track}")
@@ -220,7 +219,7 @@ class PlaylistDisplay(ttk.Frame):
     
     def _on_menu_add_to_playlist(self, key, name):
         track = self.playlist_tree.set(self.menu_iid, "filepath")
-        self.playlist_manager.add_to_user_playlist(key, name, track)
+        self.playlist_manager.add_to_user_playlist(key, name, Path(track))
         self.menu_iid = None
 
     def _on_menu_update_favorite(self):

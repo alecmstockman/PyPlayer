@@ -20,7 +20,11 @@ class PlaylistManager():
         self.id = uuid.uuid4()
 
     def create_playlist(self, name, tracks=None):
-        playlist = Playlist(name, [])
+        if tracks == None:
+            playlist = Playlist(name, [])
+        else:
+            playlist = Playlist(name, tracks)
+        print(f"CREATE PLAYLIST: {playlist}")
         playlist.id = str(uuid.uuid4())
         self.user_playlists[playlist.id] = playlist
         self.save_playlists()
@@ -29,7 +33,10 @@ class PlaylistManager():
     def save_playlists(self):
         user_playlists = {}
         for key, value in self.user_playlists.items():
-            user_playlists[key] = {"name": value.name, "tracks": value.track_list, "id": key}
+            track_list = []
+            for track in value.track_list:
+                track_list.append(str(track))
+            user_playlists[key] = {"name": value.name, "tracks": track_list, "id": key}
         path = Path("data/playlists.json")
         try: 
             with path.open("w", encoding="utf-8") as f:
@@ -59,9 +66,20 @@ class PlaylistManager():
             self.user_playlists[key] = Playlist(value["name"], path_list, key)
     
     def add_to_user_playlist(self, key, name, track):
+        print("\nPLAYLIST: - ADD TO USER PLAYLIST")
         playlist = self.user_playlists[key]
         playlist.track_list.append(track)
         self.save_playlists()
+
+    def delete_user_playlist(self, playlist_id):
+        remaining_user_playlists = {}
+        for key, playlist in self.user_playlists.items():
+            if key != playlist_id:
+                remaining_user_playlists[key] = playlist
+
+        self.user_playlists = remaining_user_playlists
+        self.save_playlists()
+
 
 
 class CreatePlaylistEntry(tk.Toplevel):

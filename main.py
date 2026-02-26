@@ -82,16 +82,22 @@ root.bind("<Right>", controls.next_track, add="+")
 
 def on_sidebar_selection(event):
     selected_view = sidebar.selected_view
-    print("MAIN: ON SIDEBAR EVENT", selected_view)
+    # print("MAIN: ON SIDEBAR EVENT", selected_view)
 
     if selected_view == "Favorites":
         playlist_display.show_favorites()
     if selected_view != "Favorites":
+        print("main: FAVORITES")
         playlist_display.set_playlist(library)
 
+    print(f"\n --- MAIN: on_sidebar_selection")
+
     if selected_view in playlist_manager.user_playlists.keys():
+        print(f"selected_view: {selected_view}")
+
         user_playlist = playlist_manager.user_playlists[selected_view]
         playlist_display.set_playlist(user_playlist)
+        
         if paned.secondary_sidebar is not None:
             paned.forget(secondary_sidebar_region)
             paned.secondary_sidebar.destroy()
@@ -130,10 +136,12 @@ def on_secondary_sidebar_selection(event):
     artist_album = sidebar_widget.selected_view
 
     if sidebar.selected_view == "Artists" and artist_album:
+        print("------- secondary artists")
         playlist_display.set_playlist(library)
         playlist_display.get_artist_tracks(artist_album)
 
     if sidebar.selected_view == "Albums" and artist_album:
+        print("------ secondary albums")
         playlist_display.set_playlist(library)
         playlist_display.get_album_tracks(artist_album)
     # print(f"SIDEBAR.SELECTED_VIEW = {sidebar.selected_view}")
