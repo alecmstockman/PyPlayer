@@ -46,9 +46,7 @@ class Sidebar(ttk.Frame):
         self.set_user_playlists()
 
     def set_user_playlists(self):
-        # print("SET USER PLAYLISTS:")
         children = self.sidebar_tree.get_children(self.playlist_id)
-        # print(f"BEFORE CHILDREN: {children}")
         for child in children[1:]:
             self.sidebar_tree.delete(child)
 
@@ -56,11 +54,9 @@ class Sidebar(ttk.Frame):
             self.sidebar_tree.insert(self.playlist_id, "end", iid=value.id, text=f"- {value.name}", values=(value.id, value.name))
         
         children = self.sidebar_tree.get_children(self.playlist_id)
-        # print(f"AFTER CHILDREN: {children}\n")
 
     def on_sidebar_click(self, event):
         selection = self.sidebar_tree.selection()
-        # print(f"SIDEBAR CLICK: {selection}")
         if not selection:
             return
         self.selected_iid = selection[0]
@@ -122,4 +118,3 @@ class SecondarySidebar(ttk.Frame):
         self.selected_iid = selection[0]
         self.selected_view = self.tree.item(self.selected_iid, "values")[0]
         self.event_generate("<<SecondarySidebarSelection>>")
-        print("SECONDARY SIDEBAR CLICK:", self.selected_iid)

@@ -72,7 +72,6 @@ class PlaylistDisplay(ttk.Frame):
 
 
     def set_playlist(self, playlist):
-        print(f"\nSET PLAYLIST: {playlist.name}")
         self.playlist = playlist
         self.clear_playlist()
         if not playlist or not hasattr(playlist, "track_list"):
@@ -126,7 +125,6 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def get_selected_tracks(self):
-        print("get_selected_tracks")
         selection = self.playlist_tree.selection()
 
         if not selection:
@@ -166,8 +164,6 @@ class PlaylistDisplay(ttk.Frame):
             print("playlist_display: play_status_icon_playing, index is None")
             return
         iid = index
-        print(f"PLAY STATUS: play iid: {iid}")
-        print(f"vlc media: {self.player.media}")
         self.playlist_tree.set(iid, column="play status", value="  🔊")
 
     def play_status_icon_paused(self, index):
@@ -177,7 +173,6 @@ class PlaylistDisplay(ttk.Frame):
             print("playlist_display: play_status_icon_paused, index is None")
             return
         iid = index
-        print(f"PLAY STATUS: pause iid: {iid}")
         self.playlist_tree.set(iid, column="play status", value="  🔈")
 
 
@@ -196,7 +191,6 @@ class PlaylistDisplay(ttk.Frame):
             self.popup_menu.tk_popup(event.x_root, event.y_root)
         elif col_id == "#9":
             self._update_favorite(row_id)
-        print(f"ON TREE CLICK, menu_iid: {self.menu_iid}")
 
     def _on_menu_play(self):
         self.clear_play_status()
@@ -205,7 +199,6 @@ class PlaylistDisplay(ttk.Frame):
         track = self.playlist.track_list[index]
         self.player.load(track)
         self.player.play()
-        print(f"ON MENU PLAY, index: {index}")
         self.play_status_icon_playing(index)
 
     def _on_menu_previous_track(self):
@@ -217,8 +210,6 @@ class PlaylistDisplay(ttk.Frame):
         self.clear_play_status()
         self.controls.play_index = int(self.menu_iid)
         self.controls.next_track()
-        print(f"ON MENU NEXT TRACK: menu_iid: {self.menu_iid}")     
-
 
     def _on_menu_create_playlist(self):
         dialog = CreatePlaylistEntry(self)
@@ -300,8 +291,9 @@ class PlaylistDisplay(ttk.Frame):
             favorites = json.load(f)
         
         favorites_list = [Path(key) for key, value in favorites.items() if value == True]
-        playlist = Playlist("Favorites", favorites_list)        
-        self.set_playlist(playlist)
+        favorites_playlist = Playlist("Favorites", favorites_list)        
+        self.set_playlist(favorites_playlist)
+        return favorites_playlist
 
     def get_all_artists(self, track_list):
         artist_set = set()
@@ -324,7 +316,6 @@ class PlaylistDisplay(ttk.Frame):
         return sorted(album_set)
     
     def get_artist_tracks(self, artist_album):
-        print("GET ARTIST TRACKS")
         track_list = []
         for iid in self.playlist_tree.get_children():
             artist = self.playlist_tree.item(iid, 'values')
@@ -334,17 +325,12 @@ class PlaylistDisplay(ttk.Frame):
         self.set_playlist(playlist)
                 
     def get_album_tracks(self, artist_album):
-        print("GET ALBUM TRACKS")
         track_list = []
         for iid in self.playlist_tree.get_children():
             album = self.playlist_tree.item(iid, 'values')
             if artist_album == album[7]:
                 track_list.append(Path(album[0]))        
         playlist = Playlist(f"{artist_album} - Album Tracks", track_list)
-        print()
-        print(playlist.name, playlist.id)
-        print(playlist.track_list)
-        print()
         self.set_playlist(playlist)
         
 

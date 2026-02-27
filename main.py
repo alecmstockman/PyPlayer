@@ -81,20 +81,21 @@ root.bind("<Right>", controls.next_track, add="+")
 
 def on_sidebar_selection(event):
     selected_view = sidebar.selected_view
-    print(f"MAIN: selected view = {selected_view}")
 
     if selected_view == "Favorites":
-        playlist_display.show_favorites()
-    # if selected_view != "Favorites":
-    #     playlist_display.set_playlist(library)
-        print(f"PLAYER CONTROLS: track list: {controls.playlist.track_list}")
-    if selected_view == "Songs":
+        favorites_playlist = playlist_display.show_favorites()
+        controls.playlist = favorites_playlist
+    elif selected_view == "Songs":
         playlist_display.set_playlist(library)
         controls.playlist.track_list = library.track_list
+    else:
+        playlist_display.set_playlist(library)
+        controls.playlist.track_list = library.track_list 
 
     if selected_view in playlist_manager.user_playlists.keys():
         user_playlist = playlist_manager.user_playlists[selected_view]
         playlist_display.set_playlist(user_playlist)
+        controls.playlist = user_playlist
         
         if paned.secondary_sidebar is not None:
             paned.forget(secondary_sidebar_region)
@@ -118,10 +119,7 @@ def on_sidebar_selection(event):
     
     
     if selected_view == "Artists":
-        # print(controls.playlist.track_list)
         playlist_display.clear_playlist()
-        print()
-        # print(controls.playlist.track_list)
         items = playlist_display.get_all_artists(library.track_list)
     else:
         playlist_display.clear_playlist()
@@ -144,9 +142,6 @@ def on_secondary_sidebar_selection(event):
         playlist_display.get_artist_tracks(artist_album)
 
         controls.playlist = playlist_display.playlist
-        print("\nMAIN: on_secondary_sidebar_click")
-        print(f"Player Controls: Playlist name: {controls.playlist.name}")
-        print(f"Playlist Display: Playlist Name: {playlist_display.playlist.name}")
 
     if sidebar.selected_view == "Albums" and artist_album:
         playlist_display.set_playlist(library)
@@ -158,7 +153,6 @@ sidebar.bind("<<SidebarSelection>>", on_sidebar_selection)
 def play_selected_tracks(event):
     track_values = playlist_display.get_selected_tracks()
     iid = track_values["index"]
-    print(f"MAIN, play selected track, iid; {iid}")
     controls.play_selection(iid)
 
 playlist_display.playlist_tree.bind('<Double-Button-1>', play_selected_tracks)

@@ -1,71 +1,11 @@
 {
-  "ae0d5e83-8881-460f-9ee7-f9affc881c7f": {
-    "name": "two",
-    "tracks": [
-      "Music/Songs/02 - Jaded.mp3",
-      "Music/Songs/12 - Dress.mp3"
-    ],
-    "id": "ae0d5e83-8881-460f-9ee7-f9affc881c7f"
-  },
-  "981a34cf-411c-444e-ad70-e691d82e5670": {
-    "name": "One",
-    "tracks": [],
-    "id": "981a34cf-411c-444e-ad70-e691d82e5670"
-  },
-  "fba0e166-86e3-462c-ba0c-47d8e34dd268": {
-    "name": "New",
-    "tracks": [
-      "Music/Albums/Muri Album/02 - THE VOID APPROACHETH.mp3",
-      "Music/Albums/Muri Album/01 - BETTER HELL (Thicc boi) [Explicit].mp3"
-    ],
-    "id": "fba0e166-86e3-462c-ba0c-47d8e34dd268"
-  },
-  "c8c9d5e2-ab50-4eb5-8be4-f1db557996ae": {
+  "903d8e60-b691-4c03-a23c-91f7732ce9e6": {
     "name": "Test",
     "tracks": [
+      "Music/Songs/02 - Jaded.mp3",
+      "Music/Albums/Muri Album/01 - BETTER HELL (Thicc boi) [Explicit].mp3",
       "Music/Albums/Test Album/01 - Blackest Eyes [Remastered].mp3"
     ],
-    "id": "c8c9d5e2-ab50-4eb5-8be4-f1db557996ae"
-  },
-  "add08cf5-acd4-4ac0-b04e-47f6648e1cb5": {
-    "name": "new",
-    "tracks": [],
-    "id": "add08cf5-acd4-4ac0-b04e-47f6648e1cb5"
-  },
-  "ee589e2a-86b0-4d6d-bba7-702ebaa74f6e": {
-    "name": "Bilmuri Tracks",
-    "tracks": [
-      "Music/Albums/Muri Album/01 - BETTER HELL (Thicc boi) [Explicit].mp3"
-    ],
-    "id": "ee589e2a-86b0-4d6d-bba7-702ebaa74f6e"
-  },
-  "03b164a2-78e9-4bc8-b2db-5cf4c493e43c": {
-    "name": "Bilmuri Tracks",
-    "tracks": [
-      "Music/Albums/Muri Album/01 - BETTER HELL (Thicc boi) [Explicit].mp3"
-    ],
-    "id": "03b164a2-78e9-4bc8-b2db-5cf4c493e43c"
-  },
-  "9a35052f-30d9-4713-a122-853876fbda6d": {
-    "name": "Nickelback Tracks",
-    "tracks": [
-      "Music/Albums/Test Album/01 - San Quentin [Explicit].mp3"
-    ],
-    "id": "9a35052f-30d9-4713-a122-853876fbda6d"
-  },
-  "df0e29b0-642a-4d8c-8319-ddfde759c463": {
-    "name": "Poppy, Amy Lee, Spiritbox Tracks",
-    "tracks": [
-      "Music/Songs/01 - End of You.mp3"
-    ],
-    "id": "df0e29b0-642a-4d8c-8319-ddfde759c463"
-  },
-  "77d381bb-1451-4415-80e9-0a1592cdc803": {
-    "name": "Spiritbox Tracks",
-    "tracks": [
-      "Music/Songs/02 - Jaded.mp3",
-      "Music/Songs/01 - Circle With Me.mp3"
-    ],
-    "id": "77d381bb-1451-4415-80e9-0a1592cdc803"
+    "id": "903d8e60-b691-4c03-a23c-91f7732ce9e6"
   }
 }

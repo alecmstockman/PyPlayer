@@ -36,18 +36,13 @@ class PlayerControls(ttk.Frame):
         self.now_playing_label.pack(side="left", padx=(300))   
 
     def get_current_track(self):
-        print("GET CURRENT TRACK")
         index = self.play_order[self.play_index]
         self.track = self.playlist.track_list[index]
         self.current_track_title.set(self.track.stem)
         self.playlist_display.playlist_tree.selection_set(index)
 
     def toggle_play(self, event=None):
-        print(f"\nPLAYER CONTROLS, index: {self.play_order[self.play_index]}")
-        track = self.playlist.track_list[self.play_order[self.play_index]]
-        print(f"track stem: {track.stem}")
-        print(f"current title: {self.track.stem}")
-        
+        track = self.playlist.track_list[self.play_order[self.play_index]]        
 
         if self.player.is_playing():
             self.player.pause()
@@ -77,7 +72,6 @@ class PlayerControls(ttk.Frame):
             else:
                 self.player.load(track)
                 self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
-            # --------------------------------------------------------------
             self.playlist_display.menu_iid = self.play_order[self.play_index]
             return
         
@@ -102,7 +96,6 @@ class PlayerControls(ttk.Frame):
         self.get_current_track()
 
     def next_track(self, event=None):
-        print("TEST")
         self.playlist_display.clear_play_status()
         if self.loop_status == "track":
             index = self.play_order[self.play_index]
@@ -131,7 +124,6 @@ class PlayerControls(ttk.Frame):
             self.player.load(track)
             self.player.play()
             self.playlist_display.play_status_icon_playing(self.play_order[self.play_index])
-            print(f"CONTROLS, NEXT TRACK, playlist_display menu iid: {self.playlist_display.menu_iid}")
         else:
             self.player.load(track)
             self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
