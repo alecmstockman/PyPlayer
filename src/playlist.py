@@ -8,7 +8,7 @@ import vlc
 
 class Playlist():
     def __init__(self, name, track_list=None, song_id=None):
-        self.id = song_id
+        self.id = song_id if song_id is not None else uuid.uuid4()
         self.name = name
         self.track_list = track_list
 
@@ -24,7 +24,7 @@ class PlaylistManager():
             playlist = Playlist(name, [])
         else:
             playlist = Playlist(name, tracks)
-        print(f"CREATE PLAYLIST: {playlist}")
+        # print(f"CREATE PLAYLIST: {playlist}")
         playlist.id = str(uuid.uuid4())
         self.user_playlists[playlist.id] = playlist
         self.save_playlists()
@@ -66,7 +66,7 @@ class PlaylistManager():
             self.user_playlists[key] = Playlist(value["name"], path_list, key)
     
     def add_to_user_playlist(self, key, name, track):
-        print("\nPLAYLIST: - ADD TO USER PLAYLIST")
+        # print("\nPLAYLIST: - ADD TO USER PLAYLIST")
         playlist = self.user_playlists[key]
         playlist.track_list.append(track)
         self.save_playlists()
