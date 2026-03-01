@@ -142,8 +142,11 @@ class PlayerControls(ttk.Frame):
             if self.shuffle == False:
                 self.shuffle = True
                 self.shuffle_btn.config(text="🔀*")
+                index = self.play_index
                 self.play_order = list(range(len(self.playlist.track_list)))
                 random.shuffle(self.play_order)
+                self.play_order.remove(index)
+                self.play_order.insert(0, index)
             else:
                 self.shuffle = False
                 self.shuffle_btn.config(text="🔀")
