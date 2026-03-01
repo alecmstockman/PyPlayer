@@ -40,16 +40,16 @@ class PlayerControls(ttk.Frame):
 
     def get_current_track(self):
         index = self.play_order[self.play_index]
+        display_index = self.get_display_index()
         self.track = self.playlist.track_list[index]
-        self.current_track_title.set(self.track.stem)
-        self.playlist_display.playlist_tree.selection_set(index)
+        self.current_track_title.set(self.track.stem) 
+        if display_index != None:
+            self.playlist_display.playlist_tree.selection_set(display_index)
 
     def toggle_play(self, event=None):
-        print(f"\nCONTROLS (toggle play): playlist name: {self.playlist.name}, current track: {self.track.stem}, \nplay order: {self.play_order}, index: {self.play_index}")
+        # print(f"\nCONTROLS (toggle play): playlist name: {self.playlist.name}, current track: {self.track.stem}, \nplay order: {self.play_order}, index: {self.play_index}")
         track = self.playlist.track_list[self.play_order[self.play_index]]
-        print(f"CONTROLS (toggle play): track: {self.track}")
-        print(f"toggle_play track: {track}")
-        print(f"\nCONTROLS playlist: {self.playlist.name}, DISPLAY playlist: {self.playlist_display.playlist.name}")
+        # print(f"CONTROLS (toggle play): track: {self.track}")
 
         if self.playlist.name == self.playlist_display.playlist.name:
             if self.player.is_playing():
@@ -85,77 +85,59 @@ class PlayerControls(ttk.Frame):
                     self.playlist_display.clear_play_status
 
         
+    def get_display_index(self):
+        if self.playlist.name == self.playlist_display.playlist.name:
+            return self.play_order[self.play_index]
+        else:
+            children = self.playlist_display.playlist_tree.get_children()
+            for child in children:
+                item = self.playlist_display.playlist_tree.item(child)["values"]
+                filepath = item[0]
+                index = item[1]
+                self.track = self.playlist.track_list[self.play_index]
+                if str(self.track) == filepath:
+                    return index
+                else:
+                    return None
 
     def previous_track(self, event=None):
         self.playlist_display.clear_play_status()
-        if self.loop_status == "track":
-            index = self.play_order[self.play_index]
-            track = self.playlist.track_list[index]
-            if self.player.is_playing():
-                self.player.load(track)
-                self.player.play()
-                self.playlist_display.play_status_icon_playing(self.play_order[self.play_index])
-            else:
-                self.player.load(track)
-                self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
-            self.playlist_display.menu_iid = self.play_order[self.play_index]
-            return
-        
-        if self.play_index > 0:
-            self.play_index -= 1
-        else:
-            if self.loop_status == "playlist":
-                self.play_index = len(self.playlist.track_list) -1
-            else:
-                self.play_index = 0
-        index = self.play_order[self.play_index]
-        track = self.playlist.track_list[index]
-        if self.player.is_playing():
-            self.player.load(track)
-            self.player.play()
-            self.playlist_display.play_status_icon_playing(self.play_order[self.play_index])
-        else:
-            self.player.load(track)
-            self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
-        # --------------------------------------------------------------
-        self.playlist_display.menu_iid = self.play_order[self.play_index]
-        self.get_current_track()
+
+        if 0 < self.play_index:
+            if self.loop_status != "track":
+                self.play_index -= 1
+        elif self.play_index == 0 and self.loop_status == "playlist":
+            self.play_index = len(self.playlist.track_list) -1
+
+        self._load_current_track()
 
     def next_track(self, event=None):
         self.playlist_display.clear_play_status()
-        if self.loop_status == "track":
-            index = self.play_order[self.play_index]
-            track = self.playlist.track_list[index]
-            if self.player.is_playing():
-                self.player.load(track)
-                self.player.play()
-                # self.toggle_play
-                self.playlist_display.play_status_icon_playing(self.play_order[self.play_index])
-            else:
-                self.player.load(track)
-                self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
-
-            self.playlist_display.menu_iid = self.play_order[self.play_index]
-            return
 
         if 0 <= self.play_index < len(self.playlist.track_list) -1:
-            self.play_index += 1
-        else:
-            if self.loop_status == "playlist":
-                self.play_index = 0
-            else:
-                self.play_index = len(self.playlist.track_list) - 1
-        index = self.play_order[self.play_index]
-        track = self.playlist.track_list[index]
+            if self.loop_status != "track":
+                self.play_index += 1
+        elif self.play_index == len(self.playlist.track_list) - 1 and self.loop_status == "playlist":
+            self.play_index = 0
+
+        self._load_current_track()
+
+    def _load_current_track(self):
+        controls_index = self.play_order[self.play_index]
+        display_index = self.get_display_index()
+        track = self.playlist.track_list[controls_index]
+
         if self.player.is_playing():
             self.player.load(track)
             self.player.play()
-            self.playlist_display.play_status_icon_playing(self.play_order[self.play_index])
+            if display_index != None:
+                self.playlist_display.play_status_icon_playing(display_index)
         else:
-            self.player.load(track)
-            self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
-        # --------------------------------------------------------------
-        self.playlist_display.menu_iid = self.play_order[self.play_index]
+            self.player.load(track) 
+            if display_index != None:
+                self.playlist_display.play_status_icon_paused(display_index)
+        
+        self.playlist_display.menu_iid = display_index
         self.get_current_track()
 
     def shuffle_playlist(self):
