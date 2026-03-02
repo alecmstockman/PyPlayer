@@ -3,7 +3,6 @@ from tkinter import ttk
 from pathlib import Path
 import json
 import uuid
-import vlc
 
 
 class Playlist():

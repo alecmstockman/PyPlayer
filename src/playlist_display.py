@@ -6,7 +6,7 @@ from pathlib import Path
 from src.playlist import Playlist, PlaylistManager, CreatePlaylistEntry
 from src.vlc_player import VLCPlayer
 import json
-# from src.styles import setup_styles
+from src.styles import setup_styles
 from src.config import AUDIO_FILETYPES
 
 
@@ -23,6 +23,25 @@ class PlaylistDisplay(ttk.Frame):
         self.favorites = {}
         self.load_favorites()
         self._last_playlist_created = None
+
+        self.header_var = tk.StringVar()
+        self.header_var.set(playlist.name)
+        
+        self.display_header = tk.Frame(self, bg="#2b2b2b", height=40)
+        self.display_header.pack(fill="x")
+
+        self.header_label = tk.Label(
+            self.display_header,
+            textvariable=self.header_var,
+            font=("Trebuchet MS", 16),
+            fg="white",
+            bg="#1d1d1d",
+            anchor="w",       
+            padx=10
+        )
+        self.header_label.pack(fill="both", expand=True)
+        ttk.Separator(self, orient="horizontal").pack(fill="x")
+
 
         self.playlist_tree = ttk.Treeview(
             self, 
@@ -68,11 +87,13 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Remove Favorite", command=self._on_menu_update_favorite)
 
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_click)
-
+        self.get_playlist_time()
+        
 
     def set_playlist(self, playlist):
         self.playlist = playlist
         self.clear_playlist()
+        
         if not playlist or not hasattr(playlist, "track_list"):
             print("No playlist or invalid playlist object")
             return
@@ -118,6 +139,22 @@ class PlaylistDisplay(ttk.Frame):
                     )
                     even = True
                 index += 1
+            self.get_playlist_time()
+
+    def get_playlist_time(self):
+        self.HEADER_TEXT = self.playlist.name
+        children = self.playlist_tree.get_children()
+        total_seconds = 0
+        
+        for child in children:
+            item = self.playlist_tree.item(child)["values"]
+            time_str = item[5]
+            minutes, seconds = map(int, time_str.split(":"))
+            total_seconds += minutes * 60 + seconds 
+
+        total_minutes = total_seconds // 60 
+        remaining_seconds = total_seconds % 60
+        self.header_var.set(f"{self.playlist.name} ({total_minutes}:{remaining_seconds})")
 
     def clear_playlist(self):
         for iid in self.playlist_tree.get_children():

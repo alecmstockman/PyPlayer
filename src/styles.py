@@ -29,7 +29,18 @@ def setup_styles(root):
     style.configure(
         "Custom.TLabel", 
         font=("Trebuchet MS", 15),
-        foreground="FFFFFF"
+        foreground="#FFFFFF"
+    )
+
+    style.configure(
+        "Header.TFrame",
+        background="#2b2b2b"
+    )
+    
+    style.configure(
+        "Header.TLabel",
+        font=("Trebuchet MS", 20, "bold"),
+        padding=(10, 6)
     )
 
 

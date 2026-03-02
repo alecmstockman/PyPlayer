@@ -58,6 +58,7 @@ playlist_display = PlaylistDisplay(playlist_display_region, player, library, pla
 playlist_display.pack(fill="both", expand=True)
 playlist_display.set_playlist(library)
 
+
 controls = PlayerControls(top_row_1, player, playlist_display, library)
 controls.pack(side="left")
 playlist_display.controls = controls
@@ -231,7 +232,6 @@ def update_time_and_progress():
 progress_bar.pack(pady=5)
 progress_bar.bind('<Button-1>', set_progress_on_click, add="+")
 progress_bar.bind('<B1-Motion>', set_progress_on_click, add="+")
-
 
 def set_audio_volume(val):
     volume_level = int(float(val))
