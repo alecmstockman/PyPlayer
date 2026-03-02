@@ -79,7 +79,6 @@ root.bind("<Left>", controls.previous_track, add="+")
 root.bind("<Right>", controls.next_track, add="+")
 
 def check_play_status(selected_view, artist_album=None):
-    print(f"CHECK PLAY STATUS: selected view: {selected_view}")
     if selected_view and artist_album:
         return
     else:
@@ -88,7 +87,6 @@ def check_play_status(selected_view, artist_album=None):
             filepath = item["values"][0]
 
             if filepath == str(controls.track):
-                print(filepath, controls.track)
                 if player.is_playing():
                     playlist_display.play_status_icon_playing(item["values"][1])
                 else:
@@ -111,14 +109,12 @@ def on_sidebar_selection(event):
         check_play_status(selected_view)
 
     if selected_view in playlist_manager.user_playlists.keys():
-        print("USER PLAYLIST")
         user_playlist = playlist_manager.user_playlists[selected_view]
         playlist_display.set_playlist(user_playlist)
         controls.playlist = user_playlist
         check_play_status(selected_view)
 
     if selected_view not in ("Artists", "Albums"):
-        print("NOT IN ARTISTS OR ALBUMS")
         if paned.secondary_sidebar is not None:
             paned.forget(secondary_sidebar_region)
             paned.secondary_sidebar.destroy()
@@ -152,34 +148,27 @@ def on_sidebar_selection(event):
 def on_secondary_sidebar_selection(event):
     sidebar_widget = event.widget
     artist_album = sidebar_widget.selected_view
+    # print("\nON SECONDARY SIDEBAR SELECTION")
+    # print(f"artist_album: {artist_album}")
 
     if sidebar.selected_view == "Artists" and artist_album:
         playlist_display.set_playlist(library)
         playlist_display.get_artist_tracks(artist_album)
-        print(f" - - CONTROLS: index: {controls.play_index}\nPlay Order: {controls.play_order}")
         
-        # controls.playlist = playlist_display.playlist
-
     elif sidebar.selected_view == "Albums" and artist_album:
         playlist_display.set_playlist(library)
         playlist_display.get_album_tracks(artist_album)
-        # controls.playlist = playlist_display.playlist
-    check_play_status(sidebar.selected_view, artist_album)
+
+    controls.check_play_status()
 
 sidebar.bind("<<SidebarSelection>>", on_sidebar_selection)
 
 def play_selected_tracks(event):
-    print(f"MAIN: Play Selected Tracks")
     track_values = playlist_display.get_selected_tracks()
-    print(f"track values: {track_values}\n")
-    print(f"PLAYLIST DISPLAY: Playlist name: {playlist_display.playlist.name}")
     controls.playlist = playlist_display.playlist
     controls.update_play_order()
     iid = track_values["index"]
     controls.play_selection(iid)
-    # check_play_status()
-    print(f"MAIN: controls playlist: {controls.playlist.name}")
-    # print(f"MAIN: controls track_list: {controls.playlist.track_list}")
 
 playlist_display.playlist_tree.bind('<Double-Button-1>', play_selected_tracks)
 
@@ -192,7 +181,6 @@ def on_playlist_created(event):
 
 playlist_display.bind("<<PlaylistCreated>>", on_playlist_created)
 
-
 def lock_sidebar():
     try:
         paned.sashpos(0, 200)
@@ -203,6 +191,7 @@ root.after(200, lock_sidebar)
 
 
 progress_var = tk.DoubleVar()
+
 def set_progress_on_click(event):
     proportion = event.x / event.widget.winfo_width()
     length = player.get_length()
@@ -263,7 +252,6 @@ def quit_app(event=None):
     player.stop()
     root.destroy()
 root.bind("<Command-q>", quit_app, add="+")
-
 
 
 def test_function():

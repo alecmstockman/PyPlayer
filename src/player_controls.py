@@ -83,15 +83,19 @@ class PlayerControls(ttk.Frame):
                     self.playlist_display.clear_play_status
 
     def get_display_index(self):
+        print("GET DISPLAY INDEX")
         if self.playlist.name == self.playlist_display.playlist.name:
             return self.play_order[self.play_index]
         else:
             children = self.playlist_display.playlist_tree.get_children()
+            print("playlist display track list:")
+            print(self.playlist_display.playlist.track_list)
             for child in children:
                 item = self.playlist_display.playlist_tree.item(child)["values"]
                 filepath = item[0]
+                print(filepath)
                 index = item[1]
-                self.track = self.playlist.track_list[self.play_index]
+                self.track = self.playlist.track_list[self.play_index] 
                 if str(self.track) == filepath:
                     return index
                 else:
@@ -137,6 +141,28 @@ class PlayerControls(ttk.Frame):
         self.playlist_display.menu_iid = display_index
         self.get_current_track()
 
+    def check_play_status(self):
+        if self.playlist.name == self.playlist_display.playlist.name:
+            return
+        else:
+            children = self.playlist_display.playlist_tree.get_children()
+            for child in children:
+                item = self.playlist_display.playlist_tree.item(child)["values"]
+                filepath = item[0]
+                index = item[1]
+                self.track = self.playlist.track_list[self.play_index] 
+                if str(self.track) == filepath:
+                    if self.player.is_playing():
+                        if index != None:
+                            self.playlist_display.play_status_icon_playing(index)
+                    else:
+                        if index != None:
+                            self.playlist_display.play_status_icon_paused(index)
+
+        self.playlist_display.menu_iid = index
+        self.get_current_track()
+
+
     def shuffle_playlist(self):
         if self.loop_status != "track":
             if self.shuffle == False:
@@ -147,7 +173,7 @@ class PlayerControls(ttk.Frame):
                 random.shuffle(self.play_order)
                 self.play_order.remove(self.play_index)
                 self.play_order.insert(0, self.play_index)
-                
+
             else:
                 self.shuffle = False
                 self.shuffle_btn.config(text="🔀")

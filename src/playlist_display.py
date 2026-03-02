@@ -19,7 +19,6 @@ class PlaylistDisplay(ttk.Frame):
         
         self.popup_menu = tk.Menu(self, tearoff=False)
         self.playlist_submenu = tk.Menu(self.popup_menu, tearoff=False)
-        # self.menu_iid = None
         self.menu_iid = None
         self.favorites = {}
         self.load_favorites()
