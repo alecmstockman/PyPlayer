@@ -82,7 +82,7 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Create Playlist", command=self._on_menu_create_playlist)
         self.popup_menu.add_separator()
         self.popup_menu.add_cascade(label="Add to Playlist", menu=self.playlist_submenu)
-        self.popup_menu.add_cascade(label="Delete from Playlist", command=self._on_menu_delete_from_playlist)
+        self.popup_menu.add_command(label="Delete from Playlist", command=self._on_menu_delete_from_playlist)
         self.popup_menu.add_separator()
         self.popup_menu.add_command(label="Favorite", command=self._on_menu_update_favorite)
         self.popup_menu.add_command(label="Remove Favorite", command=self._on_menu_update_favorite)
@@ -141,6 +141,11 @@ class PlaylistDisplay(ttk.Frame):
                     even = True
                 index += 1
             self.get_playlist_time()
+
+            if self.playlist.id in self.playlist_manager.user_playlists.keys():
+                 self.popup_menu.entryconfig("Delete from Playlist", state="normal")
+            else:
+                self.popup_menu.entryconfig("Delete from Playlist", state="disabled")
 
     def get_playlist_time(self):
         self.HEADER_TEXT = self.playlist.name
