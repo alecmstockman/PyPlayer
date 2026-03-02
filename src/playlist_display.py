@@ -334,10 +334,4 @@ class PlaylistDisplay(ttk.Frame):
                 track_list.append(Path(album[0]))        
         playlist = Playlist(f"{artist_album} - Album Tracks", track_list)
         self.set_playlist(playlist)
-        
-
-
-
-
-
 

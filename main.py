@@ -35,9 +35,9 @@ paned.add(sidebar_region, weight=0)
 
 secondary_sidebar_region = ttk.Frame(paned, width=300, style="Border.TFrame")
 
-content_region = ttk.Frame(paned, style="Border.TFrame")
-content_region.pack(side="top", fill="both", expand=True)
-paned.add(content_region, weight=1)
+playlist_display_region = ttk.Frame(paned, style="Border.TFrame")
+playlist_display_region.pack(side="top", fill="both", expand=True)
+paned.add(playlist_display_region, weight=1)
 
 player = VLCPlayer()
 event_manager = player.player.event_manager()
@@ -54,7 +54,7 @@ album_dir_list = [filename for filename in album_dir.iterdir() if filename.is_di
 library = Playlist("Main Library", library_all_tracks)
 playlist_manager = PlaylistManager(library)
 
-playlist_display = PlaylistDisplay(content_region, player, library, playlist_manager)
+playlist_display = PlaylistDisplay(playlist_display_region, player, library, playlist_manager)
 playlist_display.pack(fill="both", expand=True)
 playlist_display.set_playlist(library)
 
