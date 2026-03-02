@@ -45,55 +45,56 @@ class PlayerControls(ttk.Frame):
         self.current_track_title.set(self.track.stem) 
         if display_index != None:
             self.playlist_display.playlist_tree.selection_set(display_index)
-
+   
     def toggle_play(self, event=None):
         track = self.playlist.track_list[self.play_order[self.play_index]]
+        same_playlist = (self.playlist.name == self.playlist_display.playlist.name)
 
-        if self.playlist.name == self.playlist_display.playlist.name:
-            if self.player.is_playing():
-                self.player.pause()
-                self.play_pause_btn.config(text="▶")
-                if self.track.stem == str(track.stem):
-                    self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
-                else:
-                    self.playlist_display.clear_play_status
-            else:
-                self.player.play()
-                self.play_pause_btn.config(text="⏸")
-                if self.track.stem == str(track.stem):
+        if self.player.is_playing():
+            self.player.pause() 
+            self.play_pause_btn.config(text="▶")
+            is_now_playing = False
+        else:
+            self.player.play()
+            self.play_pause_btn.config(text="⏸")
+            is_now_playing = True
+
+        if same_playlist:
+            if self.track.stem == str(track.stem):
+                if is_now_playing:
                     self.playlist_display.play_status_icon_playing(self.play_order[self.play_index])
                 else:
-                    self.playlist_display.clear_play_status
+                    self.playlist_display.play_status_icon_paused(self.play_order[self.play_index])
+            else:
+                self.playlist_display.clear_play_status()
         else:
-            children = self.playlist_display.playlist_tree.get_children()
-            for child in children:
-                item = self.playlist_display.playlist_tree.item(child)["values"]
-                filepath = item[0]
-                index = item[1]
-                if str(self.track) == filepath:
-                    if self.player.is_playing():
-                        self.player.pause()
-                        self.play_pause_btn.config(text="▶")
-                        self.playlist_display.play_status_icon_paused(index)
-                    else: 
-                        self.player.play()
-                        self.play_pause_btn.config(text="⏸")
-                        self.playlist_display.play_status_icon_playing(index)
+            self._update_display_for_current_track(is_now_playing)
+
+    def _update_display_for_current_track(self, is_now_playing):
+        children = self.playlist_display.playlist_tree.get_children()
+
+        for child in children:
+            item = self.playlist_display.playlist_tree.item(child)["values"]
+            filepath = item[0]
+            index = item[1]
+
+            if str(self.track) == filepath:
+                if is_now_playing:
+                    self.playlist_display.play_status_icon_playing(index)
                 else:
-                    self.playlist_display.clear_play_status
+                    self.playlist_display.play_status_icon_paused(index)
+                return
+
+        self.playlist_display.clear_play_status()
 
     def get_display_index(self):
-        print("GET DISPLAY INDEX")
         if self.playlist.name == self.playlist_display.playlist.name:
             return self.play_order[self.play_index]
         else:
             children = self.playlist_display.playlist_tree.get_children()
-            print("playlist display track list:")
-            print(self.playlist_display.playlist.track_list)
             for child in children:
                 item = self.playlist_display.playlist_tree.item(child)["values"]
                 filepath = item[0]
-                print(filepath)
                 index = item[1]
                 self.track = self.playlist.track_list[self.play_index] 
                 if str(self.track) == filepath:
@@ -145,23 +146,7 @@ class PlayerControls(ttk.Frame):
         if self.playlist.name == self.playlist_display.playlist.name:
             return
         else:
-            children = self.playlist_display.playlist_tree.get_children()
-            for child in children:
-                item = self.playlist_display.playlist_tree.item(child)["values"]
-                filepath = item[0]
-                index = item[1]
-                self.track = self.playlist.track_list[self.play_index] 
-                if str(self.track) == filepath:
-                    if self.player.is_playing():
-                        if index != None:
-                            self.playlist_display.play_status_icon_playing(index)
-                    else:
-                        if index != None:
-                            self.playlist_display.play_status_icon_paused(index)
-
-        self.playlist_display.menu_iid = index
-        self.get_current_track()
-
+            self._update_display_for_current_track(self.player.is_playing())
 
     def shuffle_playlist(self):
         if self.loop_status != "track":
