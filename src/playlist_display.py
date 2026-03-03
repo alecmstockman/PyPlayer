@@ -174,8 +174,6 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def get_selected_tracks(self):
-        print("GET SELECTED TRACK")
-        print(f"Playlist Display: playlist {self.playlist.name}")
         selection = self.playlist_tree.selection()
 
         if not selection:
@@ -290,30 +288,16 @@ class PlaylistDisplay(ttk.Frame):
         self.menu_iid = None
 
     def _on_menu_delete_from_playlist(self):
-        print("\nDISPLAY: on menu delete from playlist")
         track = self.playlist_tree.set(self.menu_iid, "filepath")
-        print(f"track: {track}, menu_iid: {self.menu_iid}")
-
         new_list = []
+
         for item in self.playlist.track_list:
-            print(item)
             if track != str(item):
                 new_list.append(item)
         self.playlist.track_list = new_list
-
-        print("---------")
-        for item in self.playlist.track_list:
-            print(item)
-        print()
         
         self.set_playlist(self.playlist)
-        print(f"Playlist id: {self.playlist.id}")
         self.playlist_manager.update_user_playlist(self.playlist.id)
-        
-
-
-
-
 
     def _on_menu_update_favorite(self):
         self._update_favorite(self.menu_iid)

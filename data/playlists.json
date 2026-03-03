@@ -2,9 +2,7 @@
   "1fa12b4e-021e-4c58-8149-fed779c5b9d4": {
     "name": "Test",
     "tracks": [
-      "Music/Songs/01 - Voices In My Head [Explicit].mp3",
       "Music/Songs/03 - The Middle.mp3",
-      "Music/Songs/01 - Voices In My Head [Explicit].mp3",
       "Music/Albums/Test Album/01 - Blackest Eyes [Remastered].mp3"
     ],
     "id": "1fa12b4e-021e-4c58-8149-fed779c5b9d4"
@@ -18,7 +16,9 @@
   },
   "53c88338-ca19-4977-944f-e157c629bf36": {
     "name": "two",
-    "tracks": [],
+    "tracks": [
+      "Music/Songs/08 - Drive.mp3"
+    ],
     "id": "53c88338-ca19-4977-944f-e157c629bf36"
   },
   "8fec63f2-6226-4540-ab89-564c71881654": {

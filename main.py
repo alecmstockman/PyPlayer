@@ -96,23 +96,18 @@ def check_play_status(selected_view, artist_album=None):
 def on_sidebar_selection(event):
     selected_view = sidebar.selected_view
     check_play_status(selected_view)
-    print(F"\nMAIN: on sidebar selection")
-    print(f"selected view: {selected_view}")
 
     if selected_view == "Library" or selected_view == "Songs":
         playlist_display.set_playlist(library)
-        controls.playlist.track_list = library.track_list
         check_play_status(selected_view)
 
     if selected_view == "Favorites":
-        favorites_playlist = playlist_display.show_favorites()
-        controls.playlist = favorites_playlist
+        playlist_display.show_favorites()
         check_play_status(selected_view)
 
     if selected_view in playlist_manager.user_playlists.keys():
         user_playlist = playlist_manager.user_playlists[selected_view]
         playlist_display.set_playlist(user_playlist)
-        controls.playlist = user_playlist
         check_play_status(selected_view)
 
     if selected_view not in ("Artists", "Albums"):
@@ -149,8 +144,6 @@ def on_sidebar_selection(event):
 def on_secondary_sidebar_selection(event):
     sidebar_widget = event.widget
     artist_album = sidebar_widget.selected_view
-    # print("\nON SECONDARY SIDEBAR SELECTION")
-    # print(f"artist_album: {artist_album}")
 
     if sidebar.selected_view == "Artists" and artist_album:
         playlist_display.set_playlist(library)

@@ -99,7 +99,6 @@ class PlayerControls(ttk.Frame):
                 self.track = self.playlist.track_list[self.play_index] 
                 if str(self.track) == filepath:
                     return index
-                # else:
             return None
 
     def previous_track(self, event=None):
@@ -126,8 +125,9 @@ class PlayerControls(ttk.Frame):
 
     def _load_current_track(self):
         if not self.playlist.track_list:
-            print("No Tracks in playlist")
             return
+        if self.play_index >= len(self.play_order):
+            self.play_index = self.play_order[-1]
         controls_index = self.play_order[self.play_index]
         display_index = self.get_display_index()
         track = self.playlist.track_list[controls_index]
@@ -206,6 +206,8 @@ class PlayerControls(ttk.Frame):
         if 0 <= self.play_index < len(self.playlist.track_list) -1:
             if self.loop_status != "track":
                 self.play_index += 1
+        elif self.play_index >= len(self.playlist.track_list):
+            self.play_index = len(self.playlst.track_list) - 1
         elif self.play_index == len(self.playlist.track_list) - 1 and self.loop_status == "playlist":
             self.play_index = 0
 
