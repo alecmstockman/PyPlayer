@@ -3,3 +3,18 @@ Music/Albums/*
 
 !Music/Songs/.gitkeep
 !Music/Albums/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# macOS
+.DS_Store
+
+
+
+
+
