@@ -87,7 +87,8 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Favorite", command=self._on_menu_update_favorite)
         self.popup_menu.add_command(label="Remove Favorite", command=self._on_menu_update_favorite)
 
-        self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_click)
+        # self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_click)
+        self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
         self.get_playlist_time()
         
 
@@ -176,6 +177,7 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def get_selected_tracks(self):
+        print("\nPLAYLIST DISPLAY: get_selected_tracks")
         selection = self.playlist_tree.selection()
 
         if not selection:
@@ -226,16 +228,21 @@ class PlaylistDisplay(ttk.Frame):
         iid = index
         self.playlist_tree.set(iid, column="play status", value="  🔈")
 
-
+    def on_tree_selection(self, event):
+        selected = self.playlist_tree.selection
+        print(f"DISPLAY: on_tree_selection: {selected}")
+    
     def on_tree_click(self, event):
+        print("\nDISPLAY: on_tree_click")
         row_id = self.playlist_tree.identify_row(event.y)
         col_id = self.playlist_tree.identify_column(event.x)
+        print(f"row: {row_id} col: {col_id}")
 
         if not row_id:
             return
 
         self.playlist_tree.selection_set(row_id)
-        self.playlist_tree.event_generate("<<TreeviewSelect>>")
+        # self.playlist_tree.event_generate("<<TreeviewSelect>>")
 
         self.menu_iid = row_id
         if col_id == "#5":

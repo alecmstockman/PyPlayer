@@ -76,8 +76,8 @@ sidebar.set_sidebar()
 paned.secondary_sidebar = None
 
 root.bind("<space>", controls.toggle_play, add="+")
-root.bind("<Left>", controls.previous_track, add="+")
-root.bind("<Right>", controls.next_track, add="+")
+root.bind("<Command-Left>", controls.previous_track, add="+")
+root.bind("<Command-Right>", controls.next_track, add="+")
 
 def check_play_status(selected_view, artist_album=None):
     if selected_view and artist_album:
