@@ -83,6 +83,7 @@ class PlaylistDisplay(ttk.Frame):
         self.playlist_tree.heading("Filetype", command=lambda: self.sort_column("Filetype"))
 
         self.playlist_tree.bind("<Button-1>", self.on_tree_click)
+        self.playlist_tree.bind("<Button-2>", self.on_tree_right_click)
 
         self.popup_menu.add_command(label="Play", command=self._on_menu_play)
         self.popup_menu.add_command(label="Previous", command=self._on_menu_previous_track)
@@ -256,6 +257,16 @@ class PlaylistDisplay(ttk.Frame):
             self.popup_menu.tk_popup(event.x_root, event.y_root)
         elif col_id == "#9":
             self._update_favorite(row_id)
+
+    def on_tree_right_click(self, event):
+        print("ON TREE RIGHT CLICK")
+        row_id = self.playlist_tree.identify_row(event.y)
+
+        if not row_id:
+            return
+        
+        self.menu_iid = row_id
+        self.popup_menu.tk_popup(event.x_root, event.y_root)
 
 
     def sort_column(self, column):        
