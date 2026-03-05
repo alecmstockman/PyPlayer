@@ -238,7 +238,6 @@ class PlaylistDisplay(ttk.Frame):
 
     def on_tree_selection(self, event):
         selected = self.playlist_tree.selection
-        print(f"DISPLAY: on_tree_selection: {selected}")
         return selected
     
     def on_tree_click(self, event):

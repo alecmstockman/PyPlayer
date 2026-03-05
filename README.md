@@ -19,8 +19,100 @@ This is a music player app similar to Apple Music or VLC and is my first persona
 * Add songs to your favorites list
 * Easily see total playlist time
 
-## Installation
-tbd
+# Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/alecmstockman/music-player.git
+cd music-player
+```
+
+### 2. Create a virtual environment
+
+```bash
+python3 -m venv venv
+```
+
+### 3. Activate the virtual environment
+
+macOS / Linux:
+
+```bash
+source venv/bin/activate
+```
+
+### 4. Install dependencies
+
+```bash
+pip install python-vlc
+```
+
+You must also have **VLC installed** on your system since playback is handled through the VLC engine.
+
+---
+
+# Running the App
+
+Start the application with:
+
+```bash
+python3 main.py
+```
+
+---
+
+# Project Structure
+
+```
+music-player/
+│
+├── main.py                # Application entry point
+├── README.md
+│
+├── src/
+│   ├── config.py
+│   ├── player_controls.py
+│   ├── playlist.py
+│   ├── playlist_display.py
+│   ├── sidebar.py
+│   ├── styles.py
+│   └── vlc_player.py
+│
+├── data/                  # JSON data files (favorites, playlists, etc.)
+│
+├── Music/
+│   ├── Songs/
+│   └── Albums/
+│
+└── venv/                  # Python virtual environment (ignored by git)
+```
+
+---
+
+# Current Features
+
+- Playlist view using **Tkinter Treeview**
+- Sortable columns
+- Favorite tracks
+- Playlist creation
+- Context menu actions
+- VLC-based audio playback
+- Sidebar library navigation
+
+---
+
+# Notes
+
+Music files are **not stored in the repository**.  
+Place your music files inside:
+
+```
+Music/Songs/
+Music/Albums/
+```
+
+The project uses `.gitkeep` files so these directories exist even when empty.
 
 ## Planned Features
 * Move top control banner to a tkinter grid for cleaner look
