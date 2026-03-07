@@ -99,7 +99,6 @@ class PlaylistDisplay(ttk.Frame):
 
         # self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_click)
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
-        self.get_playlist_time()
         
 
     def set_playlist(self, playlist):
@@ -151,14 +150,16 @@ class PlaylistDisplay(ttk.Frame):
                     )
                     even = True
                 index += 1
-            self.get_playlist_time()
+            
 
             if self.playlist.id in self.playlist_manager.user_playlists.keys():
                  self.popup_menu.entryconfig("Delete from Playlist", state="normal")
             else:
                 self.popup_menu.entryconfig("Delete from Playlist", state="disabled")
+        self.get_playlist_time()
 
     def get_playlist_time(self):
+        print("DISPLAY: get playlist time")
         self.HEADER_TEXT = self.playlist.name
         children = self.playlist_tree.get_children()
         total_seconds = 0
