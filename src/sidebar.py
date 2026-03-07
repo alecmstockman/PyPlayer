@@ -79,9 +79,7 @@ class Sidebar(ttk.Frame):
                     return "break"
 
     def on_sidebar_click(self, event):
-        print("SIDEBAR: on sidebar click")
         selection = self.sidebar_tree.selection()
-        print(f"selction; {selection}")
         if not selection:
             return
         self.selected_iid = selection[0]

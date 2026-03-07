@@ -159,7 +159,6 @@ class PlaylistDisplay(ttk.Frame):
         self.get_playlist_time()
 
     def get_playlist_time(self):
-        print("DISPLAY: get playlist time")
         self.HEADER_TEXT = self.playlist.name
         children = self.playlist_tree.get_children()
         total_seconds = 0
