@@ -3,6 +3,7 @@ from tkinter import ttk
 import vlc
 from pathlib import Path
 from src.player_controls import PlayerControls
+from src.track_display import TrackDisplay
 from src.vlc_player import VLCPlayer
 from src.playlist import Playlist, PlaylistManager
 from src.styles import setup_styles
@@ -21,14 +22,32 @@ screen_height = root.winfo_screenheight()
 root.geometry(f"{screen_width}x{screen_height}")
 
 top_region = ttk.Frame(root, style="Border.TFrame")
-top_region.pack(side="top", fill="x")
-top_row_1 = ttk.Frame(top_region)
-top_row_1.pack(side="top", fill="x")
-top_row_2 = ttk.Frame(top_region)
-top_row_2.pack(side="top", fill="x")
+top_region.grid(row=0, column=0, sticky="ew")
+root.columnconfigure(0, weight=1)
+
+
+# top_row_1 = ttk.Frame(top_region)
+# top_row_1.grid(row=0, column=0, sticky="ew")
+# top_row_2 = ttk.Frame(top_region)
+# top_row_2.grid(row=1, column=0, sticky="ew")
+
+top_region.columnconfigure(0, weight=1)
+top_region.columnconfigure(1, weight=1)
+top_region.columnconfigure(2, weight=1)
+
+left_controls = ttk.Frame(top_region)
+center_display = ttk.Frame(top_region)
+right_controls = ttk.Frame(top_region)
+
+left_controls.grid(row=0, column=0, sticky="w", padx=10)
+center_display.grid(row=0, column=1, sticky="ew")
+right_controls.grid(row=0, column=2, sticky="e", padx=10)
+
 
 paned = ttk.PanedWindow(root, orient="horizontal")
-paned.pack(fill="both", expand=True)
+paned.grid(row=1, column=0, sticky="nsew")
+root.rowconfigure(1, weight=1)
+
 sidebar_region = ttk.Frame(paned, width=200, style="Border.TFrame")
 sidebar_region.pack(side="left", fill="y")
 paned.add(sidebar_region, weight=0)
@@ -54,16 +73,19 @@ album_dir_list = [filename for filename in album_dir.iterdir() if filename.is_di
 library = Playlist("Main Library", library_all_tracks)
 playlist_manager = PlaylistManager(library)
 
+track_display = TrackDisplay(center_display, player)
+track_display.pack(fill="x", expand=True)
+
 playlist_display = PlaylistDisplay(playlist_display_region, player, library, playlist_manager)
 playlist_display.pack(fill="both", expand=True)
 playlist_display.set_playlist(library)
 
-controls = PlayerControls(top_row_1, player, playlist_display, library)
+controls = PlayerControls(left_controls, player, track_display, playlist_display, library)
 controls.pack(side="left")
 playlist_display.controls = controls
 player.load(library.track_list[controls.play_index])
-time_label = tk.Label(top_row_2, text="00:00 / 00:00", font=("Trebuchet MS", 15), fg="black", bg="CadetBlue")
-time_label.pack(pady=5)
+# time_label = tk.Label(center_display, text="00:00 / 00:00", font=("Trebuchet MS", 15), fg="black", bg="CadetBlue")
+# time_label.pack(pady=5)
 
 player.load(library.track_list[controls.play_index])
 playlist_manager.load_playlist()
@@ -166,6 +188,7 @@ def play_selected_tracks(event):
     if track_values is not None:
         controls.playlist = playlist_display.playlist
         controls.update_play_order()
+        track_display.update_current_track(controls.current_track_title)
         iid = track_values["index"]
         controls.play_selection(iid)
 
@@ -188,47 +211,49 @@ def lock_sidebar():
     root.after(500, lock_sidebar)
 root.after(200, lock_sidebar)
 
-progress_var = tk.DoubleVar()
+# progress_var = tk.DoubleVar()
 
-def set_progress_on_click(event):
-    proportion = event.x / event.widget.winfo_width()
-    length = player.get_length()
-    if length <= 0:
-        return
-    new_time = int(proportion * length)
-    player.set_time(new_time)
+# def set_progress_on_click(event):
+#     proportion = event.x / event.widget.winfo_width()
+#     length = player.get_length()
+#     if length <= 0:
+#         return
+#     new_time = int(proportion * length)
+#     player.set_time(new_time)
 
-progress_bar = ttk.Progressbar(
-    top_row_2,
-    orient="horizontal", 
-    length=500, 
-    maximum=100, 
-    mode="determinate", 
-    variable=progress_var
-    )
+# progress_bar = ttk.Progressbar(
+#     center_display,
+#     orient="horizontal", 
+#     length=500, 
+#     maximum=100, 
+#     mode="determinate", 
+#     variable=progress_var
+#     )
 
-def update_time_and_progress():
-    elapsed_ms = player.player.get_time()
-    total_ms = player.player.get_length()
+# def update_time_and_progress():
+#     elapsed_ms = player.player.get_time()
+#     total_ms = player.player.get_length()
 
-    if elapsed_ms == -1:
-        elapsed_ms = 0
-    if total_ms <= 0:
-        total_ms = 0
+#     if elapsed_ms == -1:
+#         elapsed_ms = 0
+#     if total_ms <= 0:
+#         total_ms = 0
 
-    elapsed_s = elapsed_ms // 1000
-    total_s = total_ms // 1000
-    elapsed_str = f"{elapsed_s//60:02d}:{elapsed_s%60:02d}"
-    total_str = f"{total_s//60:02d}:{total_s%60:02d}"
+#     elapsed_s = elapsed_ms // 1000
+#     total_s = total_ms // 1000
+#     elapsed_str = f"{elapsed_s//60:02d}:{elapsed_s%60:02d}"
+#     total_str = f"{total_s//60:02d}:{total_s%60:02d}"
 
-    time_label.config(text=f"{elapsed_str} / {total_str}")
-    percent = (elapsed_ms / total_ms * 100) if total_ms > 0 else 0
-    progress_var.set(percent)
-    root.after(100, update_time_and_progress)
+#     time_label.config(text=f"{elapsed_str} / {total_str}")
+#     percent = (elapsed_ms / total_ms * 100) if total_ms > 0 else 0
+#     progress_var.set(percent)
+    # root.after(100, update_time_and_progress)
 
-progress_bar.pack(pady=5)
-progress_bar.bind('<Button-1>', set_progress_on_click, add="+")
-progress_bar.bind('<B1-Motion>', set_progress_on_click, add="+")
+root.after(100, track_display.update_time_and_progress)
+
+# progress_bar.pack(pady=5)
+# progress_bar.bind('<Button-1>', set_progress_on_click, add="+")
+# progress_bar.bind('<B1-Motion>', set_progress_on_click, add="+")
 
 def set_audio_volume(val):
     volume_level = int(float(val))
@@ -257,7 +282,7 @@ def volume_down(event):
         return "break"
 
 volume_slider = ttk.Scale(
-        top_row_1,
+        right_controls,
         orient="horizontal",
         from_=0,
         to=100,
@@ -287,5 +312,5 @@ def test_function():
     print("\n")
 
 # test_function()
-update_time_and_progress()
+track_display.update_time_and_progress()
 root.mainloop()

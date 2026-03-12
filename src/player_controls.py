@@ -6,10 +6,11 @@ from pathlib import Path
 import random
 
 class PlayerControls(ttk.Frame):
-    def __init__(self, parent, player, playlist_display, playlist):
+    def __init__(self, parent, player, track_display, playlist_display, playlist):
         super().__init__(parent)
         self.player = player
         self.playlist = playlist
+        self.track_display = track_display
         self.playlist_display = playlist_display
 
         self.loop_status = None
@@ -20,7 +21,7 @@ class PlayerControls(ttk.Frame):
         self.current_track_title = tk.StringVar()
         self.track = self.playlist.track_list[self.play_index]
         self.current_track_title.set(self.track.stem)
-        self.now_playing_label = ttk.Label(self, textvariable=self.current_track_title)
+        # self.now_playing_label = ttk.Label(self, textvariable=self.current_track_title)
 
         self.play_pause_btn = ttk.Button(self, text="▶", command=self.toggle_play, takefocus=0, width=3)
         self.previous_btn = ttk.Button(self, text="⏮", command=self.previous_track, takefocus=0, width=3)
@@ -28,12 +29,22 @@ class PlayerControls(ttk.Frame):
         self.shuffle_btn = ttk.Button(self, text="🔀", command=self.shuffle_playlist, takefocus=0, width=3)
         self.loop_btn = ttk.Button(self, text="🔁", command=self.toggle_loop, takefocus=0, width=3)
 
-        self.shuffle_btn.pack(side="left",)
-        self.previous_btn.pack(side="left")
-        self.play_pause_btn.pack(side="left")
-        self.next_btn.pack(side="left")
-        self.loop_btn.pack(side="left")
-        self.now_playing_label.pack(side="left", padx=(300))   
+        # self.shuffle_btn.pack(side="left",)
+        # self.previous_btn.pack(side="left")
+        # self.play_pause_btn.pack(side="left")
+        # self.next_btn.pack(side="left")
+        # self.loop_btn.pack(side="left")
+        # self.now_playing_label.pack(side="left", padx=(300))
+
+        self.columnconfigure(0, weight=1)
+
+        self.shuffle_btn.grid(row=0, column=1, padx=(50, 0))
+        self.previous_btn.grid(row=0, column=2)
+        self.play_pause_btn.grid(row=0, column=3)
+        self.next_btn.grid(row=0, column=4)
+        self.loop_btn.grid(row=0, column=5)
+
+        # self.now_playing_label.grid(row=0, column=6, padx=(300))   
 
     def update_play_order(self):
         self.play_order = list(range(len(self.playlist.track_list)))
@@ -45,6 +56,7 @@ class PlayerControls(ttk.Frame):
         self.current_track_title.set(self.track.stem) 
         if display_index != None:
             self.playlist_display.playlist_tree.selection_set(display_index)
+        return self.current_track_title
    
     def toggle_play(self, event=None):
         track = self.playlist.track_list[self.play_order[self.play_index]]
