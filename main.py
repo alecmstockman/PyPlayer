@@ -212,11 +212,18 @@ def on_playlist_created(event):
 playlist_display.bind("<<PlaylistCreated>>", on_playlist_created)
 
 def on_playlist_sorted(event):
+    before_sort_index = controls.play_index
     print("PLAYLIST HAS BEEN SORTED______")
+    print(f"contols: before Play_index: {controls.play_index}")
     print(f"controls.play_order: {controls.play_order}")
     new_play_order = playlist_display.get_post_sort_play_order()
     controls.play_order = new_play_order
+    after_sort_index = new_play_order.index(before_sort_index)
+    controls.play_index = after_sort_index
+    print(f"contols: after Play_index: {after_sort_index}")
     print(f"new play order: {new_play_order}")
+    check_play_status()
+
     print()
 
 playlist_display.bind("<<PlaylistSorted>>", on_playlist_sorted)
