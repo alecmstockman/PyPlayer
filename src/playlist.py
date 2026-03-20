@@ -177,13 +177,13 @@ class PlaylistManager():
             self.user_playlists = {}
 
         for key, value in user_playlists.items():
-            path_list = []
+            track_id_list = []
             track_list = value["tracks"]
             for track in track_list:
-                path_list.append(Path(track))
-            self.user_playlists[key] = Playlist(value["name"], path_list, key)
+                track_id_list.append(track)
+            self.user_playlists[key] = Playlist(value["name"], track_id_list, key)
     
-    def add_to_user_playlist(self, key, name, track):
+    def add_to_user_playlist(self, key, track):
         playlist = self.user_playlists[key]
         playlist.track_id_list.append(track)
         self.save_playlists()

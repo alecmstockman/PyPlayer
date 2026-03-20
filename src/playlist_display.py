@@ -355,12 +355,14 @@ class PlaylistDisplay(ttk.Frame):
             )
     
     def _on_menu_add_to_playlist(self, key, name):
-        track = self.playlist_tree.set(self.menu_iid, "filepath")
-        self.playlist_manager.add_to_user_playlist(key, name, Path(track))
+        print(f"DISPLAY: on_menu_add_to_playlist")
+        track = self.playlist_tree.set(self.menu_iid, "track_id")
+        self.playlist_manager.add_to_user_playlist(key, track)
         self.menu_iid = None
 
     def _on_menu_delete_from_playlist(self):
-        track = self.playlist_tree.set(self.menu_iid, "filepath")
+        print(f'DISPLAY: on_menu_delete_from_playlist')
+        track = self.playlist_tree.set(self.menu_iid, "track_id")
         new_list = []
 
         for item in self.playlist.track_id_list:

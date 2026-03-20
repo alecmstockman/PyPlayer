@@ -134,6 +134,7 @@ def on_sidebar_selection(event):
         print(f"-User Playlist: Selected view: {selected_view}")
         user_playlist = playlist_manager.user_playlists[selected_view]
         print(f"-User Playlist: {user_playlist.name}")
+        print(f"user playlist: track_id_list: {user_playlist.track_id_list}")
         playlist_display.set_playlist(user_playlist)
         check_play_status(selected_view)
 

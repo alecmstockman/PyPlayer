@@ -1,10 +1,23 @@
 {
-  "7fd1f113-4d19-41da-a2eb-b7bbd3dabe6a": {
-    "name": "Playlist One",
+  "6c80b9b7-ba6e-4584-8ce6-e1115d07cb41": {
+    "name": "User Playlist 1",
     "tracks": [
-      "/Users/alecstockman/music-player-v2/Music/Songs/03 - The Middle.mp3",
-      "/Users/alecstockman/music-player-v2/Music/Songs/AIMING ARROWS - All The Blame - FINAL MASTER.wav"
+      "40673e70",
+      "220fc28e",
+      "5055d2de",
+      "9198c62e",
+      "9198c62e"
     ],
-    "id": "7fd1f113-4d19-41da-a2eb-b7bbd3dabe6a"
+    "id": "6c80b9b7-ba6e-4584-8ce6-e1115d07cb41"
+  },
+  "6ac04487-d293-49a9-b32a-6a7f5cd07768": {
+    "name": "User Playlist 2",
+    "tracks": [],
+    "id": "6ac04487-d293-49a9-b32a-6a7f5cd07768"
+  },
+  "cc7e577a-ecb2-4e09-a179-c44061e0a262": {
+    "name": "Test",
+    "tracks": [],
+    "id": "cc7e577a-ecb2-4e09-a179-c44061e0a262"
   }
 }
