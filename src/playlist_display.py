@@ -101,7 +101,8 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_separator()
         self.popup_menu.add_command(label="Track Info", command=self._on_menu_update_favorite, state=tk.DISABLED)
         self.popup_menu.add_command(label="Write meta-data", command=self._on_menu_update_favorite, state=tk.DISABLED)
-
+        
+        self.playlist_tree.tag_configure("playing", background="#476288") 
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
 
     def set_playlist(self, playlist):
@@ -186,6 +187,20 @@ class PlaylistDisplay(ttk.Frame):
         for iid in self.playlist_tree.get_children():
             self.playlist_tree.delete(iid)
 
+    def highlight_playing(self, track_id):
+        for item in self.playlist_tree.get_children():
+            current_tags = list(self.playlist_tree.item(item, "tags"))
+            if "playing" in current_tags:
+                current_tags.remove("playing")
+            self.playlist_tree.item(item, tags=tuple(current_tags))
+
+        current_tags = list(self.playlist_tree.item(track_id, "tags"))
+        if "playing" not in current_tags:
+            current_tags.append("playing")
+
+        self.playlist_tree.item(track_id, tags=tuple(current_tags))
+        self.playlist_tree.see(track_id)
+
     def get_selected_tracks(self):
         print("DISPLAY: get_selected_tracks")
         selection = self.playlist_tree.selection()
@@ -242,7 +257,7 @@ class PlaylistDisplay(ttk.Frame):
 
     def on_tree_selection(self, event):
         selected = self.playlist_tree.selection
-        return selected
+        return selected        
     
     def on_tree_click(self, event):
         row_id = self.playlist_tree.identify_row(event.y)

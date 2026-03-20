@@ -113,6 +113,8 @@ class PlayerControls(ttk.Frame):
             self.play_index = len(self.playlist.track_id_list) -1
 
         self._load_current_track()
+        self.track = self.playlist.track_id_list[self.play_index]
+        self.playlist_display.highlight_playing(self.track)
 
     def next_track(self, event=None):
         print("CONTROLS: next track")
@@ -125,6 +127,8 @@ class PlayerControls(ttk.Frame):
             self.play_index = 0
 
         self._load_current_track()
+        self.track = self.playlist.track_id_list[self.play_index]
+        self.playlist_display.highlight_playing(self.track)
 
     def _load_current_track(self):
         print("LOAD CURRENT TRACK")
@@ -162,22 +166,29 @@ class PlayerControls(ttk.Frame):
             self._update_display_for_current_track(self.player.is_playing())
 
     def shuffle_playlist(self):
+        print("\nCONTROLS: shuffle")
+        print(f"starting play order: {self.play_order}")
+        print(f"starting play_index: {self.play_index}")
+
         if not self.playlist.track_id_list:
             print("No Tracks in playlist")
             return
         
         if self.loop_status != "track":
             if self.shuffle == False:
+                print("\nshuffle is True")
                 self.shuffle = True
                 self.shuffle_btn.config(text="🔀*")
 
                 self.play_order = list(range(len(self.playlist.track_id_list)))
+                print(f"newl play_order: {self.play_order}")
                 random.shuffle(self.play_order)
                 self.play_order.remove(self.play_index)
                 self.play_order.insert(0, self.play_index)
 
             else:
                 self.shuffle = False
+                print("\nshuffle is False")
                 self.shuffle_btn.config(text="🔀")
                 self.play_order = list(range(len(self.playlist.track_id_list)))
 
@@ -216,6 +227,7 @@ class PlayerControls(ttk.Frame):
         self.player.load(Path(track.filepath))
         self.player.play()
         self.toggle_play()
+        self.playlist_display.highlight_playing(track_id)
         
     def play_next_track(self):
         print("CONTROLS: play_next_track")
@@ -240,6 +252,7 @@ class PlayerControls(ttk.Frame):
         
         self.playlist_display.menu_iid = display_index
         self.get_current_track()
+        self.playlist_display.highlight_playing(track)
 
 
 

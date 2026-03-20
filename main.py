@@ -121,7 +121,6 @@ def check_play_status(selected_view, artist_album=None):
 def on_sidebar_selection(event):
     print("\nON SIDEBAR SELECTION")
     selected_view = sidebar.selected_view
-    print(f"Selected view: {selected_view}")
     if selected_view == "Library" or selected_view == "Songs":
         playlist_display.set_playlist(playlist_manager.library_playlist)
         check_play_status(selected_view)
@@ -131,10 +130,7 @@ def on_sidebar_selection(event):
         check_play_status(selected_view)
 
     if selected_view in playlist_manager.user_playlists.keys():
-        print(f"-User Playlist: Selected view: {selected_view}")
         user_playlist = playlist_manager.user_playlists[selected_view]
-        print(f"-User Playlist: {user_playlist.name}")
-        print(f"user playlist: track_id_list: {user_playlist.track_id_list}")
         playlist_display.set_playlist(user_playlist)
         check_play_status(selected_view)
 
@@ -213,18 +209,11 @@ playlist_display.bind("<<PlaylistCreated>>", on_playlist_created)
 
 def on_playlist_sorted(event):
     before_sort_index = controls.play_index
-    print("PLAYLIST HAS BEEN SORTED______")
-    print(f"contols: before Play_index: {controls.play_index}")
-    print(f"controls.play_order: {controls.play_order}")
     new_play_order = playlist_display.get_post_sort_play_order()
     controls.play_order = new_play_order
     after_sort_index = new_play_order.index(before_sort_index)
     controls.play_index = after_sort_index
-    print(f"contols: after Play_index: {after_sort_index}")
-    print(f"new play order: {new_play_order}")
-    check_play_status()
-
-    print()
+    # check_play_status()
 
 playlist_display.bind("<<PlaylistSorted>>", on_playlist_sorted)
 
@@ -235,7 +224,6 @@ def lock_sidebar():
         pass
     root.after(500, lock_sidebar)
 root.after(200, lock_sidebar)
-
 
 def set_audio_volume(val):
     volume_level = int(float(val))
@@ -294,7 +282,6 @@ def test_function():
     print("\n")
 
 # print(load_track_metadata("Music/Songs/08 Just Pretend.mp3"))
-
 # test_function()
 track_display.update_time_and_progress()
 root.mainloop()
