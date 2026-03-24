@@ -3,6 +3,7 @@ from tkinter import ttk
 import vlc
 from pathlib import Path
 from src.playlist import Playlist, PlaylistManager, CreatePlaylistEntry
+from src.track_info import TrackInfo
 
 
 class PlaylistDisplay(ttk.Frame):
@@ -95,7 +96,7 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Favorite", command=self._on_menu_update_favorite)
         self.popup_menu.add_command(label="Remove Favorite", command=self._on_menu_update_favorite)
         self.popup_menu.add_separator()
-        self.popup_menu.add_command(label="Track Info", command=self._on_menu_update_favorite, state=tk.DISABLED)
+        self.popup_menu.add_command(label="Track Info", command=self.display_track_info)
         self.popup_menu.add_command(label="Write meta-data", command=self._on_menu_update_favorite, state=tk.DISABLED)
         
         self.playlist_tree.tag_configure("playing", background="#476288") 
@@ -453,4 +454,16 @@ class PlaylistDisplay(ttk.Frame):
 
         playlist = Playlist(f"{artist_album} - Album Tracks", track_list)
         self.set_playlist(playlist)
+
+    def display_track_info(self):
+        print("DISPLAY: display_track_info")
+        print(f"menu_iid: {self.menu_iid}")
+        print(self.library.tracks[self.menu_iid])
+
+        track_id = self.menu_iid
+        track = self.library.tracks[self.menu_iid]
+        for key, value in vars(track).items():
+            print(key, value)
+
+
 

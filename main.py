@@ -7,6 +7,7 @@ from src.track_display import TrackDisplay
 from src.volume_controls import VolumeControls
 from src.vlc_player import VLCPlayer
 from src.playlist import PlaylistManager, Library
+from src.track_info import TrackInfo
 from src.styles import setup_styles
 from src.playlist_display import PlaylistDisplay
 from src.sidebar import Sidebar, SecondarySidebar
@@ -74,9 +75,14 @@ track_display = TrackDisplay(center_display, library, player)
 track_display.pack(fill="x", expand=True)
 track_display.update_time_and_progress()
 
+
+
 playlist_display = PlaylistDisplay(playlist_display_region, library, player, library, playlist_manager)
 playlist_display.pack(fill="both", expand=True)
 playlist_display.set_playlist(playlist_manager.library_playlist)
+
+# track_info = TrackInfo(playlist_display, library)
+
 
 controls = PlayerControls(left_controls, library, playlist_manager.library_playlist, player, track_display, playlist_display)
 controls.pack(side="left")
