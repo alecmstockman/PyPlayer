@@ -23,6 +23,7 @@ This is a music player app similar to Apple Music or VLC and is my first persona
 ## Built With
   * tkinter
   * python-vlc
+  * mutagen
 
 ## Quick Controls
 
@@ -179,7 +180,6 @@ The project uses `.gitkeep` files so these directories exist even when empty.
 
 ## Planned Features
 * Updates to controls, hotkeys, and right clicks
-* Move top control banner to tkinter grid for cleaner look
 * Add artwork Display
 * Update UI with CustomTkinter
 * Create popup play queue and history display
