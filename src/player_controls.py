@@ -126,6 +126,7 @@ class PlayerControls(ttk.Frame):
         index = self.play_order[self.play_index]
         self.track = self.playlist.track_id_list[index]
         self.playlist_display.highlight_playing(self.track)
+        self.playlist_display.clear_playlist
 
     def _load_current_track(self):
         if not self.playlist.track_id_list:
@@ -147,7 +148,7 @@ class PlayerControls(ttk.Frame):
             if display_index != None:
                 self.playlist_display.play_status_icon_paused(track_id)
         
-        self.playlist_display.menu_iid = display_index
+        self.playlist_display.menu_iid = track_id
         self.get_current_track()
 
     def check_play_status(self):
@@ -236,9 +237,9 @@ class PlayerControls(ttk.Frame):
         
         self.player.play()
         if display_index != None:
-            self.playlist_display.play_status_icon_playing(display_index)
+            self.playlist_display.play_status_icon_playing(track_id)
         
-        self.playlist_display.menu_iid = display_index
+        self.playlist_display.menu_iid = track_id
         self.get_current_track()
         self.playlist_display.highlight_playing(track_id)
 

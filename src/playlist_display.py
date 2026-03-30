@@ -17,11 +17,8 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu = tk.Menu(self, tearoff=False)
         self.playlist_submenu = tk.Menu(self.popup_menu, tearoff=False)
         self.menu_iid = None
-        # self.favorites = {}
-        # self.load_favorites()
         self._last_playlist_created = None
         self.sort_order = None
-        # self.backup_list = self.playlist.track_list.copy()
 
         self.header_var = tk.StringVar()
         self.header_var.set(playlist.name)
@@ -103,11 +100,9 @@ class PlaylistDisplay(ttk.Frame):
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
 
     def set_playlist(self, playlist):
-
         self.playlist = playlist
         self.clear_playlist()
 
-        print(playlist.name)
         if not playlist or not hasattr(playlist, "track_id_list"):
             print("No playlist or invalid playlist object")
             return
@@ -186,6 +181,7 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def highlight_playing(self, track_id):
+        print("DISPLAY: highlight_playing")
         for item in self.playlist_tree.get_children():
             current_tags = list(self.playlist_tree.item(item, "tags"))
             if "playing" in current_tags:
@@ -197,7 +193,16 @@ class PlaylistDisplay(ttk.Frame):
             current_tags.append("playing")
 
         self.playlist_tree.item(track_id, tags=tuple(current_tags))
+        self.playlist_tree.selection_set(track_id)
+        self.playlist_tree.focus(track_id)
         self.playlist_tree.see(track_id)
+    
+    def hightlight_clear_previous(self, track_id):
+        current_tags = list(self.playlist_tree.item(track_id, "tags"))
+        if "playing" in current_tags:
+            current_tags.remove("playing")
+            self.playlist_tree.item(track_id, tags=tuple(current_tags))
+        
 
     def get_selected_tracks(self):
         selection = self.playlist_tree.selection()
@@ -228,13 +233,6 @@ class PlaylistDisplay(ttk.Frame):
                 return
             self.playlist_tree.set(iid, column="play status", value="")
 
-    # def remove_play_status_icon(self, index):
-    #     if index is None:
-    #         print("playlist_display: remove_play_status_icon, index is None")
-    #         return
-    #     iid = index
-    #     self.playlist_tree.set(iid, column="play status", value="   ")     
-
     def play_status_icon_playing(self, track_id):
         if not self.playlist_tree.get_children():
             return
@@ -258,7 +256,7 @@ class PlaylistDisplay(ttk.Frame):
         self.playlist_tree.set(track_id, column="play status", value="  🔈")
 
     def on_tree_selection(self, event):
-        selected = self.playlist_tree.selection
+        selected = self.playlist_tree.selection()
         return selected        
     
     def on_tree_click(self, event):
@@ -339,24 +337,20 @@ class PlaylistDisplay(ttk.Frame):
             if index % 2 == 1:
                 self.playlist_tree.item(iid, tags=("odd",))
 
+
     def _on_menu_play(self):
-        self.clear_play_status()
-        self.controls.play_index = int(self.menu_iid)
-        index = self.controls.play_order[self.controls.play_index]
-        track = self.playlist.track_id_list[index]
-        self.player.load(track)
-        self.player.play()
-        self.play_status_icon_playing(index)
+        self.controls.play_selection(self.menu_iid)
 
     def _on_menu_previous_track(self):
+        self.hightlight_clear_previous(self.menu_iid)
         self.clear_play_status()
-        self.controls.play_index = int(self.menu_iid)
-        self.controls.previous_track()        
+        self.controls.previous_track()
 
     def _on_menu_next_track(self):
         self.clear_play_status()
-        self.controls.play_index = int(self.menu_iid)
         self.controls.next_track()
+        # track = self.library.tracks[self.playlist_tree.selection()[0]]
+        # self.update_previous_next_track_color(old_track_id)
 
     def _on_menu_create_playlist(self):
         dialog = CreatePlaylistEntry(self)
@@ -464,6 +458,7 @@ class PlaylistDisplay(ttk.Frame):
         self.set_playlist(playlist)
 
     def display_track_info(self):
+        print(F"display_track_info")
         selected = self.playlist_tree.selection()
         if not selected:
             return

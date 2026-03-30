@@ -3,6 +3,11 @@ from tkinter import ttk
 from .playlist import Playlist
 from .playlist_display import PlaylistDisplay
 from pathlib import Path
+from mutagen.mp3 import MP3
+from mutagen.id3 import ID3
+from mutagen.flac import FLAC
+from mutagen.mp4 import MP4
+
 
 class TrackDisplay(ttk.Frame):
     def __init__(self, parent, library, player):
@@ -47,9 +52,24 @@ class TrackDisplay(ttk.Frame):
         self.player.set_time(new_time)
 
     def update_track_display(self, track_id):
+        print("\nTRACK DISPLAY: update_track_display")
         track = self.library.tracks[track_id]
         self.current_track_title.set(track.title)
-        self.current_artist_and_album.set(f"{track.artist}: {track.album}") 
+        self.current_artist_and_album.set(f"{track.artist}: {track.album}")
+        
+        filepath = track.filepath
+        codec = track.codec
+        print(track.filepath)
+        print(track.codec)
+
+        if codec == MP3:
+            self.get_mp3_artwork(Path(filepath))
+        elif codec == FLAC:
+            self.get_flac_artwork(Path(filepath))
+        elif codec == MP4:
+            self.get_mp4_artwork(Path(filepath))
+
+
 
     def update_time_and_progress(self):
         elapsed_ms = self.player.player.get_time()
@@ -75,3 +95,44 @@ class TrackDisplay(ttk.Frame):
         percent = (elapsed_ms / total_ms * 100) if total_ms > 0 else 0
         self.progress_var.set(percent)
         self.after(50, self.update_time_and_progress)
+
+
+    def get_mp3_artwork(filepath):
+
+        if not filepath or not isinstance(filepath, Path):
+            print("not filepath")
+            return None
+        
+        audio = MP3(filepath, ID3=ID3)
+
+        for tag in audio.tags.values():
+            if tag.FrameID == "APIC":
+                return tag.data
+        return None
+    
+
+    def get_flac_artwork(filepath):
+
+        if not filepath or not isinstance(filepath, Path):
+            print("not filepath")
+            return None
+        
+        audio = FLAC(filepath)
+
+        if audio.pictures:
+            return audio.pictures[0].data
+        return None
+    
+
+    def get_mp4_artwork(filepath):
+
+        if not filepath or not isinstance(filepath, Path):
+            print("not filepath")
+            return None
+        
+        audio = MP4(filepath)
+
+        if "covr" in audio:
+            return audio["covr"][0]
+
+        return None
