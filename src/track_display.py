@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from .playlist import Playlist
-from .playlist_display import PlaylistDisplay
 from pathlib import Path
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3

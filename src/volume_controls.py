@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
-from pathlib import Path
-import random
+# from pathlib import Path
+# import random
 
 class VolumeControls(ttk.Frame):
     def __init__(self, parent, player):

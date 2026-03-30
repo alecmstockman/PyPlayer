@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-import vlc
-from pathlib import Path
 from src.playlist import Playlist, PlaylistManager, CreatePlaylistEntry
 from src.track_info import TrackInfo
 
@@ -282,7 +280,6 @@ class PlaylistDisplay(ttk.Frame):
         self.menu_iid = row_id
         self.popup_menu.tk_popup(event.x_root, event.y_root)
 
-
     def sort_column(self, column):
         items = [(self.playlist_tree.set(iid, column), iid) for iid in self.playlist_tree.get_children()]
         
@@ -342,12 +339,14 @@ class PlaylistDisplay(ttk.Frame):
         self.controls.play_selection(self.menu_iid)
 
     def _on_menu_previous_track(self):
-        self.hightlight_clear_previous(self.menu_iid)
         self.clear_play_status()
+        self.recolor_rows()
         self.controls.previous_track()
 
     def _on_menu_next_track(self):
+        
         self.clear_play_status()
+        self.recolor_rows
         self.controls.next_track()
         # track = self.library.tracks[self.playlist_tree.selection()[0]]
         # self.update_previous_next_track_color(old_track_id)
