@@ -13,6 +13,8 @@ As a lifelong musician, I’ve always struggled to organize my demo tracks, song
 
 #### Challenges:
 
+Like most personal projects one takes on, I vastly underestimated the amount of work involved in creating a custom player from scratch. There were a number of significant challenges I faced such as deciding on how the actual audio should be produced, shuffling the current view, and learning the Tkinter library, but by far the biggest was managing the play state while moving through different menus. There were so many little edge cases and fun challenges I had to solve to make sure song display, playlist display, and backend play order were all in sync as the user was actively changing songs and moving through the playlists and libraries. 
+
 This is a music player app similar to Apple Music or VLC player and a personal project for the Boot.dev backend engineering course. 
 
 See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockman]
