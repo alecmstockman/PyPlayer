@@ -9,10 +9,13 @@ A music library designed to play (almost) any filetype and shows you song metada
 
 ## Motivation
 
-As a lifelong musician I have always struggled with organizing my demo tracks, working songs tests, and finished songs in a clean way that is separate from my standard music library. Coincidentally I have also been learning programming and I thought, what better way to practice programming and my desktop that is littered in demo tracks than to create my own music player? And, after many a difficult hour, PyPlayer was born!
+As a lifelong musician, I’ve always struggled to organize my demo tracks, song drafts, and finished recordings in a way that keeps them separate from my main music library. Coincidentally, I’ve also been learning programming, and I thought—what better way to practice and clean up my demo littered desktop than by creating my own music player? And, after many a difficult hour, PyPlayer was born!
+
+#### Challenges:
+
 This is a music player app similar to Apple Music or VLC player and a personal project for the Boot.dev backend engineering course. 
 
-See my profile here: [https://www.boot.dev/u/stockman]
+See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockman]
 
 
 ## Screenshots
