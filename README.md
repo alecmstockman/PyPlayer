@@ -1,11 +1,21 @@
-# Python VLC Music Player
+# PyPlayer
+
+A music library designed to play (almost) any filetype and see song metadata!
 
 ![Python](https://img.shields.io/badge/python-3.x-blue)
 ![Tkinter](https://img.shields.io/badge/gui-tkinter-green)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-This is a music player app similar to Apple Music or VLC and is my first personal project for my Boot.dev course. This app is built on the tkinter and VLC libraries. 
 
+## Motivation
+
+As a lifelong musician I have always struggled with organizing my demo tracks, working songs tests, and finished songs in a clean way that is separate from my standard music library. Coincidentally I have also been learning programming and I thought, what better way to practice programming and my desktop that is littered in demo tracks than to create my own music player? And, after many a difficult hour, PyPlayer was born!
+This is a music player app similar to Apple Music or VLC player and a personal project for the Boot.dev backend engineering course. 
+
+See my profile here: [https://www.boot.dev/u/stockman] [https://www.boot.dev/u/stockman]
+
+
+## Screenshots
 
 <img width="1505" height="766" alt="Screenshot 2026-03-24 at 10 16 38 PM" src="https://github.com/user-attachments/assets/3d3e35f4-928b-4bf9-997f-e796faec5037" />
 
