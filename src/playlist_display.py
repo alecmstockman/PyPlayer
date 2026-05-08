@@ -105,7 +105,6 @@ class PlaylistDisplay(ttk.Frame):
             print("No playlist or invalid playlist object")
             return
         index = 0
-        even = True
 
         for item in self.playlist.track_id_list:
             track = self.library.tracks[item]
@@ -124,25 +123,7 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.tag_configure("odd", background="black")
 
             star = " ★ " if favorite == True else " ☆ "
-
             track_index = index
-            # if even is True:
-            #     self.playlist_tree.insert(
-            #         "", "end",
-            #         iid=str(track_id),
-            #         values=("", f"{track_id}", f"{track_index}", "", f"{title}", "···", f"{total_str}", f"{artist}", f"{album}", f"{star}", f"{filetype}"),
-            #         tags="even" 
-            #     )
-            #     even = False
-            # else:
-            #     self.playlist_tree.insert(
-            #         "", "end",
-            #         iid=str(track_id),
-            #         values=("", f"{track_id}", f"{track_index}", "", f"{title}", "···", f"{total_str}", f"{artist}", f"{album}", f"{star}", f"{filetype}"),
-            #         tags="odd" 
-            #     )
-            #     even = True
-            # index += 1
 
             self.playlist_tree.insert(
                     "", "end",
