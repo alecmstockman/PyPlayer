@@ -126,22 +126,30 @@ class PlaylistDisplay(ttk.Frame):
             star = " ★ " if favorite == True else " ☆ "
 
             track_index = index
-            if even is True:
-                self.playlist_tree.insert(
+            # if even is True:
+            #     self.playlist_tree.insert(
+            #         "", "end",
+            #         iid=str(track_id),
+            #         values=("", f"{track_id}", f"{track_index}", "", f"{title}", "···", f"{total_str}", f"{artist}", f"{album}", f"{star}", f"{filetype}"),
+            #         tags="even" 
+            #     )
+            #     even = False
+            # else:
+            #     self.playlist_tree.insert(
+            #         "", "end",
+            #         iid=str(track_id),
+            #         values=("", f"{track_id}", f"{track_index}", "", f"{title}", "···", f"{total_str}", f"{artist}", f"{album}", f"{star}", f"{filetype}"),
+            #         tags="odd" 
+            #     )
+            #     even = True
+            # index += 1
+
+            self.playlist_tree.insert(
                     "", "end",
                     iid=str(track_id),
                     values=("", f"{track_id}", f"{track_index}", "", f"{title}", "···", f"{total_str}", f"{artist}", f"{album}", f"{star}", f"{filetype}"),
-                    tags="even" 
+                    tags=self._row_tag(track_index)
                 )
-                even = False
-            else:
-                self.playlist_tree.insert(
-                    "", "end",
-                    iid=str(track_id),
-                    values=("", f"{track_id}", f"{track_index}", "", f"{title}", "···", f"{total_str}", f"{artist}", f"{album}", f"{star}", f"{filetype}"),
-                    tags="odd" 
-                )
-                even = True
             index += 1
 
             if self.playlist.id in self.playlist_manager.user_playlists.keys():
@@ -149,6 +157,9 @@ class PlaylistDisplay(ttk.Frame):
             else:
                 self.popup_menu.entryconfig("Delete from Playlist", state="disabled")
         self.get_playlist_time()
+    
+    def _row_tag(self, track_index):
+        return "even" if track_index % 2 == 0 else "odd"
 
     def get_playlist_time(self):
         self.HEADER_TEXT = self.playlist.name
@@ -344,12 +355,9 @@ class PlaylistDisplay(ttk.Frame):
         self.controls.previous_track()
 
     def _on_menu_next_track(self):
-        
         self.clear_play_status()
         self.recolor_rows
         self.controls.next_track()
-        # track = self.library.tracks[self.playlist_tree.selection()[0]]
-        # self.update_previous_next_track_color(old_track_id)
 
     def _on_menu_create_playlist(self):
         dialog = CreatePlaylistEntry(self)
@@ -457,7 +465,6 @@ class PlaylistDisplay(ttk.Frame):
         self.set_playlist(playlist)
 
     def display_track_info(self):
-        print(F"display_track_info")
         selected = self.playlist_tree.selection()
         if not selected:
             return

@@ -76,12 +76,9 @@ track_display.pack(fill="x", expand=True)
 track_display.update_time_and_progress()
 
 
-
 playlist_display = PlaylistDisplay(playlist_display_region, library, player, library, playlist_manager)
 playlist_display.pack(fill="both", expand=True)
 playlist_display.set_playlist(playlist_manager.library_playlist)
-
-# track_info = TrackInfo(playlist_display, library)
 
 
 controls = PlayerControls(left_controls, library, playlist_manager.library_playlist, player, track_display, playlist_display)
@@ -125,7 +122,6 @@ def check_play_status(selected_view, artist_album=None):
 
 def on_sidebar_selection(event):
     selected_view = sidebar.selected_view
-    print(f"selected view: {selected_view}")
     if selected_view == "Library" or selected_view == "Songs":
         playlist_display.set_playlist(playlist_manager.library_playlist)
         check_play_status(selected_view)
@@ -175,11 +171,9 @@ def on_secondary_sidebar_selection(event):
     artist_album = sidebar_widget.selected_view
 
     if sidebar.selected_view == "Artists" and artist_album:
-        # playlist_display.set_playlist(library)
         playlist_display.get_artist_tracks(artist_album)
         
     elif sidebar.selected_view == "Albums" and artist_album:
-        # playlist_display.set_playlist(library)
         playlist_display.get_album_tracks(artist_album)
 
     controls.check_play_status()
@@ -216,7 +210,6 @@ def on_playlist_sorted(event):
     controls.play_order = new_play_order
     after_sort_index = new_play_order.index(before_sort_index)
     controls.play_index = after_sort_index
-    # check_play_status()
 
 playlist_display.bind("<<PlaylistSorted>>", on_playlist_sorted)
 
@@ -247,7 +240,6 @@ def test_function():
         count += 1
     print("\n")
 
-# print(load_track_metadata("Music/Songs/08 Just Pretend.mp3"))
-# test_function()
+
 track_display.update_time_and_progress()
 root.mainloop()

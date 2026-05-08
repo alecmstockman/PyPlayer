@@ -6,11 +6,8 @@ class TrackInfo(tk.Toplevel):
         super().__init__(parent)
         self.withdraw()
         self.track = track
-
         self.title("Track Information")
-
         self.minsize(500, 450)
-
         self.transient(parent)   
         self.grab_set()          
         self.focus_force()
@@ -34,18 +31,19 @@ class TrackInfo(tk.Toplevel):
         self.set_fields_and_data()
 
         self.center_over_parent(parent)
-        # self.wait_visibility()
         self.deiconify()
         self.lift()
         self.grab_set()
-
-        # self.after(10, lambda: self.center_over_parent(parent))
-
         
 
     def set_fields_and_data(self):
+        print("set_fields_and_data")
         for field, data in vars(self.track).items():
             self.info_tree.insert("", "end", values=(field, data))
+
+    def write_fields_and_data(self):
+        
+        pass
 
     def center_over_parent(self, parent):
         parent.update_idletasks()

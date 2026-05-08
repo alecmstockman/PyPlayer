@@ -94,7 +94,7 @@
     "album": "Periphery IV: HAIL STAN [Explicit]",
     "length": 1003,
     "play_count": null,
-    "favorite": null,
+    "favorite": true,
     "filepath": "/Users/alecstockman/music-player-v2/Music/Songs/01 - Reptile [Explicit].mp3",
     "composer": "",
     "copyright": "2019: 3DOT Recordings and Many Hats Distribution",

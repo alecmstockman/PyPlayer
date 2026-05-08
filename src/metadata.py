@@ -30,3 +30,8 @@ def load_track_metadata(filepath):
 
     return track_metadata
 
+
+def write_track_metadata(filepath):
+    audio = File(filepath, easy=True)
+    
+    pass
