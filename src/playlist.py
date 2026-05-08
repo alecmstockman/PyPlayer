@@ -88,7 +88,6 @@ class Library():
         return self.tracks[track_id]
 
     def save_library(self):
-        print("save library")
         library = {}
         for track in self.tracks.values():
             library[track.track_id] = {

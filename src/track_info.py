@@ -39,7 +39,15 @@ class TrackInfo(tk.Toplevel):
     def set_fields_and_data(self):
         print("set_fields_and_data")
         for field, data in vars(self.track).items():
-            self.info_tree.insert("", "end", values=(field, data))
+            if field == "length":
+                print("----- length")
+                total_seconds = data
+                total_minutes = total_seconds // 60 
+                remaining_seconds = total_seconds % 60
+                track_time = f"{total_minutes}:{remaining_seconds}"
+                self.info_tree.insert("", "end", values=(field, track_time))
+            else:
+                self.info_tree.insert("", "end", values=(field, data))
 
     def write_fields_and_data(self):
         
