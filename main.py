@@ -5,6 +5,7 @@ from pathlib import Path
 from src.player_controls.player_controls import PlayerControls
 from src.player_controls.track_display import TrackDisplay
 from src.player_controls.volume_controls import VolumeControls
+from src.player_controls.settings import SettingsMenu
 from src.vlc_player import VLCPlayer
 from src.playlist import PlaylistManager, Library
 from src.track_info import TrackInfo
@@ -84,6 +85,9 @@ playlist_display.set_playlist(playlist_manager.library_playlist)
 controls = PlayerControls(left_controls, library, playlist_manager.library_playlist, player, track_display, playlist_display)
 controls.pack(side="left")
 playlist_display.controls = controls
+
+settings = SettingsMenu(right_controls)
+settings.pack(side="right")
 
 volume_controls = VolumeControls(right_controls, player)
 

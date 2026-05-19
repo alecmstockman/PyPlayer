@@ -27,7 +27,7 @@ class TrackInfo(tk.Toplevel):
         self.info_tree.heading("data", text="Value")
 
         self.info_tree.pack(fill="both", expand=True)
-
+        
         self.set_fields_and_data()
 
         self.center_over_parent(parent)
@@ -50,7 +50,6 @@ class TrackInfo(tk.Toplevel):
                 self.info_tree.insert("", "end", values=(field, data))
 
     def write_fields_and_data(self):
-        
         pass
 
     def center_over_parent(self, parent):

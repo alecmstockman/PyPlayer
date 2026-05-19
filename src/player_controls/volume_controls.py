@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-# from pathlib import Path
-# import random
+
 
 class VolumeControls(ttk.Frame):
     def __init__(self, parent, player):
@@ -19,7 +18,7 @@ class VolumeControls(ttk.Frame):
 
         self.volume_slider.set(80)
         self.volume_slider.pack(padx=100, pady=10)
- 
+
         
     def set_audio_volume(self, val):
         volume_level = int(float(val))
