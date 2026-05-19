@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 import vlc
 from pathlib import Path
-from src.player_controls import PlayerControls
-from src.track_display import TrackDisplay
-from src.volume_controls import VolumeControls
+from src.player_controls.player_controls import PlayerControls
+from src.player_controls.track_display import TrackDisplay
+from src.player_controls.volume_controls import VolumeControls
 from src.vlc_player import VLCPlayer
 from src.playlist import PlaylistManager, Library
 from src.track_info import TrackInfo
