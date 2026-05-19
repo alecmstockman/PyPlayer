@@ -5,31 +5,25 @@ from tkinter import ttk
 class SettingsWindow(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
-
         self.withdraw()
         self.minsize(500, 450)
         self.transient(parent)   
         self.grab_set()          
         self.focus_force()
 
-
         ttk.Label(self, text="settings").pack(anchor="w")
 
         self.info_tree = ttk.Treeview(
             self,
-
             columns=("field", "data"),
             show="headings"
         )
 
         self.info_tree.column("field", width=100, anchor="w")
         self.info_tree.column("data", width=400, anchor="w")
-
         self.info_tree.heading("field", text="Field")
         self.info_tree.heading("data", text="Value")
-
         self.info_tree.pack(fill="both", expand=True)
-        
 
         self.center_over_parent(parent)
         self.deiconify()
