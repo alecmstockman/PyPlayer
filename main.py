@@ -5,11 +5,9 @@ from pathlib import Path
 from src.player_controls.player_controls import PlayerControls
 from src.player_controls.track_display import TrackDisplay
 from src.player_controls.right_controls import VolumeControls
-from src.player_controls.settings import SettingsButton
+from src.player_controls.settings import SettingsButton, Settings, SettingsWindow
 from src.vlc_player import VLCPlayer
 from src.playlist import PlaylistManager, Library
-from src.track_info import TrackInfo
-from src.styles import setup_styles
 from src.playlist_display import PlaylistDisplay
 from src.sidebar import Sidebar, SecondarySidebar
 
@@ -76,8 +74,9 @@ track_display = TrackDisplay(center_display, library, player)
 track_display.pack(fill="x", expand=True)
 track_display.update_time_and_progress()
 
-
-playlist_display = PlaylistDisplay(playlist_display_region, library, player, library, playlist_manager)
+settings = Settings()
+settings.load_settings()
+playlist_display = PlaylistDisplay(playlist_display_region, library, player, library, playlist_manager, settings)
 playlist_display.pack(fill="both", expand=True)
 playlist_display.set_playlist(playlist_manager.library_playlist)
 
@@ -86,9 +85,9 @@ controls = PlayerControls(left_controls, library, playlist_manager.library_playl
 controls.pack(side="left")
 playlist_display.controls = controls
 
-settings = SettingsButton(right_controls)
-settings.pack(side="right")
-
+settings_button = SettingsButton(right_controls, settings)
+settings_button.pack(side="right")
+ 
 volume_controls = VolumeControls(right_controls, player)
 
 first_track_id = controls.playlist.track_id_list[controls.play_index]
@@ -108,6 +107,12 @@ def on_left_button_previous(event):
 
 def on_right_button_next(event):
     controls.next_track()
+
+def handle_settings_changed(setting):
+    playlist_display.background_color = settings.selected_background_color
+    playlist_display.set_playlist(playlist_display.playlist)
+
+settings_button.bind("<<SettingsChanged>>", handle_settings_changed)
 
 root.bind("<space>", controls.toggle_play, add="+")
 root.bind("<Command-Left>", controls.previous_track, add="+")

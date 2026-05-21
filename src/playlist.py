@@ -147,7 +147,6 @@ class PlaylistManager():
             user_playlists[key] = {"name": value.name, "tracks": track_list, "id": key}
         path = Path("data/playlists.json")
 
-
         try: 
             with path.open("w", encoding="utf-8") as f:
                 json.dump(user_playlists, f, indent=2)

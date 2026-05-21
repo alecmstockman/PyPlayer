@@ -2,15 +2,17 @@ import tkinter as tk
 from tkinter import ttk
 from src.playlist import Playlist, PlaylistManager, CreatePlaylistEntry
 from src.track_info import TrackInfo
+from src.config import BACKGROUND_COLORS
 
 
 class PlaylistDisplay(ttk.Frame):
-    def __init__(self, parent, library, player, playlist, playlist_manager):
+    def __init__(self, parent, library, player, playlist, playlist_manager, settings):
         super().__init__(parent)
         self.library = library
         self.player = player
         self.playlist = playlist
         self.playlist_manager = playlist_manager
+        self.settings = settings
         
         self.popup_menu = tk.Menu(self, tearoff=False)
         self.playlist_submenu = tk.Menu(self.popup_menu, tearoff=False)
@@ -23,6 +25,8 @@ class PlaylistDisplay(ttk.Frame):
         
         self.display_header = tk.Frame(self, bg="#2b2b2b", height=40)
         self.display_header.pack(fill="x")
+
+        self.background_color = self.settings.selected_background_color
 
         self.header_label = tk.Label(
             self.display_header,
@@ -119,7 +123,7 @@ class PlaylistDisplay(ttk.Frame):
             filetype = track.codec
             favorite = track.favorite
 
-            self.playlist_tree.tag_configure("even", background="darkblue")
+            self.playlist_tree.tag_configure("even", background=self.background_color)
             self.playlist_tree.tag_configure("odd", background="black")
 
             star = " ★ " if favorite == True else " ☆ "

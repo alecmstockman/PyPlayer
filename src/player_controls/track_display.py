@@ -57,8 +57,6 @@ class TrackDisplay(ttk.Frame):
         
         filepath = track.filepath
         codec = track.codec
-        print(track.filepath)
-        print(track.codec)
 
         if codec == MP3:
             self.get_mp3_artwork(Path(filepath))
@@ -66,8 +64,6 @@ class TrackDisplay(ttk.Frame):
             self.get_flac_artwork(Path(filepath))
         elif codec == MP4:
             self.get_mp4_artwork(Path(filepath))
-
-
 
     def update_time_and_progress(self):
         elapsed_ms = self.player.player.get_time()
@@ -94,9 +90,7 @@ class TrackDisplay(ttk.Frame):
         self.progress_var.set(percent)
         self.after(50, self.update_time_and_progress)
 
-
     def get_mp3_artwork(filepath):
-
         if not filepath or not isinstance(filepath, Path):
             print("not filepath")
             return None
@@ -108,9 +102,7 @@ class TrackDisplay(ttk.Frame):
                 return tag.data
         return None
     
-
     def get_flac_artwork(filepath):
-
         if not filepath or not isinstance(filepath, Path):
             print("not filepath")
             return None
@@ -120,10 +112,8 @@ class TrackDisplay(ttk.Frame):
         if audio.pictures:
             return audio.pictures[0].data
         return None
-    
 
     def get_mp4_artwork(filepath):
-
         if not filepath or not isinstance(filepath, Path):
             print("not filepath")
             return None
