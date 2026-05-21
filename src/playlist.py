@@ -86,6 +86,9 @@ class Library():
 
     def get_track(self, track_id):
         return self.tracks[track_id]
+    
+    def get_track_length(self, track_id):
+        return self.tracks[track_id].length
 
     def save_library(self):
         library = {}

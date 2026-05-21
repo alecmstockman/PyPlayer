@@ -80,7 +80,6 @@ playlist_display = PlaylistDisplay(playlist_display_region, library, player, lib
 playlist_display.pack(fill="both", expand=True)
 playlist_display.set_playlist(playlist_manager.library_playlist)
 
-
 controls = PlayerControls(left_controls, library, playlist_manager.library_playlist, player, track_display, playlist_display)
 controls.pack(side="left")
 playlist_display.controls = controls
