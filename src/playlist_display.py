@@ -277,28 +277,13 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.tk_popup(event.x_root, event.y_root)
 
     def sort_column(self, column):
-
+        print("column", column)
         if column != "Time":
             items = [(self.playlist_tree.set(iid, column), iid) for iid in self.playlist_tree.get_children()]
         else: 
             items = [(self.library.get_track_length(iid), iid) for iid in self.playlist_tree.get_children()]
 
-        print("SORT COLUMN: ", column)
-
-        def time_to_seconds(time):
-            minutes = int(time.split(":")[0])
-            seconds = int(time.split(":")[1])
-            return (minutes * 60) + seconds
-    
-        for item in items:
-            # if column == "Time":
-            #     time = time_to_seconds(item[0])
-            #     track_id = item[1]
-            #     track_length = self.library.get_track_length(track_id)
-            #     print(track_id, track_length)
-            print(item)
-
-        if column in ("Track", "Artist", "Album", "Time", "Filetype"):
+        if column in ("Track", "Artist", "Album", "Time", "Filetype", "favorite"):
             if self.sort_order == None:
                 items.sort()
                 for index, (_, iid) in enumerate(items):

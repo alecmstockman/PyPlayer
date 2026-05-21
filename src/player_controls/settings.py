@@ -53,7 +53,8 @@ class SettingsWindow(tk.Toplevel):
         ttk.Label(self, text="Background").grid(row=0, column=0, padx=10, pady=10, sticky="w")
         ttk.Label(self, text="Font Color").grid(row=1, column=0, padx=10, pady=10, sticky="w")
         ttk.Label(self, text="Font Selection").grid(row=2, column=0, padx=10, pady=10, sticky="w")
-        ttk.Label(self, text="Rescan Library").grid(row=3, column=0, padx=10, pady=10, sticky="w")
+        ttk.Label(self, text="Edit File Metadata").grid(row=3, column=0, padx=10, pady=10, sticky="w")
+        ttk.Label(self, text="Rescan Library").grid(row=4, column=0, padx=10, pady=10, sticky="w")
         
         background_color_dropdown = ttk.Combobox(
             self,
