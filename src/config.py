@@ -16,3 +16,15 @@ FONT_COLORS = [
     "#E2E2E2",
     "#000000",
 ]
+
+FONTS = [
+    "Helvetica", 
+    "Arial",
+    "Menlo",
+    "Monaco",
+    "Times",
+    "Courier",
+    "Verdana",
+    "Trebuchet MS",
+    "Georgia"
+]
