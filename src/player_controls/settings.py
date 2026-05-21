@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 import json
-import uuid
 from src.config import BACKGROUND_COLORS, FONT_COLORS, FONTS
 
 
@@ -145,8 +144,14 @@ class SettingsButton(ttk.Frame):
         self.settings_button = ttk.Button(self, text="⚙️", command=self.open_settings, takefocus=0, width=3)
         self.settings_button.pack(padx=(5), pady=5)
         self.settings = settings
+        self.settings_window = None
 
     def open_settings(self):
         self.settings_window = SettingsWindow(self, self.settings)
+        # if self.settings_window is None or not self.settings_window.winfo_exists():
+        #     self.settings_window = SettingsWindow(self, self.settings)
+        # else:
+        #     self.settings_window.close_settings_window()
+        #     self.settings_window = None
 
 
