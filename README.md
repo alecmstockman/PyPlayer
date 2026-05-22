@@ -149,9 +149,11 @@ python3 main.py
 - Sortable columns
 - Favorite tracks
 - Playlist creation
+- Edit metadata on MP3 files
 - Context menu actions
 - VLC-based audio playback
 - Sidebar library navigation
+- Change the background color theme
 
 ---
 
@@ -214,7 +216,6 @@ The project uses `.gitkeep` files so these directories exist even when empty.
 * Update UI with CustomTkinter
 * Create popup play queue and history display
 * Implement a play counts column
-* Ability to write meta-data to song files
 * Ability to change theme and styles
 * Recently Played Playlist
 
