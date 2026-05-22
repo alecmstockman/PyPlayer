@@ -110,7 +110,7 @@ python3 main.py
 
 ---
 
-# Running the App
+# Using the App
 
 Add audio files to root/music in either the 'Albums' or 'Songs' folder.
 
