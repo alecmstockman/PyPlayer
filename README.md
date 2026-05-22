@@ -4,6 +4,7 @@ PyPlayer is a desktop music player and library manager built with Python, Tkinte
 
 ![Python](https://img.shields.io/badge/python-3.x-blue)
 ![Tkinter](https://img.shields.io/badge/gui-tkinter-green)
+![SQLite](https://img.shields.io/badge/database-SQLite-07405E?logo=sqlite&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 
