@@ -24,15 +24,13 @@ See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockma
 
 <img width="1511" height="944" alt="Screenshot 2026-05-21 at 9 44 55 PM" src="https://github.com/user-attachments/assets/545cb000-0b55-448f-9a40-27b8c77eee61" />
 <br><br>
-<img width="500" height="334" alt="Screenshot 2026-03-24 at 10 18 21 PM" src="https://github.com/user-attachments/assets/8209f64c-e864-4293-a8b2-12afb53924b0" />
+<img width="500" height="332" alt="Screenshot 2026-03-24 at 10 18 21 PM" src="https://github.com/user-attachments/assets/8209f64c-e864-4293-a8b2-12afb53924b0" />
 
-<img width="500" height="334" alt="Screenshot 2026-03-24 at 10 19 10 PM" src="https://github.com/user-attachments/assets/1a4f5847-a4ed-4b9a-aa97-6c4c61c86cb0" />
+<img width="500" height="332" alt="Screenshot 2026-03-24 at 10 19 10 PM" src="https://github.com/user-attachments/assets/1a4f5847-a4ed-4b9a-aa97-6c4c61c86cb0" />
 <br><br>
-<img width="500" height="334" alt="Screenshot 2026-05-21 at 9 49 03 PM" src="https://github.com/user-attachments/assets/0ad62c37-0b1f-478f-b3c4-8668a016a1b7" />
+<img width="500" height="332" alt="Screenshot 2026-05-21 at 9 49 03 PM" src="https://github.com/user-attachments/assets/0ad62c37-0b1f-478f-b3c4-8668a016a1b7" />
 
-<img width="500" height="334" alt="Screenshot 2026-03-24 at 10 19 49 PM" src="https://github.com/user-attachments/assets/3f710618-cdb2-49db-a519-146cc724614a" />
-<br><br>
-<img width="500" height="334" alt="Screenshot 2026-05-21 at 10 20 32 PM" src="https://github.com/user-attachments/assets/3ab65e4d-f73e-4fb4-8bbc-c783c739f278" />
+<img width="500" height="332" alt="Screenshot 2026-03-24 at 10 19 49 PM" src="https://github.com/user-attachments/assets/3f710618-cdb2-49db-a519-146cc724614a" />
 
 
 
@@ -228,6 +226,12 @@ The project uses `.gitkeep` files so these directories exist even when empty.
 ```bash
 git clone https://github.com/alecmstockman/music-player.git
 cd music-player
+
+python -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+python main.py
 ```
 
 
