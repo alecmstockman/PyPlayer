@@ -1,24 +1,23 @@
 {
-  "f0fa6496-6c07-49ca-909d-3bfc3e9af5cd": {
-    "name": "Test",
+  "57108c33-ad82-4a0e-8259-8c3b414c3612": {
+    "name": "New Playlist 1",
     "tracks": [
-      "1d5e6dbf",
-      "de1e8a13"
+      "ad3e3e58"
     ],
-    "id": "f0fa6496-6c07-49ca-909d-3bfc3e9af5cd"
+    "id": "57108c33-ad82-4a0e-8259-8c3b414c3612"
   },
-  "c936ed27-7ce8-4f9e-8b57-d04c75321308": {
-    "name": "Jamz",
+  "441f45a2-fce0-42e1-8d1b-6a1ce2628cf2": {
+    "name": "Rock Songs",
     "tracks": [
-      "e13337c8",
-      "a3f01466",
-      "b4be2b77"
+      "669f6e69"
     ],
-    "id": "c936ed27-7ce8-4f9e-8b57-d04c75321308"
+    "id": "441f45a2-fce0-42e1-8d1b-6a1ce2628cf2"
   },
-  "96b51a73-eb02-45e9-91a4-7cacd75c773e": {
-    "name": "New Playlist",
-    "tracks": [],
-    "id": "96b51a73-eb02-45e9-91a4-7cacd75c773e"
+  "9e25e019-596c-41b1-8eaf-fc0fb3e03c89": {
+    "name": "Demos",
+    "tracks": [
+      "7a0af834"
+    ],
+    "id": "9e25e019-596c-41b1-8eaf-fc0fb3e03c89"
   }
 }
