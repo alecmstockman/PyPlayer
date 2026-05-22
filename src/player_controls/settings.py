@@ -1,8 +1,9 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, filedialog
 from pathlib import Path
 import json
 from src.config import BACKGROUND_COLORS, FONT_COLORS, FONTS
+from mutagen import File
 
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -29,8 +30,164 @@ class Settings():
                 self.font_selection = data["font_selection"]
 
         except Exception as e:
-            print(f"Failed to load settings: {e}")  
+            print(f"Failed to load settings: {e}")
+
+
+class WriteMetaDataWindow(tk.Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.filepath = "None"
+        self.audio_file = None
+        self.edit_entry = None
+        self.entries = {}
         
+        self.withdraw()
+        self.minsize(700, 500)
+        self.transient(parent)   
+        self.grab_set()          
+        self.focus_force()
+
+        self.title("Meta-Data Writer")
+
+        self.select_filepath = ttk.Button(self, text="Select Filepath", command=self.select_filepath, takefocus=0, width=10)
+        self.select_filepath.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+
+        self.save_meta_data = ttk.Button(self, text="Save Data", command=self.save_meta_data, takefocus=0, width=10)
+        self.save_meta_data.grid(row=0, column=1, padx=10, pady=10, sticky="w")
+
+        self.filepath_label = ttk.Label(self, text="Filepath")
+        self.filepath_label.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+        
+        self.center_over_parent(parent)
+        self.deiconify()
+        self.lift()
+        self.grab_set()
+
+    def select_filepath(self):
+        print("SELECT FILEPATH")
+        filepath = filedialog.askopenfilename(
+            title = "Select audio file"
+        )
+        self.filepath = filepath
+        self.filepath_label = ttk.Label(self, text=self.filepath).grid(row=1, column=1, padx=10, pady=10, sticky="w")
+        
+        if not filepath:
+            self.filepath_label = ttk.Label(self, text="invalid file").grid(row=1, column=1, padx=10, pady=10, sticky="w")
+            return
+
+        self.audio_file = File(filepath, easy=True)
+        self.set_fields_and_data()
+        return self.audio_file
+    
+    def save_meta_data(self):
+        print("SAVE META DATA")
+        updated_data = self.collect_metadata_entries()
+        print("UPDATED DATA")
+        print(updated_data)
+
+        track = File(self.filepath, easy=True)
+
+        for key, value in updated_data.items():
+            if value == "n/a":
+                updated_data[key] = ""
+            print("KEY: ", key)
+
+        track["album"] = [updated_data["album"]]
+        track["composer"] = [updated_data["composer"]]
+        track["copyright"] = [updated_data["copyright"]]
+        track["title"] = [updated_data["title"]]
+        track["artist"] = [updated_data["artist"]]
+        track["albumartist"] = [updated_data["album artist"]]
+        track["conductor"] = [updated_data["conductor"]]
+        track["discnumber"] = [updated_data["disc_number"]]
+        track["tracknumber"] = [updated_data["track_number"]]
+        track["genre"] = [updated_data["genre"]]
+        track["date"] = [updated_data["date"]]
+
+        track.save()
+
+    def set_fields_and_data(self, close_entry=False):
+        print("\nSET FIELDS AND DATA")
+        # print(self.audio_file.tags)
+
+        tags = self.audio_file.tags
+
+        fields = ["album", "composer", "copyright", "title", "artist", "album artist", "conductor", "disc_number", "track_number", "genre", "date"]
+        self.entries = {}
+
+        for row, field in enumerate(fields): 
+            ttk.Label(self, text=field.title()).grid(row=row+2, column=0, sticky="w", padx=8, pady=8)
+            
+            entry = ttk.Entry(self, width=40)
+            entry.grid(row=row+2, column=1, sticky="ew")
+
+            current_value = tags.get(field, ["n/a"])
+            # print("current value: ", current_value, type(current_value))
+            if isinstance(current_value, list):
+                entry.insert(0, current_value[0])
+            else:
+                entry.insert(0, current_value)
+
+            self.entries[field] = entry
+        
+        print("set fields\n", self.entries)
+
+        self.columnconfigure(2, weight=1)
+
+        if close_entry:
+            self.entry.destroy()
+            self.edit_entry=None
+
+    def collect_metadata_entries(self):
+        new_values = {}
+
+        for field, entry in self.entries.items():
+            new_values[field] = entry.get()
+
+        return new_values
+
+    def on_tree_click(self, event):
+        row_id = self.meta_data_display.identify_row(event.y)
+        col_id = self.meta_data_display.identify_column(event.x)
+        
+        print("click")
+        print("row_id: ", row_id, "col_id: ", col_id)
+
+        if not row_id:
+            return
+        
+        fields = ["album", "composer", "copyright", "title", "artist", "album artist", "conductor", "disc_number", "track_number", "genre", "date"]
+
+        # var = tk.StringVar()
+        # entry = ttk.Entry(self, textvariable=var, width=40)
+        # entry.grid(row=row+1, column=1, stick="ew", padx=8, pady=4)
+        # self.entries[field] = var
+
+
+    def on_tree_right_click(self, event):
+        print("ON TREE RIGHT CLICK")
+
+    def center_over_parent(self, parent):
+        parent = parent.winfo_toplevel()
+        parent.update_idletasks()
+        self.update_idletasks()
+
+        parent_x = parent.winfo_rootx()
+        parent_y = parent.winfo_rooty()
+        parent_w = parent.winfo_width()
+        parent_h = parent.winfo_height()
+
+        win_w = self.winfo_reqwidth()
+        win_h = self.winfo_reqheight()
+
+        x = parent_x + (parent_w // 2) - (win_w // 2) - 180
+        y = parent_y + (parent_h // 2) - (win_h // 2) -  180
+
+        self.geometry(f"{win_w}x{win_h}+{x}+{y}")
+        self.lift()
+        self.focus_force()
+
 
 class SettingsWindow(tk.Toplevel):
     def __init__(self, parent, settings):
@@ -53,8 +210,12 @@ class SettingsWindow(tk.Toplevel):
         ttk.Label(self, text="Background").grid(row=0, column=0, padx=10, pady=10, sticky="w")
         ttk.Label(self, text="Font Color").grid(row=1, column=0, padx=10, pady=10, sticky="w")
         ttk.Label(self, text="Font Selection").grid(row=2, column=0, padx=10, pady=10, sticky="w")
-        ttk.Label(self, text="Edit File Metadata").grid(row=3, column=0, padx=10, pady=10, sticky="w")
-        ttk.Label(self, text="Rescan Library").grid(row=4, column=0, padx=10, pady=10, sticky="w")
+
+        self.settings_button = ttk.Button(self, text="Edit File Metadata", command=self.open_write_meta_data, takefocus=0, width=15)
+        self.settings_button.grid(row=3, column=0, padx=10, pady=10, sticky="w")
+
+        self.settings_button = ttk.Button(self, text="Rescan Library", command=self.open_write_meta_data, takefocus=0, width=15)
+        self.settings_button.grid(row=4, column=0, padx=10, pady=10, sticky="w")
         
         background_color_dropdown = ttk.Combobox(
             self,
@@ -118,6 +279,13 @@ class SettingsWindow(tk.Toplevel):
         except Exception as e:
             print(f"Failed to save settings: {e}")
 
+    def open_write_meta_data(self):
+        meta_data_window = WriteMetaDataWindow(self.parent)
+        print("\n open write meta data")
+
+    def rescan_library(self):
+        print("rescan library")
+
     def center_over_parent(self, parent):
         parent = parent.winfo_toplevel()
         parent.update_idletasks()
@@ -131,8 +299,8 @@ class SettingsWindow(tk.Toplevel):
         win_w = self.winfo_reqwidth()
         win_h = self.winfo_reqheight()
 
-        x = parent_x + (parent_w // 2) - (win_w // 2) - 100
-        y = parent_y + (parent_h // 2) - (win_h // 2) - 250
+        x = parent_x + (parent_w // 2) - (win_w // 2) - 50
+        y = parent_y + (parent_h // 2) - (win_h // 2) - 200
 
         self.geometry(f"{win_w}x{win_h}+{x}+{y}")
         self.lift()
@@ -149,10 +317,5 @@ class SettingsButton(ttk.Frame):
 
     def open_settings(self):
         self.settings_window = SettingsWindow(self, self.settings)
-        # if self.settings_window is None or not self.settings_window.winfo_exists():
-        #     self.settings_window = SettingsWindow(self, self.settings)
-        # else:
-        #     self.settings_window.close_settings_window()
-        #     self.settings_window = None
 
 

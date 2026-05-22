@@ -277,7 +277,6 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.tk_popup(event.x_root, event.y_root)
 
     def sort_column(self, column):
-        print("column", column)
         if column != "Time":
             items = [(self.playlist_tree.set(iid, column), iid) for iid in self.playlist_tree.get_children()]
         else: 

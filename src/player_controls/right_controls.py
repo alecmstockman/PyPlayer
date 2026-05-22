@@ -17,7 +17,7 @@ class VolumeControls(ttk.Frame):
             )
 
         self.volume_slider.set(80)
-        self.volume_slider.pack(padx=100, pady=10)
+        self.volume_slider.pack(padx=60, pady=10)
 
         
     def set_audio_volume(self, val):
