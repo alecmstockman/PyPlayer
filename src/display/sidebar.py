@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
-from .playlist import Playlist, PlaylistManager
-from .vlc_player import VLCPlayer
+from ..models.playlist import Playlist, PlaylistManager
+from ..vlc_player import VLCPlayer
 
 class Sidebar(ttk.Frame):
     def __init__(self, parent, library, playlist_manager):

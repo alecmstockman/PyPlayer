@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from src.playlist import Playlist, PlaylistManager, CreatePlaylistEntry
+from src.models.playlist import Playlist, PlaylistManager, CreatePlaylistEntry
 from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
 

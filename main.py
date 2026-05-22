@@ -7,9 +7,9 @@ from src.player_controls.track_display import TrackDisplay
 from src.player_controls.right_controls import VolumeControls
 from src.player_controls.settings import SettingsButton, Settings, SettingsWindow
 from src.vlc_player import VLCPlayer
-from src.playlist import PlaylistManager, Library
-from src.playlist_display import PlaylistDisplay
-from src.sidebar import Sidebar, SecondarySidebar
+from src.models.playlist import PlaylistManager, Library
+from src.display.playlist_display import PlaylistDisplay
+from src.display.sidebar import Sidebar, SecondarySidebar
 
 root = tk.Tk()
 root.lift()

@@ -3,11 +3,11 @@ from tkinter import ttk
 from pathlib import Path
 import json
 import uuid
-from .config import AUDIO_FILETYPES
-from src.metadata import load_track_metadata
+from ..config import AUDIO_FILETYPES
+from src.metadata.metadata import load_track_metadata
 
     
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 MUSIC = Path(f"{ROOT}/Music/")
 LIBRARY_JSON_PATH = Path(ROOT/"data/library.json")
 LIBRARY_JSON_PATH.parent.mkdir(exist_ok=True)

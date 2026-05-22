@@ -48,7 +48,7 @@ class WriteMetaDataWindow(tk.Toplevel):
         self.grab_set()          
         self.focus_force()
 
-        self.title("Meta-Data Writer")
+        self.title("MP3 Meta-Data Writer")
 
         self.select_filepath = ttk.Button(self, text="Select Filepath", command=self.select_filepath, takefocus=0, width=10)
         self.select_filepath.grid(row=0, column=0, padx=10, pady=10, sticky="w")
@@ -69,6 +69,13 @@ class WriteMetaDataWindow(tk.Toplevel):
         filepath = filedialog.askopenfilename(
             title = "Select audio file"
         )
+
+        path = Path(filepath)
+
+        if path.suffix != ".mp3":
+            print(f"Invalid file type: {path.suffix}")
+            return
+
         self.filepath = filepath
         self.filepath_label = ttk.Label(self, text=self.filepath).grid(row=1, column=1, padx=10, pady=10, sticky="w")
         
@@ -81,17 +88,13 @@ class WriteMetaDataWindow(tk.Toplevel):
         return self.audio_file
     
     def save_meta_data(self):
-        print("SAVE META DATA")
         updated_data = self.collect_metadata_entries()
-        print("UPDATED DATA")
-        print(updated_data)
 
         track = File(self.filepath, easy=True)
 
         for key, value in updated_data.items():
             if value == "n/a":
                 updated_data[key] = ""
-            print("KEY: ", key)
 
         track["album"] = [updated_data["album"]]
         track["composer"] = [updated_data["composer"]]
