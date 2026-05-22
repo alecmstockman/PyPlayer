@@ -31,6 +31,8 @@ See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockma
 <img width="500" height="332" alt="Screenshot 2026-05-21 at 9 49 03 PM" src="https://github.com/user-attachments/assets/0ad62c37-0b1f-478f-b3c4-8668a016a1b7" />
 
 <img width="500" height="332" alt="Screenshot 2026-03-24 at 10 19 49 PM" src="https://github.com/user-attachments/assets/3f710618-cdb2-49db-a519-146cc724614a" />
+<br><br>
+<img width="500" height="332" alt="Screenshot 2026-05-21 at 10 20 32 PM" src="https://github.com/user-attachments/assets/3ab65e4d-f73e-4fb4-8bbc-c783c739f278" />
 
 
 
