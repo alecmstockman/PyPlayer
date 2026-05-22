@@ -14,7 +14,7 @@ from src.display.sidebar import Sidebar, SecondarySidebar
 root = tk.Tk()
 root.lift()
 root.focus_force()
-root.title("No Vibe Music Player - VERSION 2")
+root.title("PyPlayer - V2")
 
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
