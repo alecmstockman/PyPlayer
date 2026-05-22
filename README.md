@@ -3,6 +3,7 @@
 PyPlayer is a desktop music player and library manager built with Python, Tkinter, and VLC. It supports playlist management, metadata editing, sorting, favorites, shuffle/loop playback, and dynamic library organization through a custom GUI application architecture.
 
 ![Python](https://img.shields.io/badge/python-3.x-blue)
+![VLC](https://img.shields.io/badge/player-VLC-orange?logo=vlcmediaplayer)
 ![Tkinter](https://img.shields.io/badge/gui-tkinter-green)
 ![SQLite](https://img.shields.io/badge/database-SQLite-07405E?logo=sqlite&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
