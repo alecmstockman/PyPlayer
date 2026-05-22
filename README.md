@@ -1,6 +1,6 @@
 # PyPlayer
 
-A music library designed to play (almost) any filetype and shows you song metadata!
+PyPlayer is a desktop music player and library manager built with Python, Tkinter, and VLC. It supports playlist management, metadata editing, sorting, favorites, shuffle/loop playback, and dynamic library organization through a custom GUI application architecture.
 
 ![Python](https://img.shields.io/badge/python-3.x-blue)
 ![Tkinter](https://img.shields.io/badge/gui-tkinter-green)
@@ -13,7 +13,7 @@ As a lifelong musician, I’ve always struggled to organize my demo tracks, song
 
 #### Challenges:
 
-Like most personal projects, I vastly underestimated the amount of work involved in building a custom player from scratch. I ran into several significant challenges like deciding how to handle audio playback, implementing shuffle for the current view, and learning Tkinter, but by far the biggest was managing play state across different menus. There were countless small edge cases to solve to keep song display, playlist display, and backend play order in sync as users switched tracks and navigated between libraries and playlists. The core functionality is now fully built out, but I have many more updates on the way. I’d love to hear what you think!
+Like most personal projects, I vastly underestimated the amount of work involved in building a custom music player from scratch. I ran into several significant challenges like deciding how to handle audio playback, implementing shuffle for the current view, and learning Tkinter, but by far the biggest was managing play state across different menus. There were countless small edge cases to solve to keep song display, playlist display, and backend play order in sync as users switched tracks and navigated between libraries and playlists. The core functionality is now fully built out, but I have many more updates on the way. I’d love to hear what you think!
 
 This is a music player app similar to Apple Music and VLC media player, and a personal project for the Boot.dev backend engineering course.
 
@@ -35,9 +35,12 @@ See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockma
 
 
 ## Built With
-  * tkinter
-  * python-vlc
-  * mutagen
+* Python
+* Tkinter / ttk
+* python-vlc
+* Mutagen
+* JSON persistence
+* pathlib
 
 ## Quick Start
 
@@ -47,12 +50,17 @@ See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockma
 - **Cmd + ↑ / ↓** : Volume
 
 ## Features
-* Plays following audio types: .mp3, .wav, .aac, .flac, .wma, ac3
-* Create, save, and delete custom user playlists
-* Seamlessly change states - Shuffle, Loop Playlist, Loop Track
-* Clickable progress bar allows you change playback position
-* Add songs to your favorites list
-* Easily see total playlist time
+- Audio playback using VLC bindings
+- Playlist management
+- Sortable music library
+- Metadata editing with Mutagen
+- Shuffle and loop playback modes
+- Favorites system
+- Keyboard shortcuts
+- Dynamic progress bar and scrubbing
+- Album/artist metadata support
+- Custom Tkinter/ttk UI architecture
+- JSON-based library persistence
 
 # Usage
 
@@ -99,30 +107,38 @@ python3 main.py
 
 ---
 
-# Project Structure
+# Architecture
 
 ```
-music-player/
-│
-├── main.py                
+.
+├── data
+│   ├── library.json
+│   ├── playlists.json
+│   └── settings.json
+├── main.py
+├── Music
+│   ├── Albums
+│   └── Songs
 ├── README.md
-│
-├── src/
-│   ├── config.py
-│   ├── player_controls.py
-│   ├── playlist.py
-│   ├── playlist_display.py
-│   ├── sidebar.py
-│   ├── styles.py
-│   └── vlc_player.py
-│
-├── data/                  
-│
-├── Music/
-│   ├── Songs/
-│   └── Albums/
-│
-└── venv/                 
+├── requirements.txt
+└── src
+    ├── __init__.py
+    ├── config.py
+    ├── display
+    │   ├── playlist_display.py
+    │   └── sidebar.py
+    ├── metadata
+    │   └── metadata.py
+    ├── models
+    │   └── playlist.py
+    ├── player_controls
+    │   ├── player_controls.py
+    │   ├── right_controls.py
+    │   ├── settings.py
+    │   └── track_display.py
+    ├── styles.py
+    ├── track_info.py
+    └── vlc_player.py              
 ```
 
 ---
@@ -211,6 +227,7 @@ The project uses `.gitkeep` files so these directories exist even when empty.
 git clone https://github.com/alecmstockman/music-player.git
 cd music-player
 ```
+
 
 ### Submit a pull request
 
