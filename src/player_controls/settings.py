@@ -108,9 +108,6 @@ class WriteMetaDataWindow(tk.Toplevel):
         track.save()
 
     def set_fields_and_data(self, close_entry=False):
-        print("\nSET FIELDS AND DATA")
-        # print(self.audio_file.tags)
-
         tags = self.audio_file.tags
 
         fields = ["album", "composer", "copyright", "title", "artist", "album artist", "conductor", "disc_number", "track_number", "genre", "date"]
@@ -118,12 +115,10 @@ class WriteMetaDataWindow(tk.Toplevel):
 
         for row, field in enumerate(fields): 
             ttk.Label(self, text=field.title()).grid(row=row+2, column=0, sticky="w", padx=8, pady=8)
-            
             entry = ttk.Entry(self, width=40)
             entry.grid(row=row+2, column=1, sticky="ew")
 
             current_value = tags.get(field, ["n/a"])
-            # print("current value: ", current_value, type(current_value))
             if isinstance(current_value, list):
                 entry.insert(0, current_value[0])
             else:
@@ -131,8 +126,6 @@ class WriteMetaDataWindow(tk.Toplevel):
 
             self.entries[field] = entry
         
-        print("set fields\n", self.entries)
-
         self.columnconfigure(2, weight=1)
 
         if close_entry:
@@ -157,13 +150,7 @@ class WriteMetaDataWindow(tk.Toplevel):
         if not row_id:
             return
         
-        fields = ["album", "composer", "copyright", "title", "artist", "album artist", "conductor", "disc_number", "track_number", "genre", "date"]
-
-        # var = tk.StringVar()
-        # entry = ttk.Entry(self, textvariable=var, width=40)
-        # entry.grid(row=row+1, column=1, stick="ew", padx=8, pady=4)
-        # self.entries[field] = var
-
+        # fields = ["album", "composer", "copyright", "title", "artist", "album artist", "conductor", "disc_number", "track_number", "genre", "date"]
 
     def on_tree_right_click(self, event):
         print("ON TREE RIGHT CLICK")
