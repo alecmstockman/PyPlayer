@@ -15,6 +15,9 @@ venv/
 .DS_Store
 
 
-
+# User/generated data
+data/library.json
+data/settings.json
+data/playlist.json
 
 
