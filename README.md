@@ -9,13 +9,13 @@ PyPlayer is a desktop music player and library manager built with Python, Tkinte
 
 ## Motivation
 
-As a lifelong musician, I’ve always struggled to organize my demo tracks, song drafts, and finished recordings in a way that keeps them separate from my main music library. Coincidentally, I’ve also been learning programming, and I thought—what better way to practice and clean up my demo littered desktop than by creating my own music player? And, after many a difficult hour, PyPlayer was born!
+As a lifelong musician, I’ve always struggled to organize my demo tracks, song drafts, and finished recordings in a way that keeps them separate from my main music library. I was also looking for a way to add metadata to song files on my finished tracks. Coincidentally, I’ve also been learning programming, and I thought—what better way to practice and clean up my demo littered desktop than by creating my own music player and file editor? And, after many a difficult hour, PyPlayer was born!
 
 #### Challenges:
 
 Like most personal projects, I vastly underestimated the amount of work involved in building a custom music player from scratch. I ran into several significant challenges like deciding how to handle audio playback, implementing shuffle for the current view, and learning Tkinter, but by far the biggest was managing play state across different menus. There were countless small edge cases to solve to keep song display, playlist display, and backend play order in sync as users switched tracks and navigated between libraries and playlists. The core functionality is now fully built out, but I have many more updates on the way. I’d love to hear what you think!
 
-This is a music player app similar to Apple Music and VLC media player, and a personal project for the Boot.dev backend engineering course.
+This is a music player app similar to Apple Music and VLC media player but with additional file editing features, and a personal project for the Boot.dev backend engineering course.
 
 See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockman]
 

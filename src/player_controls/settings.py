@@ -89,6 +89,8 @@ class WriteMetaDataWindow(tk.Toplevel):
     
     def save_meta_data(self):
         updated_data = self.collect_metadata_entries()
+        print("Updated data:")
+        print(updated_data)
 
         track = File(self.filepath, easy=True)
 
@@ -101,7 +103,7 @@ class WriteMetaDataWindow(tk.Toplevel):
         track["copyright"] = [updated_data["copyright"]]
         track["title"] = [updated_data["title"]]
         track["artist"] = [updated_data["artist"]]
-        track["albumartist"] = [updated_data["album artist"]]
+        track["albumartist"] = [updated_data["album_artist"]]
         track["conductor"] = [updated_data["conductor"]]
         track["discnumber"] = [updated_data["disc_number"]]
         track["tracknumber"] = [updated_data["track_number"]]
@@ -112,8 +114,10 @@ class WriteMetaDataWindow(tk.Toplevel):
 
     def set_fields_and_data(self, close_entry=False):
         tags = self.audio_file.tags
+        print("tags")
+        print(tags)
 
-        fields = ["album", "composer", "copyright", "title", "artist", "album artist", "conductor", "disc_number", "track_number", "genre", "date"]
+        fields = ["album", "composer", "copyright", "title", "artist", "albumartist", "conductor", "disc_number", "track_number", "genre", "date"]
         self.entries = {}
 
         for row, field in enumerate(fields): 
