@@ -2,7 +2,9 @@
   "57108c33-ad82-4a0e-8259-8c3b414c3612": {
     "name": "New Playlist 1",
     "tracks": [
-      "ad3e3e58"
+      "ad3e3e58",
+      "91abbf21",
+      "cb4637c5"
     ],
     "id": "57108c33-ad82-4a0e-8259-8c3b414c3612"
   },
@@ -16,7 +18,8 @@
   "9e25e019-596c-41b1-8eaf-fc0fb3e03c89": {
     "name": "Demos",
     "tracks": [
-      "7a0af834"
+      "7a0af834",
+      "a5b23ab5"
     ],
     "id": "9e25e019-596c-41b1-8eaf-fc0fb3e03c89"
   }

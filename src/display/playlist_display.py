@@ -96,6 +96,7 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Remove Favorite", command=self._on_menu_update_favorite)
         self.popup_menu.add_separator()
         self.popup_menu.add_command(label="Track Info", command=self.display_track_info)
+        self.popup_menu.add_command(label="Show Album Art", command=self.show_album_art, state=tk.DISABLED)
         self.popup_menu.add_command(label="Write meta-data", command=self._on_menu_update_favorite, state=tk.DISABLED)
         
         self.playlist_tree.tag_configure("playing", background="#476288") 
@@ -406,11 +407,13 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.set(track_id, column="favorite", value=" ☆ ")
             track.favorite = False
 
-        self.library.save_library()
+        self.library.save_library_to_json()
+        self.library.save_library_to_library_db()
         self.playlist_manager.update_favorites_playlist()
 
     def save_favorites(self):
         self.library.save_library()
+        self.library.save_library_to_library_db()
         self.playlist_manager.update_favorites_playlist()
 
     def show_favorites(self):
@@ -461,6 +464,9 @@ class PlaylistDisplay(ttk.Frame):
         track_id = self.menu_iid
         track = self.library.tracks[track_id]
         self.track_info_popup = TrackInfo(self, track)
+
+    def show_album_art(self):
+        pass
 
 
         

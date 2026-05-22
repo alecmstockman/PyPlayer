@@ -5,6 +5,7 @@ from ..models.track import Track
 DB_PATH = Path("data/library.db")
 
 def init_library_db():
+    print("INIT LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -41,6 +42,7 @@ def init_library_db():
         conn.close()
 
 def save_track_to_library_db(track: Track):
+    print("SAVE TRACKT TO LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -104,6 +106,7 @@ def save_track_to_library_db(track: Track):
     
 
 def get_track_from_library_db(track_id):
+    print("GET TRACK FROM LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
@@ -125,3 +128,17 @@ def get_track_from_library_db(track_id):
     track = Track(**dict(row))
 
     return track
+
+def remove_track_from_library_db(track_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        DELETE *
+        FROM library_db
+        WHERE track_id = ?
+    """, (track_id, )
+    )
+    conn.close()
+
+    print(f"{track_id} has been removed from ")

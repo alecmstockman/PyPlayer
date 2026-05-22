@@ -61,6 +61,7 @@ event_manager.event_attach(
 
 p = Path("Music/")
 
+init_library_db()
 library = Library()
 library.load_library()
 
@@ -239,8 +240,6 @@ def quit_app(event=None):
     player.stop()
     root.destroy()
 root.bind("<Command-q>", quit_app, add="+")
-
-
 
 
 def test_function():

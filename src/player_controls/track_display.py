@@ -50,7 +50,6 @@ class TrackDisplay(ttk.Frame):
         self.player.set_time(new_time)
 
     def update_track_display(self, track_id):
-        print("\nTRACK DISPLAY: update_track_display")
         track = self.library.tracks[track_id]
         self.current_track_title.set(track.title)
         self.current_artist_and_album.set(f"{track.artist}: {track.album}")
