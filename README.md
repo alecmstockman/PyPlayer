@@ -102,6 +102,8 @@ You must also have **VLC installed** on your system since playback is handled th
 
 # Running the App
 
+Add audio files to root/music in either the 'Albums' or 'Songs' folder.
+
 Start the application with:
 
 ```bash
@@ -110,11 +112,6 @@ python3 main.py
 
 ---
 
-# Using the App
-
-Add audio files to root/music in either the 'Albums' or 'Songs' folder.
-
----
 # Architecture
 
 ```
