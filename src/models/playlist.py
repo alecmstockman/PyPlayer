@@ -41,7 +41,7 @@ class Library():
             self.tracks[track.track_id] = track
 
         self.save_library_to_json()
-        self.library.save_library_to_library_db()
+        self.save_library_to_library_db()
 
     def load_library(self):
         print("LOAD LIBRARY")
@@ -90,6 +90,8 @@ class Library():
 
     def save_library_to_json(self):
         print("SAVE LIBRARY TO JSON")
+        # print("not functioning")
+        # return
         library = {}
         for track in self.tracks.values():
             library[track.track_id] = {
