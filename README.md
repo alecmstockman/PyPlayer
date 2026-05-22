@@ -112,25 +112,32 @@ python3 main.py
 ```
 .
 ├── data
+│   ├── library.db
 │   ├── library.json
+│   ├── playlists.db
 │   ├── playlists.json
 │   └── settings.json
 ├── main.py
 ├── Music
 │   ├── Albums
+│   │   ├── Muri Album
+│   │   └── Test Album
 │   └── Songs
 ├── README.md
 ├── requirements.txt
 └── src
     ├── __init__.py
     ├── config.py
+    ├── database
+    │   └── database.py
     ├── display
     │   ├── playlist_display.py
     │   └── sidebar.py
     ├── metadata
     │   └── metadata.py
     ├── models
-    │   └── playlist.py
+    │   ├── playlist.py
+    │   └── track.py
     ├── player_controls
     │   ├── player_controls.py
     │   ├── right_controls.py
@@ -138,7 +145,7 @@ python3 main.py
     │   └── track_display.py
     ├── styles.py
     ├── track_info.py
-    └── vlc_player.py              
+    └── vlc_player.py             
 ```
 
 ---

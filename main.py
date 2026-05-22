@@ -10,6 +10,7 @@ from src.vlc_player import VLCPlayer
 from src.models.playlist import PlaylistManager, Library
 from src.display.playlist_display import PlaylistDisplay
 from src.display.sidebar import Sidebar, SecondarySidebar
+from src.database.database import init_library_db, save_track_to_library_db, get_track_from_library_db
 
 root = tk.Tk()
 root.lift()
@@ -240,14 +241,26 @@ def quit_app(event=None):
 root.bind("<Command-q>", quit_app, add="+")
 
 
+
+
 def test_function():
     print("\n--- SONGS IN PLAYLIST ---")
-    count = 1
-    for song in library.tracks:
-        print(f"{count}: {song}")
+    init_library_db()
+
+    count = 0
+    for track_id, track in library.tracks.items():
+        if count == 2:
+            break
+
+        print(track_id)
+        save_track_to_library_db(track)
+        saved_track = get_track_from_library_db(track_id)
+        print(saved_track)
+
         count += 1
     print("\n")
 
+test_function()
 
 track_display.update_time_and_progress()
 root.mainloop()

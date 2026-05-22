@@ -5,35 +5,15 @@ import json
 import uuid
 from ..config import AUDIO_FILETYPES
 from src.metadata.metadata import load_track_metadata
+from src.database.database import init_library_db, save_track_to_library_db, get_track_from_library_db
+from src.models.track import Track
+
 
     
 ROOT = Path(__file__).resolve().parent.parent.parent
 MUSIC = Path(f"{ROOT}/Music/")
 LIBRARY_JSON_PATH = Path(ROOT/"data/library.json")
 LIBRARY_JSON_PATH.parent.mkdir(exist_ok=True)
-
-class Track:
-    def __init__(self, track_id=None, title=None, artist=None, album=None, length=None, play_count=None, favorite=None, **metadata):
-        self.track_id = track_id
-        self.title = title
-        self.artist = artist
-        self.album = album
-        self.length = length
-
-        self.play_count = play_count
-        self.favorite = favorite
-
-        for key, value in metadata.items():
-            setattr(self, key, value)
-
-    def __repr__(self):
-        return (f"TITLE: {self.title}, ARTIST: {self.artist}, ALBUM: {self.album}, ID: {self.track_id}")
-    
-    def __str__(self):
-        return (f"TITLE: {self.title}, ARTIST: {self.artist}, ALBUM: {self.album}, ID: {self.track_id}")
-    
-    def __eq__(self, other):
-        return self.filepath == other.filepath
 
 class Library():
     def __init__(self):
@@ -91,6 +71,7 @@ class Library():
         return self.tracks[track_id].length
 
     def save_library(self):
+        print("SAVE LIBRARY")
         library = {}
         for track in self.tracks.values():
             library[track.track_id] = {
