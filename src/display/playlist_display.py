@@ -407,7 +407,7 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.set(track_id, column="favorite", value=" ☆ ")
             track.favorite = False
 
-        self.library.save_library_to_json()
+        # self.library.save_library_to_json()
         self.library.save_library_to_library_db()
         self.playlist_manager.update_favorites_playlist()
 

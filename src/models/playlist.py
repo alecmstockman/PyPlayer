@@ -40,7 +40,7 @@ class Library():
         for track in all_tracks:
             self.tracks[track.track_id] = track
 
-        self.save_library_to_json()
+        # self.save_library_to_json()
         self.save_library_to_library_db()
 
     def load_library(self):
@@ -88,22 +88,22 @@ class Library():
     def get_track_length(self, track_id):
         return self.tracks[track_id].length
 
-    def save_library_to_json(self):
-        print("SAVE LIBRARY TO JSON")
-        # print("not functioning")
-        # return
-        library = {}
-        for track in self.tracks.values():
-            library[track.track_id] = {
-                key: str(value) if key == "filepath" else value
-                for key, value in vars(track).items()
-            }
+    # def save_library_to_json(self):
+    #     print("SAVE LIBRARY TO JSON")
+    #     # print("not functioning")
+    #     # return
+    #     library = {}
+    #     for track in self.tracks.values():
+    #         library[track.track_id] = {
+    #             key: str(value) if key == "filepath" else value
+    #             for key, value in vars(track).items()
+    #         }
 
-        try: 
-            with LIBRARY_JSON_PATH.open("w", encoding="utf-8") as f:
-                json.dump(library, f , indent=2)
-        except Exception as e:
-            print(f"Failed to save library: {e}")
+    #     try: 
+    #         with LIBRARY_JSON_PATH.open("w", encoding="utf-8") as f:
+    #             json.dump(library, f , indent=2)
+    #     except Exception as e:
+    #         print(f"Failed to save library: {e}")
         
 
     def save_library_to_library_db(self):

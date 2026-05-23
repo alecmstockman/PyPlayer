@@ -19,7 +19,6 @@ class Settings():
     def load_settings(self):
         if not SETTINGS_JSON.exists():
             print("Settings json file not found, creating new settings.json")
-            print("*** make create_settings_JSON function")
             return
         
         try: 
