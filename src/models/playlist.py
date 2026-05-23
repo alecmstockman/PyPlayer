@@ -10,6 +10,9 @@ from src.database.library_db import (
     get_track_from_library_db, 
     remove_track_from_library_db
 )
+from src.database.playlist_db import (
+    create_playlist_in_playlists_db
+)
 from src.models.track import Track
 
     
@@ -154,7 +157,10 @@ class PlaylistManager():
             playlist = Playlist(name, [])
         else:
             playlist = Playlist(name, tracks)
+
         playlist.id = str(uuid.uuid4())
+        create_playlist_in_playlists_db(playlist.id, name)
+
         self.user_playlists[playlist.id] = playlist
         self.save_playlists()
         return playlist
