@@ -42,7 +42,6 @@ def init_library_db():
         conn.close()
 
 def save_track_to_library_db(track: Track):
-    print("SAVE TRACKT TO LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 

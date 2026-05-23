@@ -5,7 +5,7 @@ import json
 import uuid
 from ..config import AUDIO_FILETYPES
 from src.metadata.metadata import load_track_metadata
-from src.database.database import (
+from src.database.library_db import (
     save_track_to_library_db, 
     get_track_from_library_db, 
     remove_track_from_library_db
