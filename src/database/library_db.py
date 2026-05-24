@@ -2,7 +2,7 @@ import sqlite3
 from pathlib import Path
 from ..models.track import Track
 
-DB_PATH = Path("data/library.db")
+DB_PATH = Path("data/pyplayer.db")
 
 def init_library_db():
     print("INIT LIBRARY DB")
@@ -11,7 +11,7 @@ def init_library_db():
 
     try:
         cursor.execute(f"""
-        CREATE TABLE IF NOT EXISTS library_db (
+        CREATE TABLE IF NOT EXISTS library (
             track_id TEXT PRIMARY KEY,
             filepath TEXT UNIQUE,
             title TEXT,
@@ -28,8 +28,8 @@ def init_library_db():
             genre TEXT,
             date TEXT,
             
-            samplerate INTEGER,
-            bitrate INTEGER,
+            sample_rate INTEGER,
+            bit_rate INTEGER,
             channels INTEGER,
             codec TEXT
         )
@@ -47,7 +47,7 @@ def save_track_to_library_db(track: Track):
 
     try:
         cursor.execute("""
-            INSERT INTO library_db (
+            INSERT INTO library (
                 track_id,
                 filepath,
                 title,
@@ -64,8 +64,8 @@ def save_track_to_library_db(track: Track):
                 genre,
                 date,
 
-                samplerate,
-                bitrate,
+                sample_rate,
+                bit_rate,
                 channels,
                 codec
             )
@@ -100,7 +100,7 @@ def save_track_to_library_db(track: Track):
         conn.commit()
         conn.close()
     except sqlite3.IntegrityError:
-        print("Track already exists")
+        # print("Track already exists")
         conn.close()
     
 
@@ -108,12 +108,11 @@ def get_track_from_library_db(track_id):
     print("GET TRACK FROM LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-
     cursor = conn.cursor()
 
     cursor.execute("""
         SELECT * 
-        FROM library_db
+        FROM library
         WHERE track_id = ?
         
     """, (track_id, ))
@@ -132,12 +131,38 @@ def remove_track_from_library_db(track_id):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    cursor.execute("""
-        DELETE *
-        FROM library_db
-        WHERE track_id = ?
-    """, (track_id, )
-    )
-    conn.close()
+    try: 
+        cursor.execute("""
+            DELETE *
+            FROM library
+            WHERE track_id = ?
+        """, (track_id, )
+        )
+        conn.close()
+        print(f"{track_id} has been removed from ")
+        return True
+    
+    except sqlite3.Error as e:
+        print(f"Unable to remove track {track_id}: {e}")
+        conn.close()
+        return False
+    
+def get_all_tracks_from_library():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
 
-    print(f"{track_id} has been removed from ")
+    try:
+        cursor.execute("""
+        SELECT *
+        FROM library
+        """)
+        rows = cursor.fetchall()
+        conn.close()
+        return rows
+    
+    except sqlite3.Error as e:
+        print(f"Unable to get all tracks: {e}")
+        conn.close()
+        return False
+

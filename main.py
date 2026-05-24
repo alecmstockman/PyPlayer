@@ -5,13 +5,14 @@ from pathlib import Path
 from src.player_controls.player_controls import PlayerControls
 from src.player_controls.track_display import TrackDisplay
 from src.player_controls.right_controls import VolumeControls
-from src.player_controls.settings import SettingsButton, Settings, SettingsWindow
+from src.player_controls.settings import SettingsButton, Settings
 from src.vlc_player import VLCPlayer
-from src.models.playlist import PlaylistManager, Library
+from src.models.playlist import PlaylistManager
+from src.models.library import Library
 from src.display.playlist_display import PlaylistDisplay
 from src.display.sidebar import Sidebar, SecondarySidebar
 from src.database.library_db import init_library_db
-from src.database.playlist_db import init_playlist_db
+from src.database.playlists_db import init_playlists_db, init_playlist_tracks_db
 
 root = tk.Tk()
 root.lift()
@@ -63,9 +64,11 @@ event_manager.event_attach(
 p = Path("Music/")
 
 init_library_db()
+init_playlists_db()
+init_playlist_tracks_db()
+
 library = Library()
 library.load_library()
-init_playlist_db()
 
 album_dir = p / "albums"
 album_dir_list = [filename for filename in album_dir.iterdir() if filename.is_dir()]

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from src.models.playlist import Playlist, PlaylistManager, CreatePlaylistEntry
+from src.models.playlist import Playlist, CreatePlaylistEntry
 from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
 
@@ -177,7 +177,6 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def highlight_playing(self, track_id):
-        print("DISPLAY: highlight_playing")
         for item in self.playlist_tree.get_children():
             current_tags = list(self.playlist_tree.item(item, "tags"))
             if "playing" in current_tags:
@@ -233,10 +232,8 @@ class PlaylistDisplay(ttk.Frame):
         if not self.playlist_tree.get_children():
             return
         if track_id is None:
-            print("playlist_display: play_status_icon_playing, track_id is None")
             return
         if track_id not in self.playlist.track_id_list:
-            print(f"DISPLAY: play_status_icon_playing: {track_id} not in playlist: {self.playlist.name}")
             return
         self.playlist_tree.set(track_id, column="play status", value="  🔊")
 
@@ -244,10 +241,8 @@ class PlaylistDisplay(ttk.Frame):
         if not self.playlist_tree.get_children():
             return
         if track_id is None:
-            print("playlist_display: play_status_icon_paused, track_id is None")
             return
         if track_id not in self.playlist.track_id_list:
-            print(f"DISPLAY: play_status_icon_paused: {track_id} not in playlist: {self.playlist.name}")
             return
         self.playlist_tree.set(track_id, column="play status", value="  🔈")
 
@@ -371,9 +366,9 @@ class PlaylistDisplay(ttk.Frame):
                     self._on_menu_add_to_playlist(k, n)
             )
     
-    def _on_menu_add_to_playlist(self, key, name):
-        track = self.playlist_tree.set(self.menu_iid, "track_id")
-        self.playlist_manager.add_to_user_playlist(key, track)
+    def _on_menu_add_to_playlist(self, playlist_id, name):
+        track_id = self.playlist_tree.set(self.menu_iid, "track_id")
+        self.playlist_manager.add_to_user_playlist(playlist_id, track_id)
         self.menu_iid = None
 
     def _on_menu_delete_from_playlist(self):
