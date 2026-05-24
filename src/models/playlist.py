@@ -73,28 +73,7 @@ class Library():
             self.create_library()
         # except Exception as e:
         #     raise Exception("Unable to load library")
-            
-
-
-
-
-        # if not LIBRARY_JSON_PATH.exists():
-        #     print("Library json file not found, creating new library")
-        #     self.create_library()
-        #     return
-        
-        # try: 
-        #     with LIBRARY_JSON_PATH.open("r", encoding="utf-8") as f:
-        #         data = json.load(f)
-
-        #         for track_id, track_data in data.items():
-        #             track = Track(**track_data)
-        #             track_id = str(track_id)
-        #             track.track_id = str(track_id)
-        #             self.tracks[track_id] = track
-
-        # except Exception as e:
-        #     print(f"Failed to load library: {e}")    
+              
 
     def add_track(self, track):
         self.tracks[track.track_id] = track
@@ -119,25 +98,7 @@ class Library():
         return get_track_from_library_db(track_id)
     
     def get_track_length(self, track_id):
-        return self.tracks[track_id].length
-
-    # def save_library_to_json(self):
-    #     print("SAVE LIBRARY TO JSON")
-    #     # print("not functioning")
-    #     # return
-    #     library = {}
-    #     for track in self.tracks.values():
-    #         library[track.track_id] = {
-    #             key: str(value) if key == "filepath" else value
-    #             for key, value in vars(track).items()
-    #         }
-
-    #     try: 
-    #         with LIBRARY_JSON_PATH.open("w", encoding="utf-8") as f:
-    #             json.dump(library, f , indent=2)
-    #     except Exception as e:
-    #         print(f"Failed to save library: {e}")
-        
+        return self.tracks[track_id].length        
 
     def save_library_to_library_db(self):
         print("SAVE LIBRARY TO LIBRARY DB")

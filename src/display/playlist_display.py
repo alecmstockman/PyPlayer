@@ -177,7 +177,6 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def highlight_playing(self, track_id):
-        print("DISPLAY: highlight_playing")
         for item in self.playlist_tree.get_children():
             current_tags = list(self.playlist_tree.item(item, "tags"))
             if "playing" in current_tags:
@@ -233,10 +232,8 @@ class PlaylistDisplay(ttk.Frame):
         if not self.playlist_tree.get_children():
             return
         if track_id is None:
-            print("playlist_display: play_status_icon_playing, track_id is None")
             return
         if track_id not in self.playlist.track_id_list:
-            print(f"DISPLAY: play_status_icon_playing: {track_id} not in playlist: {self.playlist.name}")
             return
         self.playlist_tree.set(track_id, column="play status", value="  🔊")
 
@@ -244,10 +241,8 @@ class PlaylistDisplay(ttk.Frame):
         if not self.playlist_tree.get_children():
             return
         if track_id is None:
-            print("playlist_display: play_status_icon_paused, track_id is None")
             return
         if track_id not in self.playlist.track_id_list:
-            print(f"DISPLAY: play_status_icon_paused: {track_id} not in playlist: {self.playlist.name}")
             return
         self.playlist_tree.set(track_id, column="play status", value="  🔈")
 
