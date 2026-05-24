@@ -2,7 +2,7 @@ import sqlite3
 from pathlib import Path
 from ..models.track import Track
 
-DB_PATH = Path("data/library.db")
+DB_PATH = Path("data/pyplayer.db")
 
 def init_library_db():
     print("INIT LIBRARY DB")
@@ -100,7 +100,7 @@ def save_track_to_library_db(track: Track):
         conn.commit()
         conn.close()
     except sqlite3.IntegrityError:
-        print("Track already exists")
+        # print("Track already exists")
         conn.close()
     
 

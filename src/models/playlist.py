@@ -10,8 +10,9 @@ from src.database.library_db import (
     get_track_from_library_db, 
     remove_track_from_library_db
 )
-from src.database.playlist_db import (
-    create_playlist_in_playlists_db
+from src.database.playlists_db import (
+    create_playlist_in_playlists_db,
+    add_track_to_playlist_tracks
 )
 from src.models.track import Track
 
@@ -167,9 +168,19 @@ class PlaylistManager():
 
     def save_playlists(self):
         user_playlists = {}
+        print("\nSAVE PLAYLISTS")
         for key, value in self.user_playlists.items():
+            create_playlist_in_playlists_db(key, value.name)
+            print(f"key: {key}\nvalue: {value}")
+            print(value.name)
             track_list = []
             for track in value.track_id_list:
+                try:
+                    res = add_track_to_playlist_tracks(track, key)
+                    print(f"succesffuly added track {track} ", res)
+                except Exception as e:
+                    print("Unable to save due to ", e)
+                
                 track_list.append(str(track))
             user_playlists[key] = {"name": value.name, "tracks": track_list, "id": key}
         path = Path("data/playlists.json")
@@ -178,7 +189,12 @@ class PlaylistManager():
             with path.open("w", encoding="utf-8") as f:
                 json.dump(user_playlists, f, indent=2)
         except Exception as e:
-            print(f"Failed to save playlist: {e}")
+            print(f"Failed to save playlists: {e}")
+
+        try: 
+            pass
+        except Exception as e:
+            print(f"Faild to save playlists: {e}")
 
     def update_favorites_playlist(self):
         self.favorites_playlist.track_id_list = []
