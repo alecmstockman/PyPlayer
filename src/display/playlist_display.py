@@ -371,9 +371,9 @@ class PlaylistDisplay(ttk.Frame):
                     self._on_menu_add_to_playlist(k, n)
             )
     
-    def _on_menu_add_to_playlist(self, key, name):
-        track = self.playlist_tree.set(self.menu_iid, "track_id")
-        self.playlist_manager.add_to_user_playlist(key, track)
+    def _on_menu_add_to_playlist(self, playlist_id, name):
+        track_id = self.playlist_tree.set(self.menu_iid, "track_id")
+        self.playlist_manager.add_to_user_playlist(playlist_id, track_id)
         self.menu_iid = None
 
     def _on_menu_delete_from_playlist(self):

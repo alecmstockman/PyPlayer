@@ -16,7 +16,11 @@ class PlayerControls(ttk.Frame):
         self.loop_status = None
         self.shuffle = False
         self.play_order = list(range(len(self.playlist.track_id_list)))
+        
+        
         self.play_index = 0
+        print(f"\nPLAY_INDEX: {self.play_index}")
+        print(f"track_id list: {self.playlist.track_id_list}")
 
         self.current_track_title = tk.StringVar()
         self.track = self.playlist.track_id_list[self.play_index]

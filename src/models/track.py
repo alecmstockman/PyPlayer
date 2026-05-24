@@ -16,12 +16,12 @@ class Track:
 
     def __repr__(self):
         return (
-        f"Track("
-        f"title={self.title!r}, "
-        f"artist={self.artist!r}, "
-        f"album={self.album!r}"
-        f")"
-    )
+            f"Track("
+            f"title={self.title!r}, "
+            f"artist={self.artist!r}, "
+            f"album={self.album!r}"
+            f")"
+        )
     
     def __str__(self):
         return (f"TITLE: {self.title}, ARTIST: {self.artist}, ALBUM: {self.album}, ID: {self.track_id}")

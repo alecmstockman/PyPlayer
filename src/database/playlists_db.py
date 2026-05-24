@@ -133,6 +133,8 @@ def get_all_from_playlists():
         return None
 
 def add_track_to_playlist_tracks(track_id: str, playlist_id: str):
+    print("\nADD TRACK TO PLAYLIST TRACKS")
+    print(f"track_id: {track_id}, playlist_id: {playlist_id}")
     conn = connect_to_sqlite()
     cursor = conn.cursor()
     

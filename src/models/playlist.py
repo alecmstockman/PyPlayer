@@ -6,14 +6,18 @@ import uuid
 from ..config import AUDIO_FILETYPES
 from src.metadata.metadata import load_track_metadata
 from src.database.library_db import (
+    init_library_db,
     save_track_to_library_db, 
     get_track_from_library_db, 
-    remove_track_from_library_db
+    remove_track_from_library_db,
+    get_all_tracks_from_library
 )
 from src.database.playlists_db import (
     create_playlist_in_playlists,
     add_track_to_playlist_tracks,
-    get_all_from_playlists
+    get_all_from_playlists,
+    get_playlist_tracks_from_playlist_tracks,
+    delete_playlist_from_playlists
 )
 from src.models.track import Track
 
@@ -32,7 +36,7 @@ class Library():
         return str(self.tracks)
 
     def create_library(self):
-        LIBRARY_JSON_PATH.parent.mkdir(exist_ok=True)
+        init_library_db()
 
         filename_list = [filename for filename in MUSIC.rglob('*') if filename.suffix in AUDIO_FILETYPES]
 
@@ -45,28 +49,52 @@ class Library():
         for track in all_tracks:
             self.tracks[track.track_id] = track
 
-        # self.save_library_to_json()
         self.save_library_to_library_db()
 
     def load_library(self):
-        print("LOAD LIBRARY")
-        if not LIBRARY_JSON_PATH.exists():
-            print("Library json file not found, creating new library")
+        print("\n------- LOAD LIBRARY --------")
+        tracks = get_all_tracks_from_library()
+
+        if not tracks:
             self.create_library()
-            return
+            print("not tracks creating library")
+        try:
+            for row in tracks:
+                track_data = {}
+                for key in row.keys():
+                    track_data[key] = row[key]
+                track = Track(**track_data)
+                self.tracks[track.track_id] = track
+
+                # print(f"title: {track.title}, artist: {track.artist}, genre: {track.genre} sample rate: {track.sample_rate}")
+                # print()
+        except: 
+            print("CREATE LIBRARY EXCEPTION:")
+            self.create_library()
+        # except Exception as e:
+        #     raise Exception("Unable to load library")
+            
+
+
+
+
+        # if not LIBRARY_JSON_PATH.exists():
+        #     print("Library json file not found, creating new library")
+        #     self.create_library()
+        #     return
         
-        try: 
-            with LIBRARY_JSON_PATH.open("r", encoding="utf-8") as f:
-                data = json.load(f)
+        # try: 
+        #     with LIBRARY_JSON_PATH.open("r", encoding="utf-8") as f:
+        #         data = json.load(f)
 
-                for track_id, track_data in data.items():
-                    track = Track(**track_data)
-                    track_id = str(track_id)
-                    track.track_id = str(track_id)
-                    self.tracks[track_id] = track
+        #         for track_id, track_data in data.items():
+        #             track = Track(**track_data)
+        #             track_id = str(track_id)
+        #             track.track_id = str(track_id)
+        #             self.tracks[track_id] = track
 
-        except Exception as e:
-            print(f"Failed to load library: {e}")    
+        # except Exception as e:
+        #     print(f"Failed to load library: {e}")    
 
     def add_track(self, track):
         self.tracks[track.track_id] = track
@@ -155,6 +183,7 @@ class PlaylistManager():
         self.library_playlist = Playlist("Library Playlist", library_track_list)
 
     def create_playlist(self, name, tracks=None):
+        print(f"\nCREATE PLAYLIST: {name}")
         if tracks == None:
             playlist = Playlist(name, [])
         else:
@@ -164,7 +193,6 @@ class PlaylistManager():
         create_playlist_in_playlists(playlist.id, name)
 
         self.user_playlists[playlist.id] = playlist
-        self.save_playlists()
         return playlist
 
     def save_playlists(self):
@@ -184,18 +212,6 @@ class PlaylistManager():
                 
                 track_list.append(str(track))
             user_playlists[key] = {"name": value.name, "tracks": track_list, "id": key}
-        path = Path("data/playlists.json")
-
-        try: 
-            with path.open("w", encoding="utf-8") as f:
-                json.dump(user_playlists, f, indent=2)
-        except Exception as e:
-            print(f"Failed to save playlists: {e}")
-
-        try: 
-            pass
-        except Exception as e:
-            print(f"Faild to save playlists: {e}")
 
     def update_favorites_playlist(self):
         self.favorites_playlist.track_id_list = []
@@ -205,45 +221,65 @@ class PlaylistManager():
                 self.favorites_playlist.track_id_list.append(value.track_id)
 
     def load_playlist(self):
-        print("\n-------- LOAD PLAYLIST --------")
-        user_playlists = {}
+        self.user_playlist = {}
 
         rows = get_all_from_playlists()
         for row in rows:
-            print(row)
-        print(rows)
-        print()
+            playlist_id = row["playlist_id"]
+            name = row["name"]
 
-        path = Path("data/playlists.json")
+            track_rows = get_playlist_tracks_from_playlist_tracks(playlist_id)
+            track_list = []
 
-        if not path.exists():
-            self.user_playlists = {}
-            return
-        try: 
-            with path.open("r", encoding="utf-8") as f:
-                user_playlists = json.load(f)
-        except Exception as e:
-            print(f"Failed to load playlist: {e}")
-            self.user_playlists = {}
+            for row in track_rows:
+                track_list.append(row["track_id"])
 
-        for key, value in user_playlists.items():
-            print(f"key: {key}\nvalue: {value}")
-            track_id_list = []
-            track_list = value["tracks"]
-            for track in track_list:
-                track_id_list.append(track)
-            self.user_playlists[key] = Playlist(value["name"], track_id_list, key)
+            self.user_playlists[playlist_id] = Playlist(name, track_list, playlist_id)
+        
+        # for playlist in user_playlists.items():
+        #     print(playlist)
+            
+
+        # path = Path("data/playlists.json")
+
+        # if not path.exists():
+        #     self.user_playlists = {}
+        #     return
+        # try: 
+        #     with path.open("r", encoding="utf-8") as f:
+        #         user_playlists = json.load(f)
+        #         print("\n--- user playlists from json ---")
+        #         print(user_playlists)
+        # except Exception as e:
+        #     print(f"Failed to load playlist: {e}")
+        #     self.user_playlists = {}
+
+        # for key, value in user_playlists.items():
+        #     print(f"key: {key}\nvalue: {value}")
+        #     track_id_list = []
+        #     track_list = value["tracks"]
+        #     for track in track_list:
+        #         track_id_list.append(track)
+        #     self.user_playlists[key] = Playlist(value["name"], track_id_list, key)
     
-    def add_to_user_playlist(self, key, track):
-        playlist = self.user_playlists[key]
-        playlist.track_id_list.append(track)
-        self.save_playlists()
+    def add_to_user_playlist(self, playlist_id, track_id):
+        print("\nADD TO USER PLAYLIST")
+        print(f"playlist_id: {playlist_id}, track_id: {track_id}")
+        playlist = self.user_playlists[playlist_id]
+        playlist.track_id_list.append(track_id)
+        res = add_track_to_playlist_tracks(track_id, playlist_id)
+        print("res: ", res)
+        # self.save_playlists()
 
     def update_user_playlist(self, playlist_id):
         playlist = self.user_playlists[playlist_id]
         self.save_playlists()
 
     def delete_user_playlist(self, playlist_id):
+        print("\nDELETE USER PLAYLIST")
+        res = delete_playlist_from_playlists(playlist_id)
+        print(f"res: {res}")
+
         remaining_user_playlists = {}
         for key, playlist in self.user_playlists.items():
             if key != playlist_id:
