@@ -112,7 +112,7 @@ def delete_playlist_from_playlists(playlist_id: str):
         conn.close()
         return False
     
-def get_all_playlists_from_playlist():
+def get_all_from_playlists():
     print("Getting all playlists from playlists db")
     conn = connect_to_sqlite()
     conn.row_factory = sqlite3.Row

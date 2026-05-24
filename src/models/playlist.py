@@ -12,7 +12,8 @@ from src.database.library_db import (
 )
 from src.database.playlists_db import (
     create_playlist_in_playlists,
-    add_track_to_playlist_tracks
+    add_track_to_playlist_tracks,
+    get_all_from_playlists
 )
 from src.models.track import Track
 
@@ -207,7 +208,11 @@ class PlaylistManager():
         print("\n-------- LOAD PLAYLIST --------")
         user_playlists = {}
 
-        rows = 
+        rows = get_all_from_playlists()
+        for row in rows:
+            print(row)
+        print(rows)
+        print()
 
         path = Path("data/playlists.json")
 
