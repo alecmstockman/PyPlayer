@@ -11,7 +11,7 @@ from src.database.library_db import (
     remove_track_from_library_db
 )
 from src.database.playlists_db import (
-    create_playlist_in_playlists_db,
+    create_playlist_in_playlists,
     add_track_to_playlist_tracks
 )
 from src.models.track import Track
@@ -160,7 +160,7 @@ class PlaylistManager():
             playlist = Playlist(name, tracks)
 
         playlist.id = str(uuid.uuid4())
-        create_playlist_in_playlists_db(playlist.id, name)
+        create_playlist_in_playlists(playlist.id, name)
 
         self.user_playlists[playlist.id] = playlist
         self.save_playlists()
@@ -170,14 +170,14 @@ class PlaylistManager():
         user_playlists = {}
         print("\nSAVE PLAYLISTS")
         for key, value in self.user_playlists.items():
-            create_playlist_in_playlists_db(key, value.name)
+            create_playlist_in_playlists(key, value.name)
             print(f"key: {key}\nvalue: {value}")
             print(value.name)
             track_list = []
             for track in value.track_id_list:
                 try:
                     res = add_track_to_playlist_tracks(track, key)
-                    print(f"succesffuly added track {track} ", res)
+                    print(f"succesfully added track {track} ", res)
                 except Exception as e:
                     print("Unable to save due to ", e)
                 
@@ -199,12 +199,16 @@ class PlaylistManager():
     def update_favorites_playlist(self):
         self.favorites_playlist.track_id_list = []
 
-        for key, value in self.library.tracks.items():
+        for _, value in self.library.tracks.items():
             if value.favorite == True:
                 self.favorites_playlist.track_id_list.append(value.track_id)
 
     def load_playlist(self):
+        print("\n-------- LOAD PLAYLIST --------")
         user_playlists = {}
+
+        rows = 
+
         path = Path("data/playlists.json")
 
         if not path.exists():
@@ -218,6 +222,7 @@ class PlaylistManager():
             self.user_playlists = {}
 
         for key, value in user_playlists.items():
+            print(f"key: {key}\nvalue: {value}")
             track_id_list = []
             track_list = value["tracks"]
             for track in track_list:

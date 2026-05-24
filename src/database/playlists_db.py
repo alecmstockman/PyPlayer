@@ -5,11 +5,13 @@ from pathlib import Path
 DB_PATH = Path("data/pyplayer.db")
 
 def connect_to_sqlite():
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
     try:
         conn = sqlite3.connect(DB_PATH)
         conn.execute("PRAGMA foreign_keys = ON")
         return conn
-    except Exception as e:
+    except sqlite3.Error as e:
         print(f"Unable to connect to sqlite3: {e}")
         return None
 
@@ -109,6 +111,26 @@ def delete_playlist_from_playlists(playlist_id: str):
         print(f"Unable to delete {playlist_id} from playlist db")
         conn.close()
         return False
+    
+def get_all_playlists_from_playlist():
+    print("Getting all playlists from playlists db")
+    conn = connect_to_sqlite()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM playlists
+        """)
+        rows = cursor.fetchall()
+        conn.close()
+        return rows
+  
+    except sqlite3.Error as e:
+        print(f"Unable to get all playlists from playlists db: {e}")
+        conn.close()
+        return None
 
 def add_track_to_playlist_tracks(track_id: str, playlist_id: str):
     conn = connect_to_sqlite()
