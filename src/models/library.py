@@ -43,7 +43,6 @@ class Library():
         self.save_library_to_library_db()
 
     def load_library(self):
-        print("\n------- LOAD LIBRARY --------")
         tracks = get_all_tracks_from_library()
 
         if not tracks:
@@ -57,7 +56,6 @@ class Library():
                 track = Track(**track_data)
                 self.tracks[track.track_id] = track
         except: 
-            print("CREATE LIBRARY EXCEPTION:")
             self.create_library()
               
 
@@ -92,8 +90,8 @@ class Library():
         return self.tracks[track_id].length        
 
     def save_library_to_library_db(self):
-        print("SAVE LIBRARY TO LIBRARY DB")
         library = {}
+        
         for track in self.tracks.values():
             library[track.track_id] = {
                 key: str(value) if key == "filepath" else value 
@@ -101,14 +99,11 @@ class Library():
             }
 
         try:
-            print("saving to library database")
             for track_id in self.tracks.keys():
                 save_track_to_library_db(self.tracks[track_id])
         except Exception as e:
             print(f"Failed to save library to database: {e}")
 
     def update_track_favorite(self, track_id: str, favorite: bool):
-        favorite_status = update_track_favorite(track_id, favorite)
-        print(f"Update favorite, library.py: {track_id}, fav: {favorite}")
-        return favorite_status
+        return update_track_favorite(track_id, favorite)
 

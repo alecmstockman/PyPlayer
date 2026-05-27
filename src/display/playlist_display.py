@@ -127,7 +127,6 @@ class PlaylistDisplay(ttk.Frame):
             favorite = track.favorite
 
             self.playlist_tree.tag_configure("even", background=self.background_color)
-            # self.playlist_tree.tag_configure("odd", background="black")
             self.playlist_tree.tag_configure("odd", background="#0C0C0C")
 
             star = " ★ " if favorite == True else " ☆ "
@@ -403,15 +402,12 @@ class PlaylistDisplay(ttk.Frame):
         elif value == " ★ ":
             self.playlist_tree.set(track_id, column="favorite", value=" ☆ ")
             track.favorite = False
+            
         self.library.update_track_favorite(track.track_id, track.favorite)
-
-    def save_favorites(self):
-        self.library.save_library_to_library_db()
         self.playlist_manager.update_favorites_playlist()
 
-    def show_favorites(self):
-        self.clear_playlist()
-        self.set_playlist(self.playlist_manager.favorites_playlist)
+        if self.playlist.name == "Favorites":
+            self.set_playlist(self.playlist)
 
     def get_all_artists(self):
         artist_set = set()

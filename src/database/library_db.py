@@ -196,8 +196,8 @@ def get_all_tracks_from_library():
 
     try:
         cursor.execute("""
-        SELECT *
-        FROM library
+            SELECT *
+            FROM library
         """)
         rows = cursor.fetchall()
         conn.close()
