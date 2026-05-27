@@ -191,7 +191,7 @@ class SettingsWindow(tk.Toplevel):
 
         self.title("Settings")
 
-        self.selected_background_color = tk.StringVar(value="#064C15")
+        self.selected_background_color = tk.StringVar(value=BACKGROUND_COLORS["Aqua"])
         self.selected_font_color = tk.StringVar(value="#ECECEC")
         self.fonts = tk.StringVar(value="trebuchet MS")
 

@@ -99,7 +99,7 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Show Album Art", command=self.show_album_art, state=tk.DISABLED)
         self.popup_menu.add_command(label="Write meta-data", command=self._on_menu_update_favorite, state=tk.DISABLED)
         
-        self.playlist_tree.tag_configure("playing", background="#476288") 
+        self.playlist_tree.tag_configure("playing", background=BACKGROUND_COLORS["Aqua"]) 
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
 
     def set_playlist(self, playlist):
