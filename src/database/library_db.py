@@ -47,8 +47,6 @@ def init_library_db():
         return False
 
 def save_track_to_library_db(track: Track):
-    print(f"SAVE TRACK TO LIBRARY")
-    print(track)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -211,7 +209,6 @@ def get_all_tracks_from_library():
         return False
     
 def delete_all_tracks_from_library():
-    print("\nDelete all tracks from library")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 

@@ -37,7 +37,6 @@ class PlaylistManager():
         self.library_playlist = Playlist("Library Playlist", library_track_list)
 
     def create_playlist(self, name, tracks=None):
-        print(f"\nCREATE PLAYLIST: {name}")
         if tracks == None:
             playlist = Playlist(name, [])
         else:
@@ -51,16 +50,12 @@ class PlaylistManager():
 
     def save_playlists(self):
         user_playlists = {}
-        print("\nSAVE PLAYLISTS")
         for key, value in self.user_playlists.items():
             create_playlist_in_playlists(key, value.name)
-            print(f"key: {key}\nvalue: {value}")
-            print(value.name)
             track_list = []
             for track in value.track_id_list:
                 try:
                     res = add_track_to_playlist_tracks(track, key)
-                    print(f"succesfully added track {track} ", res)
                 except Exception as e:
                     print("Unable to save due to ", e)
                 
@@ -91,22 +86,16 @@ class PlaylistManager():
             self.user_playlists[playlist_id] = Playlist(name, track_list, playlist_id)
     
     def add_to_user_playlist(self, playlist_id, track_id):
-        print("\nADD TO USER PLAYLIST")
-        print(f"playlist_id: {playlist_id}, track_id: {track_id}")
         playlist = self.user_playlists[playlist_id]
         playlist.track_id_list.append(track_id)
         res = add_track_to_playlist_tracks(track_id, playlist_id)
-        print("res: ", res)
-        # self.save_playlists()
 
     def update_user_playlist(self, playlist_id):
         playlist = self.user_playlists[playlist_id]
         self.save_playlists()
 
     def delete_user_playlist(self, playlist_id):
-        print("\nDELETE USER PLAYLIST")
         res = delete_playlist_from_playlists(playlist_id)
-        print(f"res: {res}")
 
         remaining_user_playlists = {}
         for key, playlist in self.user_playlists.items():

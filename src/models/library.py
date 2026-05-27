@@ -27,7 +27,6 @@ class Library():
         return str(self.tracks)
 
     def create_library(self):
-        print("\nCreating Library")
         init_library_db()
 
         filename_list = [filename for filename in MUSIC.rglob('*') if filename.suffix in AUDIO_FILETYPES]
@@ -48,8 +47,9 @@ class Library():
         tracks = get_all_tracks_from_library()
 
         if not tracks:
-            self.create_library()
             print("No tracks creating library")
+            self.create_library()
+            
         try:
             for row in tracks:
                 track_data = {}
@@ -88,7 +88,6 @@ class Library():
         return self.tracks[track_id]
     
     def get_track_from_library_db(self, track_id):
-        print("\n library.py: get_track_from_library_db, track_id: ", track_id)
         return get_track_from_library_db(track_id)
     
     def get_track_length(self, track_id):
@@ -97,9 +96,7 @@ class Library():
     def save_library_to_library_db(self):
         library = {}
 
-        print(f"\nsave library to library db")
         for track in self.tracks.values():
-            print(track)
             library[track.track_id] = {
                 key: str(value) if key == "filepath" else value 
                 for key, value in vars(track).items()

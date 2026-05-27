@@ -36,7 +36,6 @@ def init_playlists_db():
         return False
 
 def init_playlist_tracks_db():
-    print(f"init playlist_tracks db in {DB_PATH}")
     conn = connect_to_sqlite()
     cursor = conn.cursor()
 
@@ -67,7 +66,6 @@ def init_playlist_tracks_db():
 
 
 def create_playlist_in_playlists(playlist_id: str, playlist_name: str):
-    print(f"creating playlist: {playlist_name}")
     conn = connect_to_sqlite()
     cursor = conn.cursor()
 
@@ -92,7 +90,6 @@ def create_playlist_in_playlists(playlist_id: str, playlist_name: str):
         return False
 
 def delete_playlist_from_playlists(playlist_id: str):
-    print(f"Deleting playlist {playlist_id} from playlists_db")
     conn = connect_to_sqlite()
     cursor = conn.cursor()
 
@@ -113,7 +110,6 @@ def delete_playlist_from_playlists(playlist_id: str):
         return False
     
 def get_all_from_playlists():
-    print("Getting all playlists from playlists db")
     conn = connect_to_sqlite()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -133,8 +129,6 @@ def get_all_from_playlists():
         return None
 
 def add_track_to_playlist_tracks(track_id: str, playlist_id: str):
-    print("\nADD TRACK TO PLAYLIST TRACKS")
-    print(f"track_id: {track_id}, playlist_id: {playlist_id}")
     conn = connect_to_sqlite()
     cursor = conn.cursor()
     
@@ -162,7 +156,6 @@ def add_track_to_playlist_tracks(track_id: str, playlist_id: str):
         return False
     
 def delete_track_from_playlist_tracks(track_id: str, playlist_id: str):
-    print(f"Deleting track: {track_id} from playlist {playlist_id}")
     conn = connect_to_sqlite()
     cursor = conn.cursor()
 
@@ -185,7 +178,6 @@ def delete_track_from_playlist_tracks(track_id: str, playlist_id: str):
         return False
 
 def get_playlist_tracks_from_playlist_tracks(playlist_id: str):
-    print(f"Getting all playlist tracks for {playlist_id}")
     conn = connect_to_sqlite()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()

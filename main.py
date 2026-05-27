@@ -121,24 +121,17 @@ def handle_settings_changed(event=None):
 
 settings_button.bind("<<SettingsChanged>>", handle_settings_changed)
 
-def test():
-    print("\n\n\n\ntest\n\n\n\n")
-
 def handle_rescan_library(event=None):
     sidebar.delete_all_user_playlists()
     delete_all_tracks_from_library()
-
     library.tracks = {}
-    playlist_display.playlist = None
-    
-    root.after(1000, test())
 
+    playlist_display.playlist = None
     playlist_display.set_playlist(library)
     library.load_library()
-    playlist_manager.create_library_playlist()
-    
-    playlist_display.set_playlist(playlist_manager.library_playlist)
 
+    playlist_manager.create_library_playlist()
+    playlist_display.set_playlist(playlist_manager.library_playlist)   
 
 root.bind("<<RescanLibrary>>", handle_rescan_library)
 root.bind("<space>", controls.toggle_play, add="+")

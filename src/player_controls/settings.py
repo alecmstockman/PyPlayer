@@ -148,15 +148,12 @@ class WriteMetaDataWindow(tk.Toplevel):
     def on_tree_click(self, event):
         row_id = self.meta_data_display.identify_row(event.y)
         col_id = self.meta_data_display.identify_column(event.x)
-        
-        print("click")
-        print("row_id: ", row_id, "col_id: ", col_id)
 
         if not row_id:
             return
         
     def on_tree_right_click(self, event):
-        print("ON TREE RIGHT CLICK")
+        print("ON TREE RIGHT CLICK - Not Currently Functional")
 
     def center_over_parent(self, parent):
         parent = parent.winfo_toplevel()
