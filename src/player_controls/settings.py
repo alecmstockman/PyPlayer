@@ -119,7 +119,7 @@ class WriteMetaDataWindow(tk.Toplevel):
         self.entries = {}
 
         for row, field in enumerate(fields): 
-            ttk.Label(self, text=field.title()).grid(row=row+2, column=0, sticky="w", padx=8, pady=8)
+            ttk.Label(self, text=field.title()).grid(row=row+2, column=0, sticky="w", padx=5, pady=5)
             entry = ttk.Entry(self, width=40)
             entry.grid(row=row+2, column=1, sticky="ew")
 
@@ -205,8 +205,8 @@ class SettingsWindow(tk.Toplevel):
         self.settings_button = ttk.Button(self, text="Convert File", command=self.open_write_meta_data, takefocus=0, width=15)
         self.settings_button.grid(row=4, column=0, padx=10, pady=10, sticky="w")
 
-        self.rescan_button = ttk.Button(self, text="Reset Library", command=self.reset_library, takefocus=0, width=15)
-        self.rescan_button.grid(row=5, column=0, padx=10, pady=10, sticky="w")
+        self.reset_button = ttk.Button(self, text="Reset Library", command=self.reset_library, takefocus=0, width=15)
+        self.reset_button.grid(row=5, column=0, padx=10, pady=10, sticky="w")
         
         background_color_dropdown = ttk.Combobox(
             self,
@@ -282,9 +282,9 @@ class SettingsWindow(tk.Toplevel):
     def reset_library(self, event=None):
         self.parent.event_generate("<<RescanLibrary>>")
 
-        self.rescan_label = ttk.Label(self, text="* library reset complete *")
-        self.rescan_label.grid(row=5, column=1, padx=0, pady=0, sticky="w")
-        self.after(2000, self.rescan_label.destroy)
+        self.reset_label = ttk.Label(self, text="* library reset complete *")
+        self.reset_label.grid(row=5, column=1, padx=0, pady=0, sticky="w")
+        self.after(2000, self.reset_label.destroy)
 
     def center_over_parent(self, parent):
         parent = parent.winfo_toplevel()
