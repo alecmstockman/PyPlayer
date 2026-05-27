@@ -5,7 +5,6 @@ from ..models.track import Track
 DB_PATH = Path("data/pyplayer.db")
 
 def init_library_db():
-    print("INIT LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -40,13 +39,14 @@ def init_library_db():
 
         conn.commit()
         conn.close()
-    except sqlite3.IntegrityError:
-        print("Unable to create library db")
+        return True
+    
+    except sqlite3.Error as e:
+        print(f"Unable to create library db: {e}")
         conn.close()
+        return False
 
 def save_track_to_library_db(track: Track):
-    print("\nSAVE TRACK TO LIBRARY:")
-    print(track)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -108,12 +108,14 @@ def save_track_to_library_db(track: Track):
                 track.channels,
                 track.codec,
             ))
-        
         conn.commit()
         conn.close()
-    except sqlite3.IntegrityError:
-        # print("Track already exists")
+        return True
+
+    except sqlite3.Error as e:
+        print(f"Unable to save track {track.title} to library:", e)
         conn.close()
+        return False
 
 def update_track_favorite(track_id: str, favorite: bool):
     conn = sqlite3.connect(DB_PATH)
@@ -138,35 +140,34 @@ def update_track_favorite(track_id: str, favorite: bool):
         return False
     
 def get_track_from_library_db(track_id: str):
-    print("\nget_track_from_libray_db - track_id: ", track_id)
-    print("type: ", type(track_id))
     if not isinstance(track_id, str):
         return ValueError("_get_track_from_library_db only accepts track_id as a string")
 
-    print("GET TRACK FROM LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
-    print(track_id)
-    print(type(track_id))
 
-    cursor.execute("""
-        SELECT * 
-        FROM library
-        WHERE track_id = ?
+    try:
+        cursor.execute("""
+            SELECT * 
+            FROM library
+            WHERE track_id = ?
+            
+        """, (str(track_id), ))
+
+        row = cursor.fetchone()
+        conn.close()
+
+        if row is None:
+            return None
         
-    """, (str(track_id), ))
-
-    row = cursor.fetchone()
-    conn.close()
-
-    if row is None:
-        return None
+        track = Track(**dict(row))
+        return track
     
-    track = Track(**dict(row))
-    print("\n GETTING TRACK")
-    print(track)
-    return track
+    except sqlite3.Error as e:
+        conn.close()
+        print(f"Unable to get track from library: {e}")
+        return False
 
 def remove_track_from_library_db(track_id):
     conn = sqlite3.connect(DB_PATH)
@@ -179,8 +180,8 @@ def remove_track_from_library_db(track_id):
             WHERE track_id = ?
         """, (track_id, )
         )
+        conn.commit()
         conn.close()
-        print(f"{track_id} has been removed from ")
         return True
     
     except sqlite3.Error as e:
