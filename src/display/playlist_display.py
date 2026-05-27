@@ -125,6 +125,7 @@ class PlaylistDisplay(ttk.Frame):
             favorite = track.favorite
 
             self.playlist_tree.tag_configure("even", background=self.background_color)
+            # self.selected_font_color.get()
             self.playlist_tree.tag_configure("odd", background="#0C0C0C")
 
             star = " ★ " if favorite == True else " ☆ "

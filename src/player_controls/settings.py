@@ -207,7 +207,7 @@ class SettingsWindow(tk.Toplevel):
         background_color_dropdown = ttk.Combobox(
             self,
             textvariable=self.selected_background_color,
-            values=BACKGROUND_COLORS,
+            values=list(BACKGROUND_COLORS.keys()),
             state="readonly",
             width=12,
         )
@@ -246,7 +246,8 @@ class SettingsWindow(tk.Toplevel):
         self.grab_set()
 
     def on_background_selected(self, event=None):
-        self.settings.selected_background_color = self.selected_background_color.get()
+        selected_name = self.selected_background_color.get()
+        self.settings.selected_background_color = BACKGROUND_COLORS[selected_name]
         self.parent.event_generate("<<SettingsChanged>>")
         self.save_settings()
 
