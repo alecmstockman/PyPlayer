@@ -52,6 +52,11 @@ class Sidebar(ttk.Frame):
 
         self.set_user_playlists()
 
+    def delete_all_user_playlists(self):
+        children = self.sidebar_tree.get_children(self.playlist_id)
+        for child in children[1:]:
+            self.sidebar_tree.delete(child)
+
     def set_user_playlists(self):
         children = self.sidebar_tree.get_children(self.playlist_id)
         for child in children[1:]:

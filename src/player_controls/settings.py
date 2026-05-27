@@ -64,7 +64,6 @@ class WriteMetaDataWindow(tk.Toplevel):
         self.grab_set()
 
     def select_filepath(self):
-        print("SELECT FILEPATH")
         filepath = filedialog.askopenfilename(
             title = "Select audio file"
         )
@@ -88,8 +87,6 @@ class WriteMetaDataWindow(tk.Toplevel):
     
     def save_meta_data(self):
         updated_data = self.collect_metadata_entries()
-        print("Updated data:")
-        print(updated_data)
 
         track = File(self.filepath, easy=True)
 
@@ -113,8 +110,6 @@ class WriteMetaDataWindow(tk.Toplevel):
 
     def set_fields_and_data(self, close_entry=False):
         tags = self.audio_file.tags
-        print("tags")
-        print(tags)
 
         fields = ["album", "composer", "copyright", "title", "artist", "albumartist", "conductor", "disc_number", "track_number", "genre", "date"]
         self.entries = {}
@@ -156,8 +151,6 @@ class WriteMetaDataWindow(tk.Toplevel):
         if not row_id:
             return
         
-        # fields = ["album", "composer", "copyright", "title", "artist", "album artist", "conductor", "disc_number", "track_number", "genre", "date"]
-
     def on_tree_right_click(self, event):
         print("ON TREE RIGHT CLICK")
 
@@ -183,10 +176,11 @@ class WriteMetaDataWindow(tk.Toplevel):
 
 
 class SettingsWindow(tk.Toplevel):
-    def __init__(self, parent, settings):
+    def __init__(self, parent, settings, library):
         super().__init__(parent)
         self.parent = parent
         self.settings = settings
+        self.library = library
 
         self.withdraw()
         self.minsize(500, 450)
@@ -207,7 +201,7 @@ class SettingsWindow(tk.Toplevel):
         self.settings_button = ttk.Button(self, text="Edit File Metadata", command=self.open_write_meta_data, takefocus=0, width=15)
         self.settings_button.grid(row=3, column=0, padx=10, pady=10, sticky="w")
 
-        self.settings_button = ttk.Button(self, text="Rescan Library", command=self.open_write_meta_data, takefocus=0, width=15)
+        self.settings_button = ttk.Button(self, text="Rescan Library", command=self.rescan_library, takefocus=0, width=15)
         self.settings_button.grid(row=4, column=0, padx=10, pady=10, sticky="w")
         
         background_color_dropdown = ttk.Combobox(
@@ -280,8 +274,8 @@ class SettingsWindow(tk.Toplevel):
         meta_data_window = WriteMetaDataWindow(self.parent)
         print("\n open write meta data")
 
-    def rescan_library(self):
-        print("rescan library")
+    def rescan_library(self, event=None):
+        self.parent.event_generate("<<RescanLibrary>>")
 
     def center_over_parent(self, parent):
         parent = parent.winfo_toplevel()
@@ -305,14 +299,15 @@ class SettingsWindow(tk.Toplevel):
 
 
 class SettingsButton(ttk.Frame):
-    def __init__(self, parent, settings):
+    def __init__(self, parent, settings, library):
         super().__init__(parent)
         self.settings_button = ttk.Button(self, text="⚙️", command=self.open_settings, takefocus=0, width=3)
         self.settings_button.pack(padx=(5), pady=5)
         self.settings = settings
+        self.library = library
         self.settings_window = None
 
     def open_settings(self):
-        self.settings_window = SettingsWindow(self, self.settings)
+        self.settings_window = SettingsWindow(self, self.settings, self.library)
 
 

@@ -7,10 +7,10 @@ from src.database.library_db import (
     get_track_from_library_db, 
     remove_track_from_library_db,
     get_all_tracks_from_library,
-    update_track_favorite
+    update_track_favorite,
+    delete_all_tracks_from_library
 )
 from src.models.track import Track
-
 
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -27,6 +27,7 @@ class Library():
         return str(self.tracks)
 
     def create_library(self):
+        print("\nCreating Library")
         init_library_db()
 
         filename_list = [filename for filename in MUSIC.rglob('*') if filename.suffix in AUDIO_FILETYPES]
@@ -57,6 +58,9 @@ class Library():
                 self.tracks[track.track_id] = track
         except: 
             self.create_library()
+
+    def delete_all_tracks(self):
+        delete_all_tracks_from_library()
               
 
     def add_track(self, track):
@@ -91,7 +95,7 @@ class Library():
 
     def save_library_to_library_db(self):
         library = {}
-        
+
         for track in self.tracks.values():
             library[track.track_id] = {
                 key: str(value) if key == "filepath" else value 

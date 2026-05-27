@@ -207,4 +207,23 @@ def get_all_tracks_from_library():
         print(f"Unable to get all tracks: {e}")
         conn.close()
         return False
+    
+def delete_all_tracks_from_library():
+    print("\nDelete all tracks from library")
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    try: 
+        cursor.execute("DELETE FROM playlist_tracks;")
+        cursor.execute("DELETE FROM Playlists;")
+        cursor.execute("DELETE FROM library;")
+
+        conn.commit()
+        conn.close()
+        return True
+    
+    except sqlite3.Error as e:
+        print(f"Unable to delete all track from library: {e}")
+        conn.close()
+        return False
 

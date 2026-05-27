@@ -91,7 +91,7 @@ controls = PlayerControls(left_controls, library, playlist_manager.library_playl
 controls.pack(side="left")
 playlist_display.controls = controls
 
-settings_button = SettingsButton(right_controls, settings)
+settings_button = SettingsButton(right_controls, settings, library)
 settings_button.pack(side="right")
  
 volume_controls = VolumeControls(right_controls, player)
@@ -120,6 +120,20 @@ def handle_settings_changed(setting):
 
 settings_button.bind("<<SettingsChanged>>", handle_settings_changed)
 
+def handle_rescan_library(setting):
+    sidebar.delete_all_user_playlists()
+    library.delete_all_tracks()
+    playlist_display.set_playlist(library)
+    
+    init_library_db()
+    init_playlists_db()
+    init_playlist_tracks_db()
+
+    library = Library()
+    library.load_library()
+
+
+root.bind("<<RescanLibrary>>", handle_rescan_library)
 root.bind("<space>", controls.toggle_play, add="+")
 root.bind("<Command-Left>", controls.previous_track, add="+")
 root.bind("<Command-Right>", controls.next_track, add="+")
