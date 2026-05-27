@@ -99,7 +99,7 @@ class WriteMetaDataWindow(tk.Toplevel):
         track["copyright"] = [updated_data["copyright"]]
         track["title"] = [updated_data["title"]]
         track["artist"] = [updated_data["artist"]]
-        track["albumartist"] = [updated_data["album_artist"]]
+        track["albumartist"] = [updated_data["albumartist"]]
         track["conductor"] = [updated_data["conductor"]]
         track["discnumber"] = [updated_data["disc_number"]]
         track["tracknumber"] = [updated_data["track_number"]]
@@ -107,6 +107,10 @@ class WriteMetaDataWindow(tk.Toplevel):
         track["date"] = [updated_data["date"]]
 
         track.save()
+        self.saved_label = ttk.Label(self, text="* metadata saved *")
+        self.saved_label.grid(row=0, column=2, padx=10, pady=10, sticky="w")
+        self.after(2000, self.saved_label.destroy)
+
 
     def set_fields_and_data(self, close_entry=False):
         tags = self.audio_file.tags
