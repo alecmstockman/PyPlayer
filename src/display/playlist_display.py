@@ -3,7 +3,9 @@ from tkinter import ttk
 from src.models.playlist import Playlist, CreatePlaylistEntry
 from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
+# from src.models.library import add_track_to_library_db, save_track_to_library_db
 
+# add_track_to_library_db()
 
 class PlaylistDisplay(ttk.Frame):
     def __init__(self, parent, library, player, playlist, playlist_manager, settings):
@@ -384,9 +386,13 @@ class PlaylistDisplay(ttk.Frame):
         self.playlist_manager.update_user_playlist(self.playlist.id)
 
     def _on_menu_update_favorite(self):
+        print("\nON MENU UPDATE FAVORITE")
+        print("self.menu_iid: ", self.menu_iid)
         self._update_favorite(self.menu_iid)
         
     def _update_favorite(self, track_id):
+        print("\n_UPDATE FAVORITE")
+        print("track_id", track_id)
         if track_id is None or not self.playlist_tree.exists(track_id):
             print("playlist_display: _update_favorite, iid is None or doesn't exit")
             return
@@ -401,13 +407,17 @@ class PlaylistDisplay(ttk.Frame):
         elif value == " ★ ":
             self.playlist_tree.set(track_id, column="favorite", value=" ☆ ")
             track.favorite = False
+        print("Update favorite")
+        print(track.title, track.favorite)
 
-        # self.library.save_library_to_json()
-        self.library.save_library_to_library_db()
-        self.playlist_manager.update_favorites_playlist()
+        # self.library.save_track_to_library_db(track)
+        # new_track = self.library.get_track_from_library_db(track_id)
+        print("new track:")
+        # print(new_track)
+        self.library.update_track_favorite(track.track_id, track.favorite)
+        # self.playlist_manager.update_favorites_playlist()
 
     def save_favorites(self):
-        self.library.save_library()
         self.library.save_library_to_library_db()
         self.playlist_manager.update_favorites_playlist()
 

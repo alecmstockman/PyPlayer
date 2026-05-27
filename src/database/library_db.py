@@ -18,6 +18,9 @@ def init_library_db():
             artist TEXT,
             album TEXT,
             length INTEGER,
+                       
+            play_count INTEGER,
+            favorite BOOLEAN,
                     
             composer TEXT,
             copyright TEXT,
@@ -42,6 +45,8 @@ def init_library_db():
         conn.close()
 
 def save_track_to_library_db(track: Track):
+    print("\nSAVE TRACK TO LIBRARY:")
+    print(track)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -54,6 +59,9 @@ def save_track_to_library_db(track: Track):
                 artist,
                 album,
                 length,
+                       
+                play_count,
+                favorite,
 
                 composer,
                 copyright,
@@ -70,9 +78,10 @@ def save_track_to_library_db(track: Track):
                 codec
             )
             VALUES (
-                ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?
+                ?, ?, ?, ?, ?, 
+                ?, ?, ?, ?, ?, 
+                ?, ?, ?, ?, ?, 
+                ?, ?, ?, ?, ?
             )
             """, (
                 track.track_id,
@@ -81,6 +90,9 @@ def save_track_to_library_db(track: Track):
                 track.artist,
                 track.album,
                 track.length,
+
+                track.play_count,
+                track.favorite,
 
                 track.composer,
                 track.copyright,
@@ -102,20 +114,48 @@ def save_track_to_library_db(track: Track):
     except sqlite3.IntegrityError:
         # print("Track already exists")
         conn.close()
-    
 
-def get_track_from_library_db(track_id):
+def update_track_favorite(track_id: str, favorite: bool):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE library
+            SET favorite = ?
+            WHERE track_id = ?
+        """, (
+            favorite, track_id
+        ))
+
+        conn.commit()
+        conn.close()
+        return True
+    
+    except sqlite3.Error as e:
+        print(f"Unable to update favorite to {favorite} for {track_id}", e)
+        conn.close()
+        return False
+    
+def get_track_from_library_db(track_id: str):
+    print("\nget_track_from_libray_db - track_id: ", track_id)
+    print("type: ", type(track_id))
+    if not isinstance(track_id, str):
+        return ValueError("_get_track_from_library_db only accepts track_id as a string")
+
     print("GET TRACK FROM LIBRARY DB")
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
+    print(track_id)
+    print(type(track_id))
 
     cursor.execute("""
         SELECT * 
         FROM library
         WHERE track_id = ?
         
-    """, (track_id, ))
+    """, (str(track_id), ))
 
     row = cursor.fetchone()
     conn.close()
@@ -124,7 +164,8 @@ def get_track_from_library_db(track_id):
         return None
     
     track = Track(**dict(row))
-
+    print("\n GETTING TRACK")
+    print(track)
     return track
 
 def remove_track_from_library_db(track_id):

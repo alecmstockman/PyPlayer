@@ -6,7 +6,8 @@ from src.database.library_db import (
     save_track_to_library_db, 
     get_track_from_library_db, 
     remove_track_from_library_db,
-    get_all_tracks_from_library
+    get_all_tracks_from_library,
+    update_track_favorite
 )
 from src.models.track import Track
 
@@ -66,6 +67,10 @@ class Library():
     def add_track_to_library_db(self, track):
         save_track_to_library_db(track)
         return track
+    
+    def save_track_to_library_db(self, track):
+        save_track_to_library_db(track)
+        return track
 
     def remove_track(seslf, track_id):
         return
@@ -80,6 +85,7 @@ class Library():
         return self.tracks[track_id]
     
     def get_track_from_library_db(self, track_id):
+        print("\n library.py: get_track_from_library_db, track_id: ", track_id)
         return get_track_from_library_db(track_id)
     
     def get_track_length(self, track_id):
@@ -100,4 +106,9 @@ class Library():
                 save_track_to_library_db(self.tracks[track_id])
         except Exception as e:
             print(f"Failed to save library to database: {e}")
+
+    def update_track_favorite(self, track_id: str, favorite: bool):
+        favorite_status = update_track_favorite(track_id, favorite)
+        print(f"Update favorite, library.py: {track_id}, fav: {favorite}")
+        return favorite_status
 
