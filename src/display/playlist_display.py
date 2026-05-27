@@ -3,9 +3,7 @@ from tkinter import ttk
 from src.models.playlist import Playlist, CreatePlaylistEntry
 from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
-# from src.models.library import add_track_to_library_db, save_track_to_library_db
 
-# add_track_to_library_db()
 
 class PlaylistDisplay(ttk.Frame):
     def __init__(self, parent, library, player, playlist, playlist_manager, settings):
