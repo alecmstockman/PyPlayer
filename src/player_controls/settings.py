@@ -239,7 +239,6 @@ class SettingsWindow(tk.Toplevel):
 
         font_color_label = ttk.Label(self, text="COMING SOON!").grid(row=1, column=3, padx=10, pady=10, sticky="w")
         font_type_label = ttk.Label(self, text="COMING SOON!").grid(row=2, column=3, padx=10, pady=10, sticky="w")
-        library_rescan_label = ttk.Label(self, text="COMING SOON!").grid(row=4, column=3, padx=10, pady=10, sticky="w")
 
         self.center_over_parent(parent)
         self.deiconify()
