@@ -47,6 +47,8 @@ def init_library_db():
         return False
 
 def save_track_to_library_db(track: Track):
+    print(f"SAVE TRACK TO LIBRARY")
+    print(track)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -215,7 +217,7 @@ def delete_all_tracks_from_library():
 
     try: 
         cursor.execute("DELETE FROM playlist_tracks;")
-        cursor.execute("DELETE FROM Playlists;")
+        cursor.execute("DELETE FROM playlists;")
         cursor.execute("DELETE FROM library;")
 
         conn.commit()

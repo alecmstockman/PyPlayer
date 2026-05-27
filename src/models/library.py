@@ -33,6 +33,7 @@ class Library():
         filename_list = [filename for filename in MUSIC.rglob('*') if filename.suffix in AUDIO_FILETYPES]
 
         all_tracks = []
+        
         for name in filename_list:
             track_data = load_track_metadata(name)
             track = Track(**track_data)
@@ -96,7 +97,9 @@ class Library():
     def save_library_to_library_db(self):
         library = {}
 
+        print(f"\nsave library to library db")
         for track in self.tracks.values():
+            print(track)
             library[track.track_id] = {
                 key: str(value) if key == "filepath" else value 
                 for key, value in vars(track).items()

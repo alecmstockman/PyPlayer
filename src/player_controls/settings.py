@@ -205,8 +205,11 @@ class SettingsWindow(tk.Toplevel):
         self.settings_button = ttk.Button(self, text="Edit File Metadata", command=self.open_write_meta_data, takefocus=0, width=15)
         self.settings_button.grid(row=3, column=0, padx=10, pady=10, sticky="w")
 
-        self.settings_button = ttk.Button(self, text="Rescan Library", command=self.rescan_library, takefocus=0, width=15)
+        self.settings_button = ttk.Button(self, text="Convert File", command=self.open_write_meta_data, takefocus=0, width=15)
         self.settings_button.grid(row=4, column=0, padx=10, pady=10, sticky="w")
+
+        self.rescan_button = ttk.Button(self, text="Rescan Library", command=self.rescan_library, takefocus=0, width=15)
+        self.rescan_button.grid(row=5, column=0, padx=10, pady=10, sticky="w")
         
         background_color_dropdown = ttk.Combobox(
             self,
@@ -243,6 +246,7 @@ class SettingsWindow(tk.Toplevel):
 
         font_color_label = ttk.Label(self, text="COMING SOON!").grid(row=1, column=3, padx=10, pady=10, sticky="w")
         font_type_label = ttk.Label(self, text="COMING SOON!").grid(row=2, column=3, padx=10, pady=10, sticky="w")
+        convert_file_label = ttk.Label(self, text="COMING SOON!").grid(row=4, column=3, padx=10, pady=10, sticky="w")
 
         self.center_over_parent(parent)
         self.deiconify()
@@ -280,6 +284,10 @@ class SettingsWindow(tk.Toplevel):
 
     def rescan_library(self, event=None):
         self.parent.event_generate("<<RescanLibrary>>")
+
+        self.rescan_label = ttk.Label(self, text="* rescan complete *")
+        self.rescan_label.grid(row=5, column=3, padx=10, pady=10, sticky="w")
+        self.after(2000, self.rescan_label.destroy)
 
     def center_over_parent(self, parent):
         parent = parent.winfo_toplevel()

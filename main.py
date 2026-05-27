@@ -11,8 +11,9 @@ from src.models.playlist import PlaylistManager
 from src.models.library import Library
 from src.display.playlist_display import PlaylistDisplay
 from src.display.sidebar import Sidebar, SecondarySidebar
-from src.database.library_db import init_library_db
+from src.database.library_db import init_library_db, delete_all_tracks_from_library
 from src.database.playlists_db import init_playlists_db, init_playlist_tracks_db
+
 
 root = tk.Tk()
 root.lift()
@@ -44,6 +45,10 @@ paned = ttk.PanedWindow(root, orient="horizontal")
 paned.grid(row=1, column=0, sticky="nsew")
 root.rowconfigure(1, weight=1)
 
+init_library_db()
+init_playlists_db()
+init_playlist_tracks_db()
+
 sidebar_region = ttk.Frame(paned, width=200, style="Border.TFrame")
 sidebar_region.pack(side="left", fill="y")
 paned.add(sidebar_region, weight=0)
@@ -62,10 +67,6 @@ event_manager.event_attach(
 )
 
 p = Path("Music/")
-
-init_library_db()
-init_playlists_db()
-init_playlist_tracks_db()
 
 library = Library()
 library.load_library()
@@ -114,23 +115,29 @@ def on_left_button_previous(event):
 def on_right_button_next(event):
     controls.next_track()
 
-def handle_settings_changed(setting):
+def handle_settings_changed(event=None):
     playlist_display.background_color = settings.selected_background_color
     playlist_display.set_playlist(playlist_display.playlist)
 
 settings_button.bind("<<SettingsChanged>>", handle_settings_changed)
 
-def handle_rescan_library(setting):
-    sidebar.delete_all_user_playlists()
-    library.delete_all_tracks()
-    playlist_display.set_playlist(library)
-    
-    init_library_db()
-    init_playlists_db()
-    init_playlist_tracks_db()
+def test():
+    print("\n\n\n\ntest\n\n\n\n")
 
-    library = Library()
+def handle_rescan_library(event=None):
+    sidebar.delete_all_user_playlists()
+    delete_all_tracks_from_library()
+
+    library.tracks = {}
+    playlist_display.playlist = None
+    
+    root.after(1000, test())
+
+    playlist_display.set_playlist(library)
     library.load_library()
+    playlist_manager.create_library_playlist()
+    
+    playlist_display.set_playlist(playlist_manager.library_playlist)
 
 
 root.bind("<<RescanLibrary>>", handle_rescan_library)
