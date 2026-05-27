@@ -121,7 +121,7 @@ def handle_settings_changed(event=None):
 
 settings_button.bind("<<SettingsChanged>>", handle_settings_changed)
 
-def handle_rescan_library(event=None):
+def handle_reset_library(event=None):
     sidebar.delete_all_user_playlists()
     delete_all_tracks_from_library()
     library.tracks = {}
@@ -133,7 +133,7 @@ def handle_rescan_library(event=None):
     playlist_manager.create_library_playlist()
     playlist_display.set_playlist(playlist_manager.library_playlist)   
 
-root.bind("<<RescanLibrary>>", handle_rescan_library)
+root.bind("<<ResetLibrary>>", handle_reset_library)
 root.bind("<space>", controls.toggle_play, add="+")
 root.bind("<Command-Left>", controls.previous_track, add="+")
 root.bind("<Command-Right>", controls.next_track, add="+")
