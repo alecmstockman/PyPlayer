@@ -19,6 +19,7 @@ class Sidebar(ttk.Frame):
         self.popup_menu = tk.Menu(self, tearoff=False)
 
         self.sidebar_tree.pack(side="left", fill="both", expand=True)
+        self.sidebar_tree.pack(side="left", fill="y", pady=10)
         self.sidebar_tree.column("#0", width=200, stretch=False)
         self.sidebar_tree.heading("#0", text="")
         self.sidebar_tree.bind("<<TreeviewSelect>>", self.on_sidebar_click)

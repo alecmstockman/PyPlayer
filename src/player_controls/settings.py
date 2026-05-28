@@ -42,7 +42,7 @@ class WriteMetaDataWindow(tk.Toplevel):
         self.entries = {}
         
         self.withdraw()
-        self.minsize(700, 500)
+        self.minsize(600, 480)
         self.transient(parent)   
         self.grab_set()          
         self.focus_force()
@@ -108,7 +108,7 @@ class WriteMetaDataWindow(tk.Toplevel):
 
         track.save()
         self.saved_label = ttk.Label(self, text="* metadata saved *")
-        self.saved_label.grid(row=0, column=2, padx=10, pady=10, sticky="w")
+        self.saved_label.grid(row=0, column=1, padx=10, pady=10, sticky="e")
         self.after(2000, self.saved_label.destroy)
 
 
