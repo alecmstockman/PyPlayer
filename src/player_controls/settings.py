@@ -4,6 +4,9 @@ from pathlib import Path
 import json
 from src.config import BACKGROUND_COLORS, FONT_COLORS, FONTS
 from mutagen import File
+from src.metadata.metadata import load_track_metadata
+from src.models.track import Track
+from src.database.library_db import save_track_to_library_db
 
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -31,6 +34,78 @@ class Settings():
         except Exception as e:
             print(f"Failed to load settings: {e}")
 
+
+class AddTrackToLibrary(tk.Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.audio_file = None
+        
+        self.withdraw()
+        self.minsize(400, 200)
+        self.transient(parent)   
+        self.grab_set()          
+        self.focus_force()
+
+        self.title("Add Track to Library")
+
+        self.select_filepath = ttk.Button(self, text="Select Filepath", command=self.select_filepath, takefocus=0, width=20)
+        self.select_filepath.grid(row=0, column=0, padx=180, pady=10, sticky="w")
+
+        self.center_over_parent(parent)
+        self.deiconify()
+        self.lift()
+        self.grab_set()
+
+    def select_filepath(self):
+        filepath = filedialog.askopenfilename(
+            title = "Select audio file"
+        )
+
+        path = Path(filepath)
+
+        if path.suffix != ".mp3":
+            print(f"Invalid file type: {path.suffix}")
+            return
+
+        self.filepath = filepath
+        self.filepath_label = ttk.Label(self, text=self.filepath).grid(row=1, column=1, padx=10, pady=10, sticky="w")
+        
+        if not filepath:
+            self.filepath_label = ttk.Label(self, text="invalid file").grid(row=1, column=1, padx=10, pady=10, sticky="w")
+            return
+
+        self.audio_file = File(filepath, easy=True)
+        self.add_track_to_library(filepath)
+        return self.audio_file
+    
+    def add_track_to_library(self, filepath):
+        print("filepath: ", filepath)
+        print("type", type(filepath))
+        track_data = load_track_metadata(Path(filepath))
+        track = Track(**track_data)
+        print("track: ", track)
+        save_track_to_library_db(track)
+
+    def center_over_parent(self, parent):
+        parent = parent.winfo_toplevel()
+        parent.update_idletasks()
+        self.update_idletasks()
+
+        parent_x = parent.winfo_rootx()
+        parent_y = parent.winfo_rooty()
+        parent_w = parent.winfo_width()
+        parent_h = parent.winfo_height()
+
+        win_w = self.winfo_reqwidth()
+        win_h = self.winfo_reqheight()
+
+        x = parent_x + (parent_w // 2) - (win_w // 2) - 50
+        y = parent_y + (parent_h // 2) - (win_h // 2) - 100
+
+        self.geometry(f"{win_w}x{win_h}+{x}+{y}")
+        self.lift()
+        self.focus_force()
 
 class WriteMetaDataWindow(tk.Toplevel):
     def __init__(self, parent):
@@ -199,14 +274,17 @@ class SettingsWindow(tk.Toplevel):
         ttk.Label(self, text="Font Color").grid(row=1, column=0, padx=10, pady=10, sticky="w")
         ttk.Label(self, text="Font Selection").grid(row=2, column=0, padx=10, pady=10, sticky="w")
 
-        self.settings_button = ttk.Button(self, text="Edit File Metadata", command=self.open_write_meta_data, takefocus=0, width=15)
+        self.settings_button = ttk.Button(self, text="Add Track to Library", command=self.open_add_track_to_library, takefocus=0, width=15)
         self.settings_button.grid(row=3, column=0, padx=10, pady=10, sticky="w")
 
-        self.settings_button = ttk.Button(self, text="Convert File", command=self.open_write_meta_data, takefocus=0, width=15)
+        self.settings_button = ttk.Button(self, text="Edit File Metadata", command=self.open_write_meta_data, takefocus=0, width=15)
         self.settings_button.grid(row=4, column=0, padx=10, pady=10, sticky="w")
 
+        self.settings_button = ttk.Button(self, text="Convert File", command=self.open_write_meta_data, takefocus=0, width=15)
+        self.settings_button.grid(row=5, column=0, padx=10, pady=10, sticky="w")
+
         self.reset_button = ttk.Button(self, text="Reset Library", command=self.reset_library, takefocus=0, width=15)
-        self.reset_button.grid(row=5, column=0, padx=10, pady=10, sticky="w")
+        self.reset_button.grid(row=6, column=0, padx=10, pady=10, sticky="w")
         
         background_color_dropdown = ttk.Combobox(
             self,
@@ -243,7 +321,8 @@ class SettingsWindow(tk.Toplevel):
 
         font_color_label = ttk.Label(self, text="COMING SOON!").grid(row=1, column=3, padx=10, pady=10, sticky="w")
         font_type_label = ttk.Label(self, text="COMING SOON!").grid(row=2, column=3, padx=10, pady=10, sticky="w")
-        convert_file_label = ttk.Label(self, text="COMING SOON!").grid(row=4, column=3, padx=10, pady=10, sticky="w")
+        add_file_label = ttk.Label(self, text="COMING SOON!").grid(row=3, column=3, padx=10, pady=10, sticky="w")
+        convert_file_label = ttk.Label(self, text="COMING SOON!").grid(row=5, column=3, padx=10, pady=10, sticky="w")
 
         self.center_over_parent(parent)
         self.deiconify()
@@ -263,6 +342,9 @@ class SettingsWindow(tk.Toplevel):
     def on_font_selection(self, event=None):
         self.save_settings()
 
+    def open_add_track_to_library(self):
+        add_track_window = AddTrackToLibrary(self.parent)
+
     def save_settings(self):
         settings_JSON = {
             "background": self.settings.selected_background_color,
@@ -280,10 +362,10 @@ class SettingsWindow(tk.Toplevel):
         print("\n open write meta data")
 
     def reset_library(self, event=None):
-        self.parent.event_generate("<<RescanLibrary>>")
+        self.parent.event_generate("<<ResetLibrary>>")
 
         self.reset_label = ttk.Label(self, text="* library reset complete *")
-        self.reset_label.grid(row=5, column=1, padx=0, pady=0, sticky="w")
+        self.reset_label.grid(row=6, column=1, padx=0, pady=0, sticky="w")
         self.after(2000, self.reset_label.destroy)
 
     def center_over_parent(self, parent):

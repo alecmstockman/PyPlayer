@@ -98,6 +98,8 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Track Info", command=self.display_track_info)
         self.popup_menu.add_command(label="Show Album Art", command=self.show_album_art, state=tk.DISABLED)
         self.popup_menu.add_command(label="Write meta-data", command=self._on_menu_update_favorite, state=tk.DISABLED)
+        self.popup_menu.add_separator()
+        self.popup_menu.add_command(label="Delete Track from Library", command=self._on_menu_delete_track_from_library, state=tk.DISABLED)
         
         self.playlist_tree.tag_configure("playing", background=BACKGROUND_COLORS["Aqua"]) 
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
@@ -385,6 +387,9 @@ class PlaylistDisplay(ttk.Frame):
 
     def _on_menu_update_favorite(self):
         self._update_favorite(self.menu_iid)
+
+    def _on_menu_delete_track_from_library(self):
+        pass
         
     def _update_favorite(self, track_id):
         if track_id is None or not self.playlist_tree.exists(track_id):
