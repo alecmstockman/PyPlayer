@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 from pathlib import Path
 import json
-from src.config import BACKGROUND_COLORS, FONT_COLORS, FONTS
+from src.config import BACKGROUND_COLORS, FONT_COLORS, FONTS, AUDIO_FILETYPES
 from mutagen import File
 from src.metadata.metadata import load_track_metadata
 from src.models.track import Track
@@ -63,8 +63,7 @@ class AddTrackToLibrary(tk.Toplevel):
         )
 
         path = Path(filepath)
-
-        if path.suffix != ".mp3":
+        if path.suffix not in AUDIO_FILETYPES:
             print(f"Invalid file type: {path.suffix}")
             return
 
@@ -74,18 +73,17 @@ class AddTrackToLibrary(tk.Toplevel):
         if not filepath:
             self.filepath_label = ttk.Label(self, text="invalid file").grid(row=1, column=1, padx=10, pady=10, sticky="w")
             return
-
+        
         self.audio_file = File(filepath, easy=True)
         self.add_track_to_library(filepath)
         return self.audio_file
     
     def add_track_to_library(self, filepath):
-        print("filepath: ", filepath)
-        print("type", type(filepath))
         track_data = load_track_metadata(Path(filepath))
         track = Track(**track_data)
-        print("track: ", track)
         save_track_to_library_db(track)
+
+        self.parent.event_generate("<<RescanLibrary>>")
 
     def center_over_parent(self, parent):
         parent = parent.winfo_toplevel()
@@ -321,7 +319,7 @@ class SettingsWindow(tk.Toplevel):
 
         font_color_label = ttk.Label(self, text="COMING SOON!").grid(row=1, column=3, padx=10, pady=10, sticky="w")
         font_type_label = ttk.Label(self, text="COMING SOON!").grid(row=2, column=3, padx=10, pady=10, sticky="w")
-        add_file_label = ttk.Label(self, text="COMING SOON!").grid(row=3, column=3, padx=10, pady=10, sticky="w")
+        # add_file_label = ttk.Label(self, text="COMING SOON!").grid(row=3, column=3, padx=10, pady=10, sticky="w")
         convert_file_label = ttk.Label(self, text="COMING SOON!").grid(row=5, column=3, padx=10, pady=10, sticky="w")
 
         self.center_over_parent(parent)

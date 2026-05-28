@@ -121,6 +121,15 @@ def handle_settings_changed(event=None):
 
 settings_button.bind("<<SettingsChanged>>", handle_settings_changed)
 
+def handler_rescan_library(event=None):
+    print("HANLDER RESCAN LIBRARY")
+    library.load_library()
+    playlist_manager.create_library_playlist()
+    playlist_display.set_playlist(playlist_manager.library_playlist)   
+
+
+root.bind("<<RescanLibrary>>", handler_rescan_library) 
+
 def handle_reset_library(event=None):
     sidebar.delete_all_user_playlists()
     delete_all_tracks_from_library()
