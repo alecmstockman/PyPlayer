@@ -51,8 +51,8 @@ class PlaylistDisplay(ttk.Frame):
         
         self.playlist_tree.column("filepath", width=0, stretch=False)
         self.playlist_tree.column("track_id", width=0, stretch=False)
-        self.playlist_tree.column("index", width=0, stretch=False)
-        self.playlist_tree.column("play status", anchor="w", width=40, stretch=False)
+        self.playlist_tree.column("index", anchor="e", width=40, stretch=False)
+        self.playlist_tree.column("play status", anchor="w", width=38, stretch=False)
         self.playlist_tree.column("Track", anchor="w", width=400, stretch=False)
         self.playlist_tree.column("Menu", anchor="e", width=20, stretch=False)
         self.playlist_tree.column("Time", anchor="e", width=60, stretch=False)
@@ -64,7 +64,10 @@ class PlaylistDisplay(ttk.Frame):
         
         self.playlist_tree.heading("filepath")
         self.playlist_tree.heading("track_id")
-        self.playlist_tree.heading("index")
+
+        self.playlist_tree.heading("index", text="  ")
+
+    
         self.playlist_tree.heading("play status", text="  ")
         self.playlist_tree.heading("Track", text="  Title  ")
         self.playlist_tree.heading("Menu", text="···")
@@ -114,7 +117,8 @@ class PlaylistDisplay(ttk.Frame):
         if not playlist or not hasattr(playlist, "track_id_list"):
             print("No playlist or invalid playlist object")
             return
-        index = 0
+        
+        index = 1
 
         for item in self.playlist.track_id_list:
             try:
@@ -133,7 +137,6 @@ class PlaylistDisplay(ttk.Frame):
             favorite = track.favorite
 
             self.playlist_tree.tag_configure("even", background=self.background_color)
-            # self.selected_font_color.get()
             self.playlist_tree.tag_configure("odd", background="#0C0C0C")
 
             star = " ★ " if favorite == True else " ☆ "
