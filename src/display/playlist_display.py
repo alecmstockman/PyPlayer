@@ -120,10 +120,7 @@ class PlaylistDisplay(ttk.Frame):
             try:
                 track = self.library.tracks[item]
             except:
-                continue
-
-            # track = self.library.tracks[item]
-                
+                continue                
 
             filepath = track.filepath
             track_id = track.track_id
@@ -208,7 +205,6 @@ class PlaylistDisplay(ttk.Frame):
         if "playing" in current_tags:
             current_tags.remove("playing")
             self.playlist_tree.item(track_id, tags=tuple(current_tags))
-        
 
     def get_selected_tracks(self):
         selection = self.playlist_tree.selection()
@@ -341,7 +337,6 @@ class PlaylistDisplay(ttk.Frame):
             if index % 2 == 1:
                 self.playlist_tree.item(iid, tags=("odd",))
 
-
     def _on_menu_play(self):
         self.controls.play_selection(self.menu_iid)
 
@@ -378,10 +373,7 @@ class PlaylistDisplay(ttk.Frame):
             )
     
     def _on_menu_add_to_playlist(self, playlist_id, name):
-        print(f"\nON MENU ADD TO PLAYLIST: {playlist_id}")
         track_id = self.playlist_tree.set(self.menu_iid, "track_id")
-        print(f"track_id: {track_id}")
-        print(self.library.tracks[track_id])
         self.playlist_manager.add_to_user_playlist(playlist_id, track_id)
         self.menu_iid = None
 
@@ -396,36 +388,20 @@ class PlaylistDisplay(ttk.Frame):
         
         self.set_playlist(self.playlist)
         self.playlist_manager.update_user_playlist(self.playlist.id)
-        print(f"self.playlst: {self.playlist}")
-        print(f"self.playlist_manager.user_playlists: {self.playlist_manager.user_playlists}")
-
         # delete_track_from_playlist_tracks(track_id, )
-        
-
-
-
-
-
-
-
 
     def _on_menu_update_favorite(self):
         self._update_favorite(self.menu_iid)
 
     def _on_menu_delete_track_from_library(self):
-        print(f"\nON MENU DELETE FROM LIBRARY")
         track_id = self.playlist_tree.set(self.menu_iid, "track_id")
-        print("track_id: ", track_id)
 
         self.library.remove_track_from_library_db(track_id)
-        print(f"playlist_display.playlist: {self.playlist}")
         self.parent.event_generate("<<RescanLibrary>>")
+
         if track_id == self.controls.track:
             self.controls.next_track()
         
-
-
-
     def _update_favorite(self, track_id):
         if track_id is None or not self.playlist_tree.exists(track_id):
             print("playlist_display: _update_favorite, iid is None or doesn't exit")
