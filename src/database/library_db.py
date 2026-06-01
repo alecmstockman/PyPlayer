@@ -175,7 +175,7 @@ def remove_track_from_library_db(track_id):
 
     try: 
         cursor.execute("""
-            DELETE *
+            DELETE
             FROM library
             WHERE track_id = ?
         """, (track_id, )

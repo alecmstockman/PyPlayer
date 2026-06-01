@@ -12,7 +12,7 @@ from src.models.library import Library
 from src.display.playlist_display import PlaylistDisplay
 from src.display.sidebar import Sidebar, SecondarySidebar
 from src.database.library_db import init_library_db, delete_all_tracks_from_library
-from src.database.playlists_db import init_playlists_db, init_playlist_tracks_db
+from src.database.playlists_db import init_playlists_db, init_playlist_tracks_db, get_all_from_playlists
 
 
 root = tk.Tk()
@@ -122,11 +122,15 @@ def handle_settings_changed(event=None):
 settings_button.bind("<<SettingsChanged>>", handle_settings_changed)
 
 def handler_rescan_library(event=None):
-    print("HANLDER RESCAN LIBRARY")
+    print("\nHANDLER RESCAN LIBRARY")
+    playlist = playlist_display.playlist
+    playlist_display.set_playlist(playlist_manager.library_playlist)
+    playlist_display.playlist = None
     library.load_library()
+    
     playlist_manager.create_library_playlist()
-    playlist_display.set_playlist(playlist_manager.library_playlist)   
-
+    playlist_manager.update_favorites_playlist()
+    playlist_display.set_playlist(playlist) 
 
 root.bind("<<RescanLibrary>>", handler_rescan_library) 
 
@@ -136,11 +140,11 @@ def handle_reset_library(event=None):
     library.tracks = {}
 
     playlist_display.playlist = None
-    playlist_display.set_playlist(library)
+    playlist_display.set_playlist(playlist_display.playlist)
     library.load_library()
 
     playlist_manager.create_library_playlist()
-    playlist_display.set_playlist(playlist_manager.library_playlist)   
+    playlist_display.set_playlist(playlist_manager.library_playlist)
 
 root.bind("<<ResetLibrary>>", handle_reset_library)
 root.bind("<space>", controls.toggle_play, add="+")
@@ -207,6 +211,7 @@ def on_sidebar_selection(event):
 def on_secondary_sidebar_selection(event):
     sidebar_widget = event.widget
     artist_album = sidebar_widget.selected_view
+    print(f"\nOn secondary sidebar selection: {artist_album}")
 
     if sidebar.selected_view == "Artists" and artist_album:
         playlist_display.get_artist_tracks(artist_album)
@@ -215,6 +220,9 @@ def on_secondary_sidebar_selection(event):
         playlist_display.get_album_tracks(artist_album)
 
     controls.check_play_status()
+    print(f"Playlist_display.playlist: {playlist_display.playlist}")
+    # print(f"Playlist_manager.library: {playlist_manager.library}")
+    print(f"playlist_manager.library_playlist: {playlist_manager.library_playlist}")
 
 sidebar.bind("<<SidebarSelection>>", on_sidebar_selection)
 

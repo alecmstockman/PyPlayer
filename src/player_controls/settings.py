@@ -68,9 +68,6 @@ class AddTrackToLibrary(tk.Toplevel):
         if path.suffix not in AUDIO_FILETYPES:
             print(f"Invalid file type: {path.suffix}")
             return
-
-        # self.filepath = filepath
-        # self.filepath_label = ttk.Label(self, text=self.filepath).grid(row=1, column=1, padx=10, pady=10, sticky="w")
         
         if not filepath:
             self.filepath_label = ttk.Label(self, text="invalid file").grid(row=1, column=1, padx=10, pady=10, sticky="w")

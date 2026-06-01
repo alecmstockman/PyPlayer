@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from src.database.playlists_db import delete_playlist_from_playlists
 
 
 class Sidebar(ttk.Frame):
@@ -121,6 +122,7 @@ class Sidebar(ttk.Frame):
         playlist_id = self.selected_user_playlist
         self.playlist_manager.delete_user_playlist(playlist_id)
         self.set_user_playlists()
+        delete_playlist_from_playlists(playlist_id)
 
 
 class SecondarySidebar(ttk.Frame):

@@ -45,7 +45,6 @@ class Library():
 
     def load_library(self):
         tracks = get_all_tracks_from_library()
-
         if not tracks:
             print("No tracks creating library")
             self.create_library()
@@ -79,10 +78,15 @@ class Library():
         return
  
     def remove_track_from_library_db(self, track_id):
+        print("remove track from library db")
+        print("track_id: ", track_id )
         try: 
-            remove_track_from_library_db(track_id)
+            remove_track_from_library_db(str(track_id))
+            del self.tracks[track_id]
+            
         except Exception as e:
             print("Unable to remove track:", e)
+
 
     def get_track(self, track_id):
         return self.tracks[track_id]

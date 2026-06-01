@@ -3,11 +3,13 @@ from tkinter import ttk
 from src.models.playlist import Playlist, CreatePlaylistEntry
 from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
+from src.database.playlists_db import delete_track_from_playlist_tracks
 
 
 class PlaylistDisplay(ttk.Frame):
     def __init__(self, parent, library, player, playlist, playlist_manager, settings):
         super().__init__(parent)
+        self.parent = parent
         self.library = library
         self.player = player
         self.playlist = playlist
@@ -99,7 +101,8 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_command(label="Show Album Art", command=self.show_album_art, state=tk.DISABLED)
         self.popup_menu.add_command(label="Write meta-data", command=self._on_menu_update_favorite, state=tk.DISABLED)
         self.popup_menu.add_separator()
-        self.popup_menu.add_command(label="Delete Track from Library", command=self._on_menu_delete_track_from_library, state=tk.DISABLED)
+        # self.popup_menu.add_command(label="Delete Track from Library", command=self._on_menu_delete_track_from_library, state=tk.DISABLED)
+        self.popup_menu.add_command(label="Delete Track from Library", command=self._on_menu_delete_track_from_library)
         
         self.playlist_tree.tag_configure("playing", background=BACKGROUND_COLORS["Aqua"]) 
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
@@ -114,7 +117,13 @@ class PlaylistDisplay(ttk.Frame):
         index = 0
 
         for item in self.playlist.track_id_list:
-            track = self.library.tracks[item]
+            try:
+                track = self.library.tracks[item]
+            except:
+                continue
+
+            # track = self.library.tracks[item]
+                
 
             filepath = track.filepath
             track_id = track.track_id
@@ -369,28 +378,54 @@ class PlaylistDisplay(ttk.Frame):
             )
     
     def _on_menu_add_to_playlist(self, playlist_id, name):
+        print(f"\nON MENU ADD TO PLAYLIST: {playlist_id}")
         track_id = self.playlist_tree.set(self.menu_iid, "track_id")
+        print(f"track_id: {track_id}")
+        print(self.library.tracks[track_id])
         self.playlist_manager.add_to_user_playlist(playlist_id, track_id)
         self.menu_iid = None
 
     def _on_menu_delete_from_playlist(self):
-        track = self.playlist_tree.set(self.menu_iid, "track_id")
+        track_id = self.playlist_tree.set(self.menu_iid, "track_id")
         new_list = []
 
         for item in self.playlist.track_id_list:
-            if track != str(item):
+            if track_id != str(item):
                 new_list.append(item)
         self.playlist.track_id_list = new_list
         
         self.set_playlist(self.playlist)
         self.playlist_manager.update_user_playlist(self.playlist.id)
+        print(f"self.playlst: {self.playlist}")
+        print(f"self.playlist_manager.user_playlists: {self.playlist_manager.user_playlists}")
+
+        # delete_track_from_playlist_tracks(track_id, )
+        
+
+
+
+
+
+
+
 
     def _on_menu_update_favorite(self):
         self._update_favorite(self.menu_iid)
 
     def _on_menu_delete_track_from_library(self):
-        pass
+        print(f"\nON MENU DELETE FROM LIBRARY")
+        track_id = self.playlist_tree.set(self.menu_iid, "track_id")
+        print("track_id: ", track_id)
+
+        self.library.remove_track_from_library_db(track_id)
+        print(f"playlist_display.playlist: {self.playlist}")
+        self.parent.event_generate("<<RescanLibrary>>")
+        if track_id == self.controls.track:
+            self.controls.next_track()
         
+
+
+
     def _update_favorite(self, track_id):
         if track_id is None or not self.playlist_tree.exists(track_id):
             print("playlist_display: _update_favorite, iid is None or doesn't exit")
