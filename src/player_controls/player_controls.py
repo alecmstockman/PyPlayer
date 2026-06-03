@@ -20,7 +20,7 @@ class PlayerControls(ttk.Frame):
 
         self.current_track_title = tk.StringVar()
         self.track = str(self.playlist.track_id_list[self.play_index])
-        self.tree_id = None
+        self.tree_id = self.playlist_display.playlist_tree.get_children()[0]
         self.current_track_title.set(self.track.title)
 
         self.play_pause_btn = ttk.Button(self, text="▶", command=self.toggle_play, takefocus=0, width=3)
@@ -42,17 +42,12 @@ class PlayerControls(ttk.Frame):
         self.current_track_title.set("No Tracks In Library")
     
     def update_play_order(self):
-        print("\nCONTROLS UPDATE PLAY ORDER")
-        print(self.playlist.track_id_list)
         self.play_order = list(self.playlist_display.playlist_tree.get_children())
 
     def get_current_track(self):
-        print("CONTROLS: GET CURRENT TRACK")
-
         tree_id = self.play_order[self.play_index]
         track_id = self.playlist_display.tree_id_to_track_id(tree_id)
         track = self.library.tracks[track_id]
-        print(f"track: {track}")
         self.track_id = track_id
 
         display_index = self.get_display_index()
@@ -66,7 +61,6 @@ class PlayerControls(ttk.Frame):
         return self.current_track_title
    
     def toggle_play(self, event=None):
-        print(f"\n TOGGLE PLAY")
         track_id = self.play_order[self.play_index]
         same_playlist = (self.playlist.name == self.playlist_display.playlist.name)
 
@@ -129,7 +123,6 @@ class PlayerControls(ttk.Frame):
         self.playlist_display.highlight_playing(tree_id)
 
     def next_track(self, event=None):
-        print("\nCONTROLS: NEXT TRACK")
         self.playlist_display.clear_play_status()
 
         if 0 <= self.play_index < len(self.playlist.track_id_list) - 1:
@@ -139,32 +132,23 @@ class PlayerControls(ttk.Frame):
             self.play_index = 0
 
         self._load_current_track()
-
         tree_id = self.play_order[self.play_index]
-        track_id = self.playlist_display.tree_id_to_track_id(tree_id)
-        track = self.library.tracks[track_id]
 
-        print(f"controls: self.track: {self.track}")
-        print(f"controls: track_id: {track_id}")
-        print(f"controls: tree_id: {tree_id}")
         self.track = str(self.playlist.track_id_list[self.play_index])
         self.tree_id = tree_id
-        print(f"self.track: {self.track}")
         self.playlist_display.highlight_playing(tree_id)
         self.playlist_display.clear_playlist
 
     def _load_current_track(self):
-        print("\nCONTROLS: LOAD CURRENT TRACK")
         if not self.playlist.track_id_list:
             return
         if self.play_index >= len(self.play_order):
             self.play_index = self.play_order[-1]
 
-        tree_id = self.play_order[self.play_index]
-        print(f"tree_id: {tree_id}")
-        
+        tree_id = self.play_order[self.play_index]        
         track_id = self.playlist_display.tree_id_to_track_id(tree_id)
         track = self.library.tracks[track_id]
+
         self.track = track_id
         self.tree_id = tree_id
 
@@ -230,7 +214,6 @@ class PlayerControls(ttk.Frame):
             self.loop_status = None
 
     def play_selection(self, tree_ids):
-        print(f"\nCONTROLS: PLAY SELECTION")
         self.update_play_order()
 
         if tree_ids is None:

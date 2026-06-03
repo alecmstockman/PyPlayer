@@ -351,6 +351,8 @@ class PlaylistDisplay(ttk.Frame):
             return
         
     def get_post_sort_play_order(self):
+        print(f"\nDISPLAY: GET POST SORT PLAY ORDER")
+        print()
         children = self.playlist_tree.get_children()
         new_play_order = []
         
