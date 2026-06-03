@@ -45,7 +45,6 @@ class PlayerControls(ttk.Frame):
     def update_play_order(self):
         print("\nCONTROLS UPDATE PLAY ORDER")
         print(self.playlist.track_id_list)
-        # self.play_order = list(range(len(self.playlist.track_id_list)))
         self.play_order = list(self.playlist_display.playlist_tree.get_children())
 
     def get_current_track(self):
@@ -57,9 +56,7 @@ class PlayerControls(ttk.Frame):
         print(f"track: {track}")
         self.track_id = track_id
 
-        # index = self.play_order[self.play_index]
         display_index = self.get_display_index()
-        # self.track_id = self.playlist.track_id_list[index]
         track = self.library.tracks[self.track_id]
 
         self.current_track_title.set(track.title) 
@@ -70,15 +67,10 @@ class PlayerControls(ttk.Frame):
         return self.current_track_title
    
     def toggle_play(self, event=None):
-        
         print(f"\n TOGGLE PLAY")
-        # print("self.playlist.track_id_list: ", self.playlist.track_id_list)
-
-        # track_id = self.playlist.track_id_list[self.play_order[self.play_index]]
-        print(f"self.play_order: {self.play_order}")
         track_id = self.play_order[self.play_index]
-        print(f"track_id: {track_id}")
         same_playlist = (self.playlist.name == self.playlist_display.playlist.name)
+
         if self.player.is_playing():
             self.player.pause() 
             self.play_pause_btn.config(text="▶")
@@ -88,7 +80,6 @@ class PlayerControls(ttk.Frame):
             self.play_pause_btn.config(text="⏸")
             is_now_playing = True
 
-        print(f"track_id: {track_id}")
         if same_playlist:
             if is_now_playing:
                 self.playlist_display.play_status_icon_playing(track_id)
@@ -165,23 +156,18 @@ class PlayerControls(ttk.Frame):
 
     def _load_current_track(self):
         print("\nCONTROLS: LOAD CURRENT TRACK")
-        # print(f"self.play_order: {self.play_order}")
         if not self.playlist.track_id_list:
             return
         if self.play_index >= len(self.play_order):
             self.play_index = self.play_order[-1]
 
-        # controls_index = self.play_order[self.play_index]
         tree_id = self.play_order[self.play_index]
         print(f"tree_id: {tree_id}")
-
-        # print(f"display_index: {display_index}")
         
         track_id = self.playlist_display.tree_id_to_track_id(tree_id)
         track = self.library.tracks[track_id]
         self.track = track_id
         self.tree_id = tree_id
-        print(f"track: {track}")
 
         display_index = self.get_display_index()
 
@@ -214,13 +200,9 @@ class PlayerControls(ttk.Frame):
                 self.shuffle = True
                 self.shuffle_btn.config(text="🔀*")
 
-                # self.play_order = list(range(len(self.playlist.track_id_list)))
                 self.play_order = list(self.playlist_display.playlist_tree.get_children())
                 random.shuffle(self.play_order)
-                print()
-                print(f"self.track: {self.track}")
-                print(f"self.tree_id: {self.tree_id}")
-                print(f"self.play_order: {self.play_order}")
+
                 if self.tree_id != None:
                     self.play_order.remove(self.tree_id)
                     self.play_order.insert(0, self.tree_id)
@@ -229,9 +211,7 @@ class PlayerControls(ttk.Frame):
                 self.shuffle = False
                 index = self.play_order[self.play_index]
                 self.shuffle_btn.config(text="🔀")
-                # self.play_order = list(range(len(self.playlist.track_id_list)))
                 self.play_order = list(self.playlist_display.playlist_tree.get_children())
-                
                 self.play_index = index
 
 

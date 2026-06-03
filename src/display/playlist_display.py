@@ -119,8 +119,6 @@ class PlaylistDisplay(ttk.Frame):
         
         index = 0
         
-        print(self.playlist.track_id_list)
-
         for item in self.playlist.track_id_list:
             try:
                 track = self.library.tracks[item]
@@ -162,8 +160,8 @@ class PlaylistDisplay(ttk.Frame):
     def tree_id_to_track_id(self, tree_id):
         return tree_id.split(":")[0]
     
-    def track_id_to_tree_id(self, track_id):
-        print("\nTRACK ID TO TREE ID")
+    # def track_id_to_tree_id(self, track_id):
+    #     print("\nTRACK ID TO TREE ID")
     
     def _row_tag(self, track_index):
         return "even" if track_index % 2 == 0 else "odd"
@@ -199,8 +197,7 @@ class PlaylistDisplay(ttk.Frame):
     def highlight_playing(self, tree_id):
         print(f"\nDISPLAY: HIGHLIGHT PLAYING")
         print(f"tree_id: {tree_id}")
-        track_id = self.tree_id_to_track_id(tree_id)
-        print()
+
         for item in self.playlist_tree.get_children():
             current_tags = list(self.playlist_tree.item(item, "tags"))
             if "playing" in current_tags:
@@ -226,7 +223,6 @@ class PlaylistDisplay(ttk.Frame):
         print("\nDISPLAY: GET SELECTED TRACK")
         selection = self.playlist_tree.selection()
         first_track_id = selection[0]
-        print(f'first track id: {first_track_id}')
 
         if not selection:
             print("playlist_display: get_selected_tracks, no selection")
@@ -255,15 +251,9 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.set(iid, column="play status", value="")
 
     def play_status_icon_playing(self, track_id):
-        print("\nDISPLAY: PLAY STATUS ICON PLAYING")
-        print(f"track_id: {track_id}")
-        print(f"controls.play_order: {self.controls.play_order}")
-        print(f"self.playlist.track_id_list: {self.playlist.track_id_list}")
         tree_id = self.controls.play_order[self.controls.play_index]
         track_id = self.tree_id_to_track_id(tree_id)
-        track = self.library.tracks[track_id]
-        print(tree_id, track_id)
-        print(track)
+        # track = self.library.tracks[track_id]
 
         if not self.playlist_tree.get_children():
             return
@@ -272,19 +262,20 @@ class PlaylistDisplay(ttk.Frame):
         if track_id not in self.playlist.track_id_list:
             return
 
-        for child in self.playlist_tree.get_children():
-            if track_id == self.tree_id_to_track_id(child):
-                tree_id = child
-                break
+        if self.playlist.id not in self.playlist_manager.user_playlists.keys():
+            for child in self.playlist_tree.get_children():
+                if track_id == self.tree_id_to_track_id(child):
+                    tree_id = child
+                    break
+
         self.playlist_tree.set(tree_id, column="play status", value="  🔊")
+
 
     def play_status_icon_paused(self, track_id):
         print("\n PLAY STATUS ICON PAUSED")
-        print(f"track_id: {track_id}")
 
         tree_id = self.controls.play_order[self.controls.play_index]
         track_id = self.controls.playlist_display.tree_id_to_track_id(tree_id)
-        track = self.library.tracks[track_id]
 
         if not self.playlist_tree.get_children():
             return
@@ -293,10 +284,12 @@ class PlaylistDisplay(ttk.Frame):
         if track_id not in self.playlist.track_id_list:
             return
         
-        for child in self.playlist_tree.get_children():
-            if track_id == self.tree_id_to_track_id(child):
-                tree_id = child
-                break
+        if self.playlist.id not in self.playlist_manager.user_playlists.keys():
+            for child in self.playlist_tree.get_children():
+                if track_id == self.tree_id_to_track_id(child):
+                    tree_id = child
+                    break
+
         self.playlist_tree.set(tree_id, column="play status", value="  🔈")
 
     def on_tree_selection(self, event):
@@ -312,8 +305,8 @@ class PlaylistDisplay(ttk.Frame):
             return
         
         self.playlist_tree.selection_set(row_id) 
-        print(f"tree_id to track_id: {row_id} is now {self.tree_id_to_track_id(row_id)}")           
         self.menu_iid = row_id
+
         if col_id == "#7":
             self.popup_menu.tk_popup(event.x_root, event.y_root)
         elif col_id == "#11":
@@ -451,8 +444,6 @@ class PlaylistDisplay(ttk.Frame):
             self.controls.next_track()
         
     def _update_favorite(self, tree_id):
-        print("\nUPDATE FAVORITE")
-        print("track_id: ", tree_id)
         if tree_id is None or not self.playlist_tree.exists(tree_id):
             print("playlist_display: _update_favorite, iid is None or doesn't exit")
             return
