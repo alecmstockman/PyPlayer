@@ -91,6 +91,8 @@ playlist_display.set_playlist(playlist_manager.library_playlist)
 controls = PlayerControls(left_controls, library, playlist_manager.library_playlist, player, track_display, playlist_display)
 controls.pack(side="left")
 playlist_display.controls = controls
+print(f"CONTROLS, self.play_order:")
+print(controls.play_order)
 
 settings_button = SettingsButton(right_controls, settings, library)
 settings_button.pack(side="right")
@@ -155,11 +157,16 @@ root.bind("<Command-Left>", controls.previous_track, add="+")
 root.bind("<Command-Right>", controls.next_track, add="+")
 
 def check_play_status(selected_view, artist_album=None):
+    print("\nCHECK PLAY STATUS")
+    print(f"selected view: {selected_view}")
     if selected_view and artist_album:
         print("main, check_play_status err: selected view and artist_album")
         return
     else:
-        track = library.tracks[controls.track]
+        print(f"controls.track: {controls.track}")
+
+        track = library.tracks[str(controls.track)]
+        print(f"check play status, track:", track)
         if player.is_playing():
             playlist_display.play_status_icon_playing(track.track_id)
         else:
@@ -226,16 +233,20 @@ def on_secondary_sidebar_selection(event):
 sidebar.bind("<<SidebarSelection>>", on_sidebar_selection)
 
 def play_selected_tracks(event):
+    print("\nMAIN: PLAY SELECTED TRACKS")
     selection = playlist_display.playlist_tree.identify_region(event.x, event.y)
     if selection == "heading" or selection == "nothing":
         return
     
     track_values = playlist_display.get_selected_tracks()
 
+    print(f"\nTrack_values[track_id]: {track_values["track_id"]}")
+
     if track_values is not None:
         controls.playlist = playlist_display.playlist
         controls.update_play_order() 
-        controls.play_selection(track_values["track_id"])
+        # controls.play_selection(track_values["track_id"])
+        controls.play_selection(track_values["tree_id"])
         track_display.update_track_display(track_values["track_id"])
 
 playlist_display.playlist_tree.bind('<Double-Button-1>', play_selected_tracks)

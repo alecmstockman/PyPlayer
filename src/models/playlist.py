@@ -32,6 +32,7 @@ class PlaylistManager():
 
     def create_library_playlist(self):
         library_track_list = []
+        index = 0
         for item in self.library.tracks.keys():
             library_track_list.append(item)
         self.library_playlist = Playlist("Library Playlist", library_track_list)
