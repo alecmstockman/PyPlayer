@@ -109,7 +109,6 @@ class PlaylistDisplay(ttk.Frame):
         self.playlist_tree.bind("<<TreeviewSelect>>", self.on_tree_selection)
 
     def set_playlist(self, playlist):
-        print("\nSET PLAYLIST")
         self.playlist = playlist
         self.clear_playlist()
 
@@ -160,9 +159,6 @@ class PlaylistDisplay(ttk.Frame):
     def tree_id_to_track_id(self, tree_id):
         return tree_id.split(":")[0]
     
-    # def track_id_to_tree_id(self, track_id):
-    #     print("\nTRACK ID TO TREE ID")
-    
     def _row_tag(self, track_index):
         return "even" if track_index % 2 == 0 else "odd"
 
@@ -195,9 +191,6 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def highlight_playing(self, tree_id):
-        print(f"\nDISPLAY: HIGHLIGHT PLAYING")
-        print(f"tree_id: {tree_id}")
-
         for item in self.playlist_tree.get_children():
             current_tags = list(self.playlist_tree.item(item, "tags"))
             if "playing" in current_tags:
@@ -220,7 +213,6 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.item(track_id, tags=tuple(current_tags))
 
     def get_selected_tracks(self):
-        print("\nDISPLAY: GET SELECTED TRACK")
         selection = self.playlist_tree.selection()
         first_track_id = selection[0]
 
@@ -272,8 +264,6 @@ class PlaylistDisplay(ttk.Frame):
 
 
     def play_status_icon_paused(self, track_id):
-        print("\n PLAY STATUS ICON PAUSED")
-
         tree_id = self.controls.play_order[self.controls.play_index]
         track_id = self.controls.playlist_display.tree_id_to_track_id(tree_id)
 
@@ -299,7 +289,6 @@ class PlaylistDisplay(ttk.Frame):
     def on_tree_click(self, event):
         row_id = self.playlist_tree.identify_row(event.y)
         col_id = self.playlist_tree.identify_column(event.x)
-        print(f"row: {row_id}, col: {col_id}")
 
         if not row_id:
             return
@@ -364,11 +353,12 @@ class PlaylistDisplay(ttk.Frame):
     def get_post_sort_play_order(self):
         children = self.playlist_tree.get_children()
         new_play_order = []
+        
         for child in children:
             track = self.playlist_tree.item(child)
             values = track["values"]
-            index = values[2]
-            new_play_order.append(index)
+            tree_id = values[2]
+            new_play_order.append(tree_id)
         return new_play_order
 
     def recolor_rows(self):

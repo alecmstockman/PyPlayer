@@ -78,8 +78,6 @@ class Library():
         return
  
     def remove_track_from_library_db(self, track_id):
-        print("remove track from library db")
-        print("track_id: ", track_id )
         try: 
             remove_track_from_library_db(str(track_id))
             del self.tracks[track_id]

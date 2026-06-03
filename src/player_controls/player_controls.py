@@ -15,7 +15,6 @@ class PlayerControls(ttk.Frame):
 
         self.loop_status = None
         self.shuffle = False
-        # self.play_order = list(range(len(self.playlist.track_id_list)))
         self.play_order = list(self.playlist_display.playlist_tree.get_children())
         self.play_index = 0
 
