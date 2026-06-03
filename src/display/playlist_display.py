@@ -351,13 +351,14 @@ class PlaylistDisplay(ttk.Frame):
             return
         
     def get_post_sort_play_order(self):
-        print(f"\nDISPLAY: GET POST SORT PLAY ORDER")
-        print()
         children = self.playlist_tree.get_children()
         new_play_order = []
         
+        new_index = 1
         for child in children:
             track = self.playlist_tree.item(child)
+            self.playlist_tree.set(child, "index", new_index)
+            new_index += 1
             values = track["values"]
             tree_id = values[2]
             new_play_order.append(tree_id)

@@ -250,7 +250,6 @@ def on_playlist_created(event):
 playlist_display.bind("<<PlaylistCreated>>", on_playlist_created)
 
 def on_playlist_sorted(event):
-    print("\nMAIN: ON PLAYLIST SORTED")
     new_play_order = playlist_display.get_post_sort_play_order()
     controls.play_order = new_play_order
     
