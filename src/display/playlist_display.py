@@ -3,7 +3,7 @@ from tkinter import ttk
 from src.models.playlist import Playlist, CreatePlaylistEntry
 from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
-from src.database.playlists_db import delete_track_from_playlist_tracks
+from src.database.playlists_db import delete_track_from_playlist
 
 
 class PlaylistDisplay(ttk.Frame):
@@ -408,21 +408,23 @@ class PlaylistDisplay(ttk.Frame):
     
     def _on_menu_add_to_playlist(self, playlist_id, name):
         track_id = self.playlist_tree.set(self.menu_iid, "track_id")
-        self.playlist_manager.add_to_user_playlist(playlist_id, track_id)
+        tree_id = self.menu_iid
+        self.playlist_manager.add_to_user_playlist(playlist_id, track_id, tree_id)
         self.menu_iid = None
 
     def _on_menu_delete_from_playlist(self):
-        track_id = self.playlist_tree.set(self.menu_iid, "track_id")
-        new_list = []
+        tree_id = self.menu_iid
+        track_id = self.tree_id_to_track_id(tree_id)
 
-        for item in self.playlist.track_id_list:
-            if track_id != str(item):
-                new_list.append(item)
-        self.playlist.track_id_list = new_list
+        self.playlist_tree.delete(tree_id)
+        self.playlist.tree_id_list = list(self.playlist_tree.get_children())
+        self.playlist.track_id_list = [
+            self.tree_id_to_track_id(row_id) 
+            for row_id in self.playlist.tree_id_list
+        ]
         
         self.set_playlist(self.playlist)
-        self.playlist_manager.update_user_playlist(self.playlist.id)
-        # delete_track_from_playlist_tracks(track_id, )
+        delete_track_from_playlist(track_id, tree_id, self.playlist.id)
 
     def _on_menu_update_favorite(self):
         self._update_favorite(self.menu_iid)

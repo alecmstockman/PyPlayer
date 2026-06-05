@@ -45,6 +45,7 @@ def init_playlist_tracks_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             playlist_id TEXT NOT NULL,
             track_id TEXT NOT NULL,
+            tree_id TEXT,
             track_position INTEGER,
                        
             FOREIGN KEY (playlist_id) 
@@ -71,7 +72,7 @@ def create_playlist_in_playlists(playlist_id: str, playlist_name: str):
 
     try:
         cursor.execute("""
-            INSERT INTO playlists (
+            INSERT OR IGNORE INTO playlists (
                 playlist_id,
                 name
             ) 
@@ -109,6 +110,23 @@ def delete_playlist_from_playlists(playlist_id: str):
         conn.close()
         return False
     
+def delete_all_playlists():
+    conn = connect_to_sqlite()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM playlists
+        """)
+        conn.commit()
+        conn.close()
+        return True
+    
+    except sqlite3.Error as e:
+        print(f"Unable to delete all playlists")
+        conn.close()
+        return False
+    
 def get_all_from_playlists():
     conn = connect_to_sqlite()
     conn.row_factory = sqlite3.Row
@@ -128,7 +146,7 @@ def get_all_from_playlists():
         conn.close()
         return None
 
-def add_track_to_playlist_tracks(track_id: str, playlist_id: str):
+def add_track_to_playlist_tracks(track_id: str, playlist_id: str, tree_id: str | None = None):
     conn = connect_to_sqlite()
     cursor = conn.cursor()
     
@@ -137,13 +155,15 @@ def add_track_to_playlist_tracks(track_id: str, playlist_id: str):
             INSERT INTO playlist_tracks (
                 playlist_id,
                 track_id,
+                tree_id,
                 track_position
             ) VALUES (
-                ?, ?, ?
+                ?, ?, ?, ?
             )
         """, (
             playlist_id,
             track_id,
+            tree_id,
             None
         ))
         conn.commit()
@@ -155,17 +175,17 @@ def add_track_to_playlist_tracks(track_id: str, playlist_id: str):
         conn.close()
         return False
     
-def delete_track_from_playlist_tracks(track_id: str, playlist_id: str):
+def delete_track_from_playlist(track_id: str, tree_id: str ,playlist_id: str):
     conn = connect_to_sqlite()
     cursor = conn.cursor()
 
     try:
         cursor.execute("""
             DELETE FROM playlist_tracks
-            WHERE track_id = ?
+            WHERE tree_id = ?
             AND playlist_id = ?
         """, (
-            track_id, 
+            tree_id, 
             playlist_id
         ))
         conn.commit()

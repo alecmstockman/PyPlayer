@@ -141,12 +141,16 @@ def handle_reset_library(event=None):
     library.load_library()
 
     playlist_manager.create_library_playlist()
+    playlist_manager.user_playlists = {}
+    playlist_manager.delete_all_user_playlists()
     playlist_display.set_playlist(playlist_manager.library_playlist)
 
     if paned.secondary_sidebar is not None:
             paned.forget(secondary_sidebar_region)
             paned.secondary_sidebar.destroy()
             paned.secondary_sidebar = None
+
+    sidebar.set_user_playlists()
     return    
 
 root.bind("<<ResetLibrary>>", handle_reset_library)
@@ -241,11 +245,12 @@ def play_selected_tracks(event):
 playlist_display.playlist_tree.bind('<Double-Button-1>', play_selected_tracks)
 
 def on_playlist_created(event):
+    print("ON Playlist Created")
     display = event.widget
-    playlist = display._last_playlist_created
-    sidebar.add_user_playlist(playlist)
+    new_playlist = display._last_playlist_created
+    sidebar.add_user_playlist(new_playlist)
     playlist_display._set_popup_playlist_list()
-    playlist_manager.save_playlists()
+    playlist_manager.save_playlist(new_playlist.id)
 
 playlist_display.bind("<<PlaylistCreated>>", on_playlist_created)
 

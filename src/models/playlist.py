@@ -6,7 +6,8 @@ from src.database.playlists_db import (
     add_track_to_playlist_tracks,
     get_all_from_playlists,
     get_playlist_tracks_from_playlist_tracks,
-    delete_playlist_from_playlists
+    delete_playlist_from_playlists,
+    delete_all_playlists
 )
 
 
@@ -15,6 +16,7 @@ class Playlist():
         self.id = song_id if song_id is not None else uuid.uuid4()
         self.name = name
         self.track_id_list = track_id_list
+        self.tree_id_list = []
 
     def __repr__(self):
         return f"PLAYLIST NAME: {self.name}, ID: {self.id}"
@@ -63,6 +65,10 @@ class PlaylistManager():
                 track_list.append(str(track))
             user_playlists[key] = {"name": value.name, "tracks": track_list, "id": key}
 
+    def save_playlist(self, playlist_id):
+        pass
+        
+
     def update_favorites_playlist(self):
         self.favorites_playlist.track_id_list = []
 
@@ -86,10 +92,11 @@ class PlaylistManager():
 
             self.user_playlists[playlist_id] = Playlist(name, track_list, playlist_id)
     
-    def add_to_user_playlist(self, playlist_id, track_id):
+    def add_to_user_playlist(self, playlist_id, track_id, tree_id):
         playlist = self.user_playlists[playlist_id]
         playlist.track_id_list.append(track_id)
-        res = add_track_to_playlist_tracks(track_id, playlist_id)
+        playlist.tree_id_list.append(tree_id)
+        res = add_track_to_playlist_tracks(track_id, playlist_id, tree_id)
 
     def update_user_playlist(self, playlist_id):
         playlist = self.user_playlists[playlist_id]
@@ -105,6 +112,9 @@ class PlaylistManager():
 
         self.user_playlists = remaining_user_playlists
         self.save_playlists()
+
+    def delete_all_user_playlists(self):
+        delete_all_playlists()
 
 
 class CreatePlaylistEntry(tk.Toplevel):

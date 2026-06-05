@@ -243,7 +243,7 @@ class PlayerControls(ttk.Frame):
             if self.loop_status != "track":
                 self.play_index += 1
         elif self.play_index >= len(self.playlist.track_id_list):
-            self.play_index = len(self.playlst.track_id_list) - 1
+            self.play_index = len(self.playlist.track_id_list) - 1
         elif self.play_index == len(self.playlist.track_id_list) - 1 and self.loop_status == "playlist":
             self.play_index = 0
 
