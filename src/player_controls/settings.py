@@ -324,7 +324,6 @@ class SettingsWindow(tk.Toplevel):
 
         font_color_label = ttk.Label(self, text="COMING SOON!").grid(row=1, column=3, padx=10, pady=10, sticky="w")
         font_type_label = ttk.Label(self, text="COMING SOON!").grid(row=2, column=3, padx=10, pady=10, sticky="w")
-        # add_file_label = ttk.Label(self, text="COMING SOON!").grid(row=3, column=3, padx=10, pady=10, sticky="w")
         convert_file_label = ttk.Label(self, text="COMING SOON!").grid(row=5, column=3, padx=10, pady=10, sticky="w")
 
         self.center_over_parent(parent)

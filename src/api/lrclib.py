@@ -4,7 +4,9 @@ from src.models.track import Track
 
 
 
-def fetch_lyrics_from_lrclib(track: Track):
+def fetch_lyrics_from_lrclib(track: Track) -> dict | None:
+    print("DISPLAY: FETCH LYRICS FROM LRCLIB")
+
     base_url = "https://lrclib.net"
 
     track_name = track.title
@@ -19,5 +21,6 @@ def fetch_lyrics_from_lrclib(track: Track):
 
     if response.status_code == 200:
         data = response.json()
-
-    print(data)
+        return data
+    
+    return None

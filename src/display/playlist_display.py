@@ -4,7 +4,7 @@ from src.models.playlist import Playlist, CreatePlaylistEntry
 from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
 from src.database.playlists_db import delete_track_from_playlist
-from src.api.lrclib import fetch_lyrics_from_lrclib
+from src.display.lyrics_display import LyricsWindow
 
 
 class PlaylistDisplay(ttk.Frame):
@@ -16,6 +16,7 @@ class PlaylistDisplay(ttk.Frame):
         self.playlist = playlist
         self.playlist_manager = playlist_manager
         self.settings = settings
+        self.lyrics_window = None
         
         self.popup_menu = tk.Menu(self, tearoff=False)
         self.playlist_submenu = tk.Menu(self.popup_menu, tearoff=False)
@@ -102,7 +103,7 @@ class PlaylistDisplay(ttk.Frame):
         self.popup_menu.add_separator()
         self.popup_menu.add_command(label="Track Info", command=self.display_track_info)
         self.popup_menu.add_command(label="Show Album Art", command=self.show_album_art, state=tk.DISABLED)
-        self.popup_menu.add_command(label="Show Lyrics", command=self._on_menu_show_lyrics, state=tk.DISABLED)
+        self.popup_menu.add_command(label="Show Lyrics", command=self._on_menu_show_lyrics)
         self.popup_menu.add_separator()
         self.popup_menu.add_command(label="Write meta-data", command=self._on_menu_update_favorite, state=tk.DISABLED)
         self.popup_menu.add_separator()
@@ -146,7 +147,6 @@ class PlaylistDisplay(ttk.Frame):
 
             self.playlist_tree.insert(
                     "", "end",
-                    # iid=str(track_id),
                     iid=str(tree_id),
                     values=("", f"{track_id}", f"{tree_id}",f"{track_index+1}", "", f"{title}", "···", f"{total_str}", f"{artist}", f"{album}", f"{star}", f"{filetype}"),
                     tags=self._row_tag(track_index)
@@ -248,7 +248,6 @@ class PlaylistDisplay(ttk.Frame):
     def play_status_icon_playing(self, track_id):
         tree_id = self.controls.play_order[self.controls.play_index]
         track_id = self.tree_id_to_track_id(tree_id)
-        # track = self.library.tracks[track_id]
 
         if not self.playlist_tree.get_children():
             return
@@ -513,10 +512,14 @@ class PlaylistDisplay(ttk.Frame):
         pass
 
     def _on_menu_show_lyrics(self):
+        print("DISPLAY: ON MENU SHOW LYRICS")
         track_id = self.tree_id_to_track_id(self.menu_iid)
         track = self.library.tracks[track_id]
-        lyrics = fetch_lyrics_from_lrclib(track)
-        print(lyrics)
+
+        self.lyrics_window = LyricsWindow(self, self.library, track)
+
+        lyrics = self.lyrics_window.fetch_lyrics()
+
         
     # async def fetch_lyrics(track):
     #     await fetch_lyrics_from_lrclib(track)
