@@ -5,6 +5,7 @@ from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
 from src.database.playlists_db import delete_track_from_playlist
 from src.display.lyrics_display import LyricsWindow
+from src.models.track import Track
 
 
 class PlaylistDisplay(ttk.Frame):
@@ -514,7 +515,7 @@ class PlaylistDisplay(ttk.Frame):
     def _on_menu_show_lyrics(self):
         print("DISPLAY: ON MENU SHOW LYRICS")
         track_id = self.tree_id_to_track_id(self.menu_iid)
-        track = self.library.tracks[track_id]
+        track: Track = self.library.tracks[track_id]
 
         self.lyrics_window = LyricsWindow(self, self.library, track)
 
