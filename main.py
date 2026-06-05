@@ -11,7 +11,8 @@ from src.models.playlist import PlaylistManager
 from src.models.library import Library
 from src.display.playlist_display import PlaylistDisplay
 from src.display.sidebar import Sidebar, SecondarySidebar
-from src.database.library_db import init_library_db, delete_all_tracks_from_library
+from src.database.library_db import init_library_db
+from src.database.lyrics_db import init_lyrics_db
 from src.database.playlists_db import init_playlists_db, init_playlist_tracks_db, get_all_from_playlists
 
 
@@ -48,6 +49,7 @@ root.rowconfigure(1, weight=1)
 init_library_db()
 init_playlists_db()
 init_playlist_tracks_db()
+init_lyrics_db()
 
 sidebar_region = ttk.Frame(paned, width=200, style="Border.TFrame")
 sidebar_region.pack(side="left", fill="y")
