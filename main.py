@@ -276,6 +276,7 @@ root.bind_all("<Command-Down>", volume_controls.volume_down, add="+")
 playlist_display.playlist_tree.bind("<Command-Up>", volume_controls.volume_up, add="+")
 playlist_display.playlist_tree.bind("<Command-Down>", volume_controls.volume_down, add="+")
 
+
 def quit_app(event=None):
     player.stop()
     root.destroy()
