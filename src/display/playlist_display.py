@@ -517,8 +517,10 @@ class PlaylistDisplay(ttk.Frame):
         print("DISPLAY: ON MENU SHOW LYRICS")
         track_id = self.tree_id_to_track_id(self.menu_iid)
         track: Track = self.library.tracks[track_id]
+        print(f"track id: {track_id}")
 
         track_lyrics = fetch_lyrics(track)
+        print(f"track_lyrics: {track_lyrics}")
 
         self.lyrics_window = LyricsWindow(self, track_lyrics)
 

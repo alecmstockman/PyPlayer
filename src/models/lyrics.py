@@ -12,3 +12,6 @@ class TrackLyrics():
         self.instrumental = None
         self.plain_lyrics = None
         self.synced_lyrics = None
+
+    def __str__(self):
+        return f"TrackLyrics Obj: track_id: {self.track_id}, track_name: {self.track_name}, lyrics_id: {self.lyrics_id}"

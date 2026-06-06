@@ -14,6 +14,7 @@ from src.display.sidebar import Sidebar, SecondarySidebar
 from src.database.library_db import init_library_db
 from src.database.lyrics_db import init_lyrics_db
 from src.database.playlists_db import init_playlists_db, init_playlist_tracks_db, get_all_from_playlists
+from src.services.lyrics_service import delete_all_cached_lyrics
 
 
 root = tk.Tk()
@@ -141,6 +142,7 @@ def handle_reset_library(event=None):
     playlist_display.playlist = None
     playlist_display.set_playlist(playlist_display.playlist)
     library.load_library()
+    delete_all_cached_lyrics()
 
     playlist_manager.create_library_playlist()
     playlist_manager.user_playlists = {}

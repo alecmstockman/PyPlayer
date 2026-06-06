@@ -77,6 +77,7 @@ def save_lyrics_to_lyrics_db(lyrics: TrackLyrics):
         return False
     
 def get_lyrics_from_lyrics_db(track_id: str) -> TrackLyrics:
+    print("\nLYRICS_DB: GET LYRICS FROM LYRICS DB")
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -86,10 +87,8 @@ def get_lyrics_from_lyrics_db(track_id: str) -> TrackLyrics:
             SELECT *
             FROM lyrics
             WHERE track_id = ?
-        )
-        VALUES (?)
         """, (
-            track_id
+            track_id, 
         ))
 
         row = cursor.fetchone()
@@ -97,11 +96,32 @@ def get_lyrics_from_lyrics_db(track_id: str) -> TrackLyrics:
 
         if row is None:
             return None
-        track_lyrics = TrackLyrics(**dict(row))
         
+        print("ROW:")
+        print(row)
+        track_lyrics = TrackLyrics(**dict(row))
+
         return track_lyrics
     
     except sqlite3.Error as e:
         print(f"Unable to get track: {track_id}: {e}")
         conn.close()
+        return None
+    
+def delete_all_from_lyrics_db():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE
+            FROM lyrics
+        """)
+        conn.commit()
+        conn.close()
+        return True
+
+    except sqlite3.Error as e:
+        print("Unable to delete all from lyrics db: {e}")
+        conn.close
         return False

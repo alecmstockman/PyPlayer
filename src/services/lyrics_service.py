@@ -1,16 +1,31 @@
 from src.models.track import Track
-from src.api.lrclib import fetch_lyrics_from_lrclib
+from src.api.lrclib import fetch_lyrics_from_lrclib, fetch_lyrics_from_lrclib_cached
 from src.models.lyrics import TrackLyrics
-from src.database.lyrics_db import save_lyrics_to_lyrics_db
+from src.database.lyrics_db import save_lyrics_to_lyrics_db, get_lyrics_from_lyrics_db, delete_all_from_lyrics_db
 
 
 def fetch_lyrics(track: Track) -> TrackLyrics:
+    print("\nFETCH LYRICS")
+    lyric_data = get_lyrics_from_lyrics_db(track.track_id)
 
-    lyric_data = fetch_lyrics_from_lrclib(track)
+    print(f"lyric_data: {lyric_data}")
+
+    if lyric_data is None:
+        lyric_data = fetch_lyrics_from_lrclib_cached(track)
+        
+    if lyric_data is None:
+        lyric_data = fetch_lyrics_from_lrclib(track)
+
+    if lyric_data is None:
+        print(f"Unable to get lyrics for {track.title}")
+        return None
+    print(f"lyrics_data: {lyric_data}")
 
     track_lyrics = TrackLyrics(track.track_id)
 
-    track_lyrics.lyrics_id = lyric_data["id"]
+    print(track_lyrics)
+
+    track_lyrics.lyrics_id = lyric_data["id"] if lyric_data["id"] else None
     track_lyrics.track_name = lyric_data["trackName"]
     track_lyrics.artist_name = lyric_data["artistName"]
     track_lyrics.album_name = lyric_data["albumName"]
@@ -27,3 +42,6 @@ def fetch_lyrics(track: Track) -> TrackLyrics:
 
 def parse_lyrics(lyric_data):
     pass
+
+def delete_all_cached_lyrics():
+    delete_all_from_lyrics_db()
