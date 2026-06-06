@@ -30,7 +30,6 @@ class LyricsWindow(tk.Toplevel):
 
     def display_plain_lyrics(self, plain_lyrics):
         print("\nWINDOW: DISPLAY LYRICS")
-        print(plain_lyrics)
         self.lyrics_text.config(padx=20, pady=10)
         self.lyrics_text.config(state="normal")
         self.lyrics_text.delete("1.10", tk.END)
@@ -50,8 +49,8 @@ class LyricsWindow(tk.Toplevel):
         win_w = self.winfo_reqwidth()
         win_h = self.winfo_reqheight()
 
-        x = parent_x + (parent_w // 2) - (win_w // 2) - 100
-        y = parent_y + (parent_h // 2) - (win_h // 2) + 100
+        x = parent_x + (parent_w // 2) - (win_w // 2) 
+        y = parent_y + (parent_h // 2) - (win_h // 2) - 100
 
         self.geometry(f"{win_w}x{win_h}+{x}+{y}")
         self.lift()

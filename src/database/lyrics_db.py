@@ -13,7 +13,7 @@ def init_lyrics_db():
         cursor.execute(f"""
         CREATE TABLE IF NOT EXISTS lyrics (
             track_id TEXT PRIMARY KEY,
-            lyrics_id INTEGER,
+            id INTEGER,
             track_name TEXT,
             artist_name TEXT,
             album_name TEXT,
@@ -43,7 +43,7 @@ def save_lyrics_to_lyrics_db(lyrics: TrackLyrics):
         cursor.execute("""
             INSERT OR REPLACE INTO lyrics (
                 track_id,
-                lyrics_id,
+                id,
                 track_name,
                 artist_name,
                 album_name,
@@ -58,7 +58,7 @@ def save_lyrics_to_lyrics_db(lyrics: TrackLyrics):
                 ?, ?, ?
             )""", (
                 lyrics.track_id,
-                lyrics.lyrics_id,
+                lyrics.id,
                 lyrics.track_name,
                 lyrics.artist_name,
                 lyrics.album_name,
@@ -97,9 +97,17 @@ def get_lyrics_from_lyrics_db(track_id: str) -> TrackLyrics:
         if row is None:
             return None
         
-        print("ROW:")
-        print(row)
-        track_lyrics = TrackLyrics(**dict(row))
+        lyrics_data = dict(row)
+        track_lyrics = TrackLyrics(lyrics_data["track_id"])
+
+        track_lyrics.id = lyrics_data["id"]
+        track_lyrics.track_name = lyrics_data["track_name"]
+        track_lyrics.artist_name = lyrics_data["artist_name"]
+        track_lyrics.album_name = lyrics_data["album_name"]
+        track_lyrics.duration = lyrics_data["duration"]
+        track_lyrics.instrumental = lyrics_data["instrumental"]
+        track_lyrics.plain_lyrics = lyrics_data["plain_lyrics"]
+        track_lyrics.synced_lyrics = lyrics_data["synced_lyrics"]
 
         return track_lyrics
     

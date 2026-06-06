@@ -13,11 +13,7 @@ def fetch_lyrics_from_lrclib_cached(track: Track) -> dict | None:
     artist_name = track.artist.strip().replace(' ', '+')
     album_name = track.album.strip().replace(' ', '+')
     duration = track.length
-
-    print(f"track_name: {track_name}")
-    print(f"artist_name: {artist_name}")
-    print(f"album_name: {album_name}")
-    print(f"duration: {duration}")
+    
     cached = f"/api/get-cached?artist_name={artist_name}&track_name={track_name}&album_name={album_name}&duration={duration}"
 
     print(base_url + cached)

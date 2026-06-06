@@ -6,7 +6,7 @@ from src.config import BACKGROUND_COLORS
 from src.database.playlists_db import delete_track_from_playlist
 from src.display.lyrics_display import LyricsWindow
 from src.models.track import Track
-from src.services.lyrics_service import fetch_lyrics
+from src.services.lyrics_service import fetch_lyrics, fetch_lyrics_from_db
 
 
 class PlaylistDisplay(ttk.Frame):
@@ -519,16 +519,13 @@ class PlaylistDisplay(ttk.Frame):
         track: Track = self.library.tracks[track_id]
         print(f"track id: {track_id}")
 
-        track_lyrics = fetch_lyrics(track)
-        print(f"track_lyrics: {track_lyrics}")
+        track_lyrics = fetch_lyrics_from_db(track)
+
+        if track_lyrics is None:
+            track_lyrics = fetch_lyrics(track)
 
         self.lyrics_window = LyricsWindow(self, track_lyrics)
 
-        # lyrics = self.lyrics_window.fetch_lyrics()
-
-        
-    # async def fetch_lyrics(track):
-    #     await fetch_lyrics_from_lrclib(track)
 
 
 
