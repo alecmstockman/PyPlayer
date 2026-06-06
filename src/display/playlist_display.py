@@ -524,6 +524,7 @@ class PlaylistDisplay(ttk.Frame):
         if track_lyrics is None:
             track_lyrics = fetch_lyrics(track)
 
+
         self.lyrics_window = LyricsWindow(self, track_lyrics)
 
 

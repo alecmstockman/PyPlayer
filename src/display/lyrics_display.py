@@ -26,7 +26,17 @@ class LyricsWindow(tk.Toplevel):
         self.lift()
         self.grab_set()
 
-        self.display_plain_lyrics(self.track_lyrics.plain_lyrics)
+        print(f"WINDOW: {self.track_lyrics}")
+
+        if not self.track_lyrics:
+            self.display_plain_lyrics("Unable to fetch lyrics")
+        
+        if self.track_lyrics.plain_lyrics:
+            self.display_plain_lyrics(self.track_lyrics.plain_lyrics)
+        elif not self.track_lyrics.plain_lyrics:
+            self.display_plain_lyrics(self.track_lyrics.synced_lyrics)
+        else:
+            self.display_plain_lyrics("Unable to fetch lyrics")
 
     def display_plain_lyrics(self, plain_lyrics):
         print("\nWINDOW: DISPLAY LYRICS")
