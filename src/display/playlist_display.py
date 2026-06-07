@@ -319,7 +319,7 @@ class PlaylistDisplay(ttk.Frame):
             items = [(self.playlist_tree.set(iid, column), iid) for iid in self.playlist_tree.get_children()]
         else: 
             items = [(self.library.get_track_length(self.tree_id_to_track_id(iid)), iid) for iid in self.playlist_tree.get_children()]
-
+                    
         if column in ("Track", "Artist", "Album", "Time", "Filetype", "favorite"):
             if self.sort_order == None:
                 items.sort()
@@ -328,6 +328,8 @@ class PlaylistDisplay(ttk.Frame):
                 self.sort_order = "descending"
                 if column == "Track":
                     self.playlist_tree.heading(column, text=f"  Title ⬆")
+                elif column == "favorite":
+                    self.playlist_tree.heading(column, text=f"⬆")
                 else:
                     self.playlist_tree.heading(column, text=f"  {column} ⬆")
 
@@ -338,6 +340,8 @@ class PlaylistDisplay(ttk.Frame):
                 self.sort_order = "ascending"
                 if column == "Track":
                     self.playlist_tree.heading(column, text=f"  Title ⬇")
+                elif column == "favorite":
+                    self.playlist_tree.heading(column, text=f"⬇")
                 else:
                     self.playlist_tree.heading(column, text=f"  {column} ⬇")
 
@@ -347,6 +351,8 @@ class PlaylistDisplay(ttk.Frame):
                 
                 if column == "Track":
                     self.playlist_tree.heading(column, text=f"  Title  ")
+                elif column == "favorite":
+                    self.playlist_tree.heading(column, text=f"")
                 else:
                     self.playlist_tree.heading(column, text=f"  {column}  ")
 
