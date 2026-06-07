@@ -4,7 +4,6 @@ from src.api.lrclib import fetch_lyrics_from_lrclib
 from src.models.lyrics import TrackLyrics
 
 
-
 class LyricsWindow(tk.Toplevel):
     def __init__(self, parent, track_lyrics: TrackLyrics):
         super().__init__(parent)

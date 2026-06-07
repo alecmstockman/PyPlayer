@@ -174,7 +174,9 @@ def check_play_status(selected_view, artist_album=None):
             playlist_display.play_status_icon_paused(track.track_id)
 
 def on_sidebar_selection(event):
+    print("\nON SIDEBAR SELECTION")
     selected_view = sidebar.selected_view
+    print(f"selected_view: {selected_view}")
     if selected_view == "Library" or selected_view == "Songs":
         playlist_display.set_playlist(playlist_manager.library_playlist)
         check_play_status(selected_view)

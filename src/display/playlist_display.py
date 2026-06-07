@@ -192,10 +192,14 @@ class PlaylistDisplay(ttk.Frame):
             self.header_var.set(f"{self.playlist.name} ({total_minutes}:{remaining_seconds})")
 
     def clear_playlist(self):
+        # print("CLEAR PLAYLIST")
+        # self.playlist = Playlist("empty", [])
         for iid in self.playlist_tree.get_children():
             self.playlist_tree.delete(iid)
 
     def highlight_playing(self, tree_id):
+        if self.playlist != self.controls.playlist:
+            return
         for item in self.playlist_tree.get_children():
             current_tags = list(self.playlist_tree.item(item, "tags"))
             if "playing" in current_tags:
