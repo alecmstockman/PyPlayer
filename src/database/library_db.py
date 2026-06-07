@@ -216,6 +216,7 @@ def delete_all_tracks_from_library():
         cursor.execute("DELETE FROM playlist_tracks;")
         cursor.execute("DELETE FROM playlists;")
         cursor.execute("DELETE FROM library;")
+        cursor.execute("DELETE FROM lyrics;")
 
         conn.commit()
         conn.close()

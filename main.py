@@ -139,6 +139,7 @@ root.bind("<<RescanLibrary>>", handler_rescan_library)
 
 def handle_reset_library(event=None):
     library.tracks = {}
+    library.delete_all_tracks()
 
     playlist_display.playlist = None
     playlist_display.set_playlist(playlist_display.playlist)
