@@ -24,7 +24,6 @@ def fetch_lyrics_from_lrclib_cached(track: Track) -> dict | None:
 
     if 199 < cached_response.status_code < 300:
         data = cached_response.json()
-        print(f"data: {data}")
         return data
     
     return None

@@ -318,7 +318,7 @@ class PlaylistDisplay(ttk.Frame):
         if column != "Time":
             items = [(self.playlist_tree.set(iid, column), iid) for iid in self.playlist_tree.get_children()]
         else: 
-            items = [(self.library.get_track_length(iid), iid) for iid in self.playlist_tree.get_children()]
+            items = [(self.library.get_track_length(self.tree_id_to_track_id(iid)), iid) for iid in self.playlist_tree.get_children()]
 
         if column in ("Track", "Artist", "Album", "Time", "Filetype", "favorite"):
             if self.sort_order == None:

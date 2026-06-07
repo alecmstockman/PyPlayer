@@ -26,8 +26,6 @@ class LyricsWindow(tk.Toplevel):
         self.lift()
         self.grab_set()
 
-        print(f"WINDOW: {self.track_lyrics}")
-
         if not self.track_lyrics:
             self.display_plain_lyrics("Unable to fetch lyrics")
         
