@@ -1,6 +1,6 @@
 # PyPlayer
 
-PyPlayer is a desktop music player and library manager built with Python, Tkinter, and VLC. It supports playlist management, metadata editing, sorting, favorites, shuffle/loop playback, and dynamic library organization through a custom GUI application architecture.
+PyPlayer is a desktop music player and library manager built with Python, Tkinter, VLC, SQLite, and Mutagen. It features playlist management, metadata editing, favorites, shuffle and loop playback, dynamic library organization, and integrated lyrics retrieval through the LRCLib API. The project was developed as a hands-on exploration of desktop application architecture, media playback, database design, and third-party API integration.
 
 ![Python](https://img.shields.io/badge/python-3.x-blue)
 ![Tkinter](https://img.shields.io/badge/gui-tkinter-green)
@@ -12,13 +12,22 @@ PyPlayer is a desktop music player and library manager built with Python, Tkinte
 
 ## Motivation
 
-As a lifelong musician, I’ve always struggled to organize my demo tracks, song drafts, and finished recordings in a way that keeps them separate from my main music library. I was also looking for a way to add metadata to song files on my finished tracks. Coincidentally, I’ve also been learning programming, and I thought—what better way to practice and clean up my demo littered desktop than by creating my own music player and file editor? And, after many a difficult hour, PyPlayer was born!
+As a lifelong musician, I’ve always struggled to organize my demo tracks, song drafts, and finished recordings in a way that keeps them separate from my main music library. I was also looking for a way to add metadata to song files on my finished tracks. Coincidentally, I’ve also been learning programming, and I thought—what better way to practice and clean up my demo littered desktop than by creating my own music player and file editor? And, after many a difficult hour, PyPlayer was born! The core functionality is now fully built out, but I have many more updates on the way. I would love to hear any feedback you may have!
 
-#### Challenges:
+## Technical Challenges
 
-Like most personal projects, I vastly underestimated the amount of work involved in building a custom music player from scratch. I ran into several significant challenges like deciding how to handle audio playback, implementing shuffle for the current view, and learning Tkinter, but by far the biggest was managing play state across different menus. There were countless small edge cases to solve to keep song display, playlist display, and backend play order in sync as users switched tracks and navigated between libraries and playlists. The core functionality is now fully built out, but I have many more updates on the way. I’d love to hear what you think!
+Like most projects, I vastly underestimated the amount of work involved in building a custom music player from scratch. One of the most difficult aspects of PyPlayer was managing playback state across multiple views and playlists. The application allows users to switch between library, artist, album, favorites, and custom playlist views along with shuffle and loop states while maintaining accurate playback information and UI state.
 
-This is a music player app similar to Apple Music and VLC media player but with additional file editing features, and a personal project for the Boot.dev backend engineering course.
+
+Additional challenges included:
+
+- Integrating VLC event handling with Tkinter's event loop
+- Implementing shuffle and loop behavior across different playlist views
+- Migrating library storage from JSON persistence to SQLite
+- Synchronizing playback state, playlist state, and display state
+- Managing metadata reading and writing with Mutagen
+- Designing a flexible playlist architecture that supports future features such as duplicate playlist entries
+- Fetchcing Lyrics from the LRCLIB API, handling any issues such as missing lyrics, and caching those lyrics in the database
 
 See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockman]
 
@@ -40,10 +49,12 @@ See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockma
 ## Built With
 * Python
 * Tkinter / ttk
+* SQLite3
 * python-vlc
 * Mutagen
-* JSON persistence
+* LRCLib API
 * pathlib
+* JSON persistence
 
 ## Quick Start
 
@@ -59,19 +70,21 @@ See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockma
 - Metadata editing with Mutagen
 - Shuffle and loop playback modes
 - Favorites system
+- Lyrics retrieval via LRCLib API
+- SQLite-backed music library
+- Persistent user settings
 - Keyboard shortcuts
 - Dynamic progress bar and scrubbing
 - Album/artist metadata support
 - Custom Tkinter/ttk UI architecture
-- JSON-based library persistence
 
 # Usage
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/alecmstockman/music-player.git
-cd music-player
+git clone https://github.com/alecmstockman/PyPlayer.git
+cd PyPlayer
 ```
 
 ### 2. Create a virtual environment
@@ -80,18 +93,11 @@ cd music-player
 python3 -m venv venv
 ```
 
-### 3. Activate the virtual environment
+### 3. Activate the virtual environment and install dependencies
 
 macOS / Linux:
 
 ```bash
-source venv/bin/activate
-```
-
-### 4. Install dependencies
-
-```bash
-python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -102,7 +108,13 @@ You must also have **VLC installed** on your system since playback is handled th
 
 # Running the App
 
-Add audio files to root/music in either the 'Albums' or 'Songs' folder.
+Add audio files to the Music directory
+
+```
+Music/
+├── Albums/
+└── Songs/
+```
 
 Start the application with:
 
@@ -115,7 +127,6 @@ python3 main.py
 # Architecture
 
 ```
-.
 .
 ├── data
 │   ├── pyplayer.db
@@ -131,17 +142,22 @@ python3 main.py
 ├── requirements.txt
 └── src
     ├── __init__.py
+    ├── api
+    │   └── lrclib.py
     ├── config.py
     ├── database
     │   ├── library_db.py
+    │   ├── lyrics_db.py
     │   └── playlists_db.py
     ├── display
+    │   ├── lyrics_display.py
     │   ├── playlist_display.py
     │   └── sidebar.py
     ├── metadata
     │   └── metadata.py
     ├── models
     │   ├── library.py
+    │   ├── lyrics.py
     │   ├── playlist.py
     │   └── track.py
     ├── player_controls
@@ -149,26 +165,12 @@ python3 main.py
     │   ├── right_controls.py
     │   ├── settings.py
     │   └── track_display.py
+    ├── services
+    │   └── lyrics_service.py
     ├── styles.py
     ├── track_info.py
-    └── vlc_player.py      
+    └── vlc_player.py   
 ```
-
----
-
-# Current Features
-
-- Playlist view using **Tkinter Treeview**
-- Sortable columns
-- Favorite tracks
-- Playlist creation
-- Edit metadata on MP3 files
-- Context menu actions
-- VLC-based audio playback
-- Sidebar library navigation
-- Change the background color theme
-
----
 
 ## Controls
 
@@ -238,7 +240,7 @@ The project uses `.gitkeep` files so these directories exist even when empty.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/alecmstockman/music-player.git
+git clone https://github.com/alecmstockman/pyplayer.git
 cd music-player
 
 python -m venv venv
