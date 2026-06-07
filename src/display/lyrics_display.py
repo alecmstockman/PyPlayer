@@ -18,8 +18,13 @@ class LyricsWindow(tk.Toplevel):
 
         self.title("Lyrics")
 
+        lyrics_title = f"   Artist: {track_lyrics.artist_name}          Song: {track_lyrics.track_name} "
+        self.track_title_label = ttk.Label(self, text=lyrics_title)
+        self.track_title_label.pack(fill="both")
+
+
         self.lyrics_text = tk.Text(self, wrap="word", font=("Trebuchet MS", 14))
-        self.lyrics_text.pack(fill="both", expand="True", padx=5, pady=5)
+        self.lyrics_text.pack(side="left", fill="both", expand="True", padx=5, pady=5)
 
         self.center_over_parent(parent)
         self.deiconify()

@@ -16,8 +16,6 @@ def fetch_lyrics_from_lrclib_cached(track: Track) -> dict | None:
     
     cached = f"/api/get-cached?artist_name={artist_name}&track_name={track_name}&album_name={album_name}&duration={duration}"
 
-    print(base_url + cached)
-
     cached_response = requests.get(base_url + cached)
     
     print(f"cached_response: {cached_response.status_code}")

@@ -22,7 +22,6 @@ def fetch_lyrics(track: Track) -> TrackLyrics:
     if lyric_data is None:
         print(f"Unable to get lyrics for {track.title}")
         return None
-    print(f"lyrics_data: {lyric_data}")
 
     track_lyrics = TrackLyrics(track.track_id)
 
@@ -39,8 +38,6 @@ def fetch_lyrics(track: Track) -> TrackLyrics:
     print(f"Saved lyrics to db: {saved}")
 
     return track_lyrics
-
-
 
 def parse_lyrics(lyric_data):
     pass
