@@ -226,13 +226,13 @@ Music/Albums/
 The project uses `.gitkeep` files so these directories exist even when empty.
 
 ## Planned Features
-* Updates to controls, hotkeys, and right clicks
 * Add artwork Display
 * Update UI with CustomTkinter
 * Create popup play queue and history display
 * Implement a play counts column
-* Ability to change theme and styles
 * Recently Played Playlist
+* Expanded meta data writer for more file formats
+* Fetch artist info from the web
 
 
 ## 🤝 Contributing
