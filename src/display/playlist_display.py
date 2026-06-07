@@ -192,8 +192,6 @@ class PlaylistDisplay(ttk.Frame):
             self.header_var.set(f"{self.playlist.name} ({total_minutes}:{remaining_seconds})")
 
     def clear_playlist(self):
-        # print("CLEAR PLAYLIST")
-        # self.playlist = Playlist("empty", [])
         for iid in self.playlist_tree.get_children():
             self.playlist_tree.delete(iid)
 
@@ -524,7 +522,6 @@ class PlaylistDisplay(ttk.Frame):
         pass
 
     def _on_menu_show_lyrics(self):
-        print("DISPLAY: ON MENU SHOW LYRICS")
         track_id = self.tree_id_to_track_id(self.menu_iid)
         track: Track = self.library.tracks[track_id]
         track_lyrics = fetch_lyrics_from_db(track)

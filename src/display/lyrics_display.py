@@ -41,7 +41,6 @@ class LyricsWindow(tk.Toplevel):
             self.display_plain_lyrics("Unable to fetch lyrics")
 
     def display_plain_lyrics(self, plain_lyrics):
-        print("\nWINDOW: DISPLAY LYRICS")
         self.lyrics_text.config(padx=20, pady=10)
         self.lyrics_text.config(state="normal")
         self.lyrics_text.delete("1.10", tk.END)

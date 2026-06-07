@@ -15,6 +15,7 @@ from src.database.library_db import init_library_db
 from src.database.lyrics_db import init_lyrics_db
 from src.database.playlists_db import init_playlists_db, init_playlist_tracks_db, get_all_from_playlists
 from src.services.lyrics_service import delete_all_cached_lyrics
+from src.models.playlist import Playlist
 
 
 root = tk.Tk()
@@ -174,9 +175,7 @@ def check_play_status(selected_view, artist_album=None):
             playlist_display.play_status_icon_paused(track.track_id)
 
 def on_sidebar_selection(event):
-    print("\nON SIDEBAR SELECTION")
     selected_view = sidebar.selected_view
-    print(f"selected_view: {selected_view}")
     if selected_view == "Library" or selected_view == "Songs":
         playlist_display.set_playlist(playlist_manager.library_playlist)
         check_play_status(selected_view)
@@ -206,6 +205,7 @@ def on_sidebar_selection(event):
     
     if selected_view == "Artists":
         playlist_display.clear_playlist()
+        playlist_display.playlist = Playlist("empty", [])
         items = playlist_display.get_all_artists()
         check_play_status(selected_view)
     else:
@@ -251,7 +251,6 @@ def play_selected_tracks(event):
 playlist_display.playlist_tree.bind('<Double-Button-1>', play_selected_tracks)
 
 def on_playlist_created(event):
-    print("ON Playlist Created")
     display = event.widget
     new_playlist = display._last_playlist_created
     sidebar.add_user_playlist(new_playlist)

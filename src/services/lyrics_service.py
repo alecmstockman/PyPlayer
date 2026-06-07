@@ -5,15 +5,12 @@ from src.database.lyrics_db import save_lyrics_to_lyrics_db, get_lyrics_from_lyr
 
 
 def fetch_lyrics_from_db(track: Track) -> TrackLyrics | None:
-    print("\nFETCH LYRICS FROM DB")
     lyric_data = get_lyrics_from_lyrics_db(track.track_id)
     if lyric_data:
         print("successfully fetched from db!")
     return lyric_data
 
 def fetch_lyrics(track: Track) -> TrackLyrics:
-    print("\nFETCH LYRICS")
-
     lyric_data = fetch_lyrics_from_lrclib_cached(track)
         
     if lyric_data is None:
@@ -35,7 +32,6 @@ def fetch_lyrics(track: Track) -> TrackLyrics:
     track_lyrics.synced_lyrics = lyric_data["syncedLyrics"]
 
     saved = save_lyrics_to_lyrics_db(track_lyrics)
-    print(f"Saved lyrics to db: {saved}")
 
     return track_lyrics
 
