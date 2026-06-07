@@ -29,8 +29,6 @@ Additional challenges included:
 - Designing a flexible playlist architecture that supports future features such as duplicate playlist entries
 - Fetchcing Lyrics from the LRCLIB API, handling any issues such as missing lyrics, and caching those lyrics in the database
 
-See my Boot.dev profile and other projects here: [https://www.boot.dev/u/stockman]
-
 
 ## Screenshots
 
