@@ -193,9 +193,6 @@ class PlayerControls(ttk.Frame):
 
             else:
                 self.shuffle = False
-                print(f"self.play_index: {self.play_index}")
-                print(f"self.play_order: ", self.play_order)
-                # index = self.play_order[self.play_index]
                 index = self.play_index
                 self.shuffle_btn.config(text="🔀")
                 self.play_order = list(self.playlist_display.playlist_tree.get_children())
