@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
 import json
 from src.config import BACKGROUND_COLORS, FONT_COLORS, FONTS, AUDIO_FILETYPES
@@ -286,7 +286,7 @@ class SettingsWindow(tk.Toplevel):
         self.settings_button = ttk.Button(self, text="Convert File", command=self.open_write_meta_data, takefocus=0, width=15)
         self.settings_button.grid(row=5, column=0, padx=10, pady=10, sticky="w")
 
-        self.reset_button = ttk.Button(self, text="Reset Library", command=self.reset_library, takefocus=0, width=15)
+        self.reset_button = ttk.Button(self, text="Reset Library", command=self.reset_library_confirmation, takefocus=0, width=15)
         self.reset_button.grid(row=6, column=0, padx=10, pady=10, sticky="w")
         
         background_color_dropdown = ttk.Combobox(
@@ -322,9 +322,9 @@ class SettingsWindow(tk.Toplevel):
         font.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
         font.bind("<<ComboboxSelected>>", self.on_font_selection)
 
-        font_color_label = ttk.Label(self, text="COMING SOON!").grid(row=1, column=3, padx=10, pady=10, sticky="w")
-        font_type_label = ttk.Label(self, text="COMING SOON!").grid(row=2, column=3, padx=10, pady=10, sticky="w")
-        convert_file_label = ttk.Label(self, text="COMING SOON!").grid(row=5, column=3, padx=10, pady=10, sticky="w")
+        font_color_label = ttk.Label(self, text="* COMING SOON *").grid(row=1, column=3, padx=10, pady=10, sticky="w")
+        font_type_label = ttk.Label(self, text="* COMING SOON *").grid(row=2, column=3, padx=10, pady=10, sticky="w")
+        convert_file_label = ttk.Label(self, text="* COMING SOON *").grid(row=5, column=3, padx=10, pady=10, sticky="w")
 
         self.center_over_parent(parent)
         self.deiconify()
@@ -362,6 +362,15 @@ class SettingsWindow(tk.Toplevel):
     def open_write_meta_data(self):
         meta_data_window = WriteMetaDataWindow(self.parent)
         print("\n open write meta data")
+
+    def reset_library_confirmation(self, event=None):
+        answer = messagebox.askyesno(
+            "Reset Library",
+            "Warning: Reset library will delete all user playlists.\n\nContinue?"
+        )
+
+        if answer:
+            self.reset_library()
 
     def reset_library(self, event=None):
         self.parent.event_generate("<<ResetLibrary>>")

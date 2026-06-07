@@ -1,7 +1,12 @@
 from src.models.track import Track
 from src.api.lrclib import fetch_lyrics_from_lrclib, fetch_lyrics_from_lrclib_cached
 from src.models.lyrics import TrackLyrics
-from src.database.lyrics_db import save_lyrics_to_lyrics_db, get_lyrics_from_lyrics_db, delete_all_from_lyrics_db
+from src.database.lyrics_db import (
+    save_lyrics_to_lyrics_db, 
+    get_lyrics_from_lyrics_db, 
+    delete_all_from_lyrics_db
+)
+from tkinter import messagebox
 
 
 def fetch_lyrics_from_db(track: Track) -> TrackLyrics | None:
