@@ -5,6 +5,8 @@ from src.track_info import TrackInfo
 from src.config import BACKGROUND_COLORS
 from src.database.playlists_db import delete_track_from_playlist
 from src.display.lyrics_display import LyricsWindow
+from src.models.track import Track
+from src.services.lyrics_service import fetch_lyrics, fetch_lyrics_from_db
 
 
 class PlaylistDisplay(ttk.Frame):
@@ -194,6 +196,8 @@ class PlaylistDisplay(ttk.Frame):
             self.playlist_tree.delete(iid)
 
     def highlight_playing(self, tree_id):
+        if self.playlist != self.controls.playlist:
+            return
         for item in self.playlist_tree.get_children():
             current_tags = list(self.playlist_tree.item(item, "tags"))
             if "playing" in current_tags:
@@ -316,8 +320,8 @@ class PlaylistDisplay(ttk.Frame):
         if column != "Time":
             items = [(self.playlist_tree.set(iid, column), iid) for iid in self.playlist_tree.get_children()]
         else: 
-            items = [(self.library.get_track_length(iid), iid) for iid in self.playlist_tree.get_children()]
-
+            items = [(self.library.get_track_length(self.tree_id_to_track_id(iid)), iid) for iid in self.playlist_tree.get_children()]
+                    
         if column in ("Track", "Artist", "Album", "Time", "Filetype", "favorite"):
             if self.sort_order == None:
                 items.sort()
@@ -326,6 +330,8 @@ class PlaylistDisplay(ttk.Frame):
                 self.sort_order = "descending"
                 if column == "Track":
                     self.playlist_tree.heading(column, text=f"  Title ⬆")
+                elif column == "favorite":
+                    self.playlist_tree.heading(column, text=f"⬆")
                 else:
                     self.playlist_tree.heading(column, text=f"  {column} ⬆")
 
@@ -336,6 +342,8 @@ class PlaylistDisplay(ttk.Frame):
                 self.sort_order = "ascending"
                 if column == "Track":
                     self.playlist_tree.heading(column, text=f"  Title ⬇")
+                elif column == "favorite":
+                    self.playlist_tree.heading(column, text=f"⬇")
                 else:
                     self.playlist_tree.heading(column, text=f"  {column} ⬇")
 
@@ -345,6 +353,8 @@ class PlaylistDisplay(ttk.Frame):
                 
                 if column == "Track":
                     self.playlist_tree.heading(column, text=f"  Title  ")
+                elif column == "favorite":
+                    self.playlist_tree.heading(column, text=f"")
                 else:
                     self.playlist_tree.heading(column, text=f"  {column}  ")
 
@@ -512,17 +522,15 @@ class PlaylistDisplay(ttk.Frame):
         pass
 
     def _on_menu_show_lyrics(self):
-        print("DISPLAY: ON MENU SHOW LYRICS")
         track_id = self.tree_id_to_track_id(self.menu_iid)
-        track = self.library.tracks[track_id]
+        track: Track = self.library.tracks[track_id]
+        track_lyrics = fetch_lyrics_from_db(track)
 
-        self.lyrics_window = LyricsWindow(self, self.library, track)
+        if track_lyrics is None:
+            track_lyrics = fetch_lyrics(track)
 
-        lyrics = self.lyrics_window.fetch_lyrics()
+        self.lyrics_window = LyricsWindow(self, track_lyrics)
 
-        
-    # async def fetch_lyrics(track):
-    #     await fetch_lyrics_from_lrclib(track)
 
 
 

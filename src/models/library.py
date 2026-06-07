@@ -62,13 +62,8 @@ class Library():
     def delete_all_tracks(self):
         delete_all_tracks_from_library()
               
-
     def add_track(self, track):
         self.tracks[track.track_id] = track
-
-    # def add_track_to_library_db(self, track):
-    #     save_track_to_library_db(track)
-    #     return track
     
     def save_track_to_library_db(self, track):
         save_track_to_library_db(track)

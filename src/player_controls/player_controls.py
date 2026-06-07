@@ -124,7 +124,6 @@ class PlayerControls(ttk.Frame):
 
     def next_track(self, event=None):
         self.playlist_display.clear_play_status()
-
         if 0 <= self.play_index < len(self.playlist.track_id_list) - 1:
             if self.loop_status != "track":
                 self.play_index += 1
@@ -192,7 +191,7 @@ class PlayerControls(ttk.Frame):
 
             else:
                 self.shuffle = False
-                index = self.play_order[self.play_index]
+                index = self.play_index
                 self.shuffle_btn.config(text="🔀")
                 self.play_order = list(self.playlist_display.playlist_tree.get_children())
                 self.play_index = index
